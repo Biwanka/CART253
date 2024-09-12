@@ -1,0 +1,7 @@
+{
+    "editor.suggest.showWords": true,
+    "editor.suggest.matchOnWordStartOnly": true,
+    "terminal.integrated.suggest.enabled": false,
+    "typescript.enablePromptUseWorkspaceTsdk": false,
+    "editor.acceptSuggestionOnEnter": "smart"
+}
