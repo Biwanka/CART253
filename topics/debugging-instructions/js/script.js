@@ -37,8 +37,8 @@ function draw() {
         pop();
 
     beginshape();
-    Reflect
-    R
+    ellipse()
+
 
 
 }
