@@ -1,6 +1,6 @@
 /**
  * Creature Loves Massage
- * Pippin Barr
+ * Bianca Gauthier
  * 
  * A creature that responds to mouse massage by changing colour
  */
