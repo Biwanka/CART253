@@ -1,6 +1,6 @@
 /**
  * Creature Loves Mouse
- * Pippin Barr
+ * Bianca Gauthier
  * 
  * A creature that responds to the mouse by changing colour
  */
