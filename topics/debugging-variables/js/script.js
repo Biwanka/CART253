@@ -13,7 +13,7 @@ const bgColor = "#87ceeb"; // Sky blue
 // The bug
 const bug = {
     // Position and dimensions
-    x: 250
+    x: 250,
     y: 0,
     w: 20,
     // Movement
@@ -23,13 +23,13 @@ const bug = {
     },
     // Colour
     color: "#87ceeb" // Dark brown
-
+},
 
 /**
  * Create the canvas
 */
 function setup() {
-        createCanvas(500, 500);
+    createCanvas(500, 500);
 }
 
 
