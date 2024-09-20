@@ -1,6 +1,6 @@
 /**
  * Death by Boredom
- * Pippin Barr
+ * Bianca Gauthier
  * 
  * A creature that can die of boredom...
  */
