@@ -27,12 +27,15 @@ const laserPointer = {
 
 
 };
-// Creates the progress bar
-const progressBar = {
+/**The backgroun will change colour to give
+    *the feeling that the cat is chasing the laser pointer in different 
+    *rooms 
+    */
+const floor = {
     x: 500,
     y: 100,
     size: 50,
-    fill: "#cc3333"
+    fill: undefined,
 };
 
 
@@ -52,11 +55,11 @@ function setup() {
 
 function draw() {
 
-    background(0);
+    background(200);
 
+
+    drawFloor();
     drawLaserPointer();
-    drawProgressBar();
-
 
     //the cat paw wich is the cursor
 
@@ -65,6 +68,8 @@ function draw() {
     image(catPaw.image, catPaw.x, catPaw.y);
     pop();
 
+    //Remap mouse X from [0, 100] to [0,255]
+    // let c = map(mouseX, 0, 100, 0, 255);
     moveCatPaw();
     checkInput();
 }
@@ -73,6 +78,14 @@ function draw() {
 function moveCatPaw() {
     catPaw.x = mouseX;
     catPaw.y = mouseY;
+
+}
+function drawFloor() {
+    push();
+    noStroke();
+    fill(0);
+    rect(30, 20, 55, 400);
+    pop();
 
 }
 
@@ -85,21 +98,16 @@ function drawLaserPointer() {
     pop();
 }
 
-function drawProgressBar() {
-    push();
-    noStroke();
-    fill(progressBar.fill);
-    rect(200, 400, 100, 100);
-    pop();
 
-}
 
 function checkInput() {
+
+    // const distance = dist(mouse.x, mouse.y, laserPointer.x, laserPointer.y);
+    //const mouseOverlapsLaserPointer = (distance < laserPointer.size / 2);
 
     if (mouseIsPressed) {
         laserPointer.x = random(0, width);
         laserPointer.y = random(0, height);
-
     }
     else {
         laserPointer.x = laserPointer.x;
