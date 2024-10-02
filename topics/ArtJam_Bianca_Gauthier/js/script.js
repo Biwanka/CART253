@@ -18,7 +18,9 @@ let catPaw = {
     image: undefined
 };
 
-
+let floorColour = {
+    fill: undefined
+};
 
 // the red dot from a laser pointer. The one that the cat is trying to catch 
 const laserPointer = {
@@ -59,13 +61,11 @@ function setup() {
 
 function draw() {
 
-    background(200);
+    background(100);
 
     moveCatPaw();
     checkInput();
-
-
-
+    drawFloorColour();
     drawFloor();
     drawLaserPointer();
 
@@ -102,12 +102,22 @@ function checkInput() {
 
 }
 
-let c = map(mouseX, 0, 100, 0, 255)
+function drawFloorColour() {
+    const distance = dist(catPaw.x, catPaw.y, floor.x, floor.y);
+    const mouseOverlapsFloor = (distance < floor.size / 2);
+    const mouseIsMoving = (movedX !== 0 || movedY !== 0);
+
+    if (mouseOverlapsFloor && mouseIsMoving) {
+        drawFloor.fill = map(mouseX, 0, 100, 0, 100);
+        drawFloor.fill = map(mouseY, 0, 100, 100, 0);
+    }
+}
+
 
 function drawFloor() {
     push();
     noStroke();
-    fill(c);
+    fill(mouseX, mouseY);
     circle(floor.x, floor.y, floor.size);
     pop();
 }
