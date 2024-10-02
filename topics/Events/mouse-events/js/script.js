@@ -1,6 +1,6 @@
 /**
  * Mouse Events
- * Pippin Barr
+ * Bianca Gauthier
  * 
  * A chance to experiment with mouse events in a simple setting.
 */
