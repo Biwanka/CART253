@@ -26,7 +26,7 @@ const laserPointer = {
     //position
     x: 100,
     y: 100,
-    size: 50,
+    size: 30,
     fill: "#cc3333",
 
 
