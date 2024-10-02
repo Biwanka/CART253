@@ -1,6 +1,6 @@
 /**
  * Keyboard Events
- * Pippin Barr
+ * Bianca Gauthier
  * 
  * A chance to experiment with keyboard events in a simple setting.
 */
