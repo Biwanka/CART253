@@ -21,6 +21,10 @@ const ball = {
         white: "#ffffff",
         red: "#ff0000",
         blue: "#0000ff"
+    },
+    keys: {
+        redKey: 82, //R
+        blueKey: 66 //B
     }
 }
 
@@ -43,4 +47,22 @@ function draw() {
     fill(ball.fill);
     ellipse(ball.x, ball.y, ball.size);
     pop();
+}
+
+function keyPressed(event) {
+    if (event.keyCode === ball.keys.red) {
+        ball.fill = ball.fills.red;
+    }
+
+    else if (event.keyCode === 66) {
+        ball.fill = ball.fills.bleu;
+    }
+
+}
+
+function keyReleased() {
+    if (event.keyCode === 82 || event.key === 66) {
+        ball.fill = ball.fills.white;
+    }
+
 }
