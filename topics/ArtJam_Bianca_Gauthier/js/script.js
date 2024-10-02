@@ -19,7 +19,6 @@ let catPaw = {
 };
 
 
-let c = map(mouseX, 0, 100, 0, 255);
 
 // the red dot from a laser pointer. The one that the cat is trying to catch 
 const laserPointer = {
@@ -57,36 +56,53 @@ function setup() {
 
 }
 
+
 function draw() {
 
     background(200);
+
+    moveCatPaw();
+    checkInput();
+
 
 
     drawFloor();
     drawLaserPointer();
 
     //the cat paw wich is the cursor
-
     push();
     imageMode(CENTER);
     image(catPaw.image, catPaw.x, catPaw.y);
     pop();
 
 
-
-    moveCatPaw();
-    checkInput();
 }
-
 //makes the cat paw move with the cursor, so it becomes the users cursor
 function moveCatPaw() {
 
     catPaw.x = mouseX;
     catPaw.y = mouseY;
+}
 
+function checkInput() {
+
+    const distance = dist(catPaw.x, catPaw.y, laserPointer.x, laserPointer.y);
+    const mouseOverlapsLaserPointer = (distance < laserPointer.size / 2);
+
+    if (mouseOverlapsLaserPointer && mouseIsPressed) {
+        laserPointer.x = random(0, width);
+        laserPointer.y = random(0, height);
+    }
+
+
+    else {
+        laserPointer.x = laserPointer.x;
+        laserPointer.y = laserPointer.y;
+    }
 
 }
 
+let c = map(mouseX, 0, 100, 0, 255)
 
 function drawFloor() {
     push();
@@ -94,7 +110,6 @@ function drawFloor() {
     fill(c);
     circle(floor.x, floor.y, floor.size);
     pop();
-
 }
 
 // Draws the red circle laser pointer that the cat is trying to catch 
@@ -106,22 +121,4 @@ function drawLaserPointer() {
     pop();
 }
 
-
-
-function checkInput() {
-
-    const distance = dist(mouse.x, mouse.y, laserPointer.x, laserPointer.y);
-    const mouseOverlapsLaserPointer = (distance < laserPointer.size / 2);
-
-    if (mouseOverLapsLaserPointer && mouseIsPressed) {
-        laserPointer.x = random(0, width);
-        laserPointer.y = random(0, height);
-    }
-
-
-    else {
-        laserPointer.x = laserPointer.x;
-        laserPointer.y = laserPointer.y;
-    }
-}
 
