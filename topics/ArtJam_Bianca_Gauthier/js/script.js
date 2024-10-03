@@ -26,7 +26,7 @@ const laserPointer = {
     //position
     x: 100,
     y: 100,
-    size: 30,
+    size: 15,
     fill: "#cc3333",
 
 
@@ -63,7 +63,7 @@ function draw() {
     checkInput();
     drawFloorColour();
     drawFloor();
-    drawLaserPointer();
+
 
     //the cat paw wich is the cursor
     push();
@@ -71,6 +71,7 @@ function draw() {
     image(catPaw.image, catPaw.x, catPaw.y);
     pop();
 
+    drawLaserPointer();
 
 }
 //makes the cat paw move with the cursor, so it becomes the users cursor
