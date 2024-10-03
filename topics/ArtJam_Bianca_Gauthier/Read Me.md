@@ -1,6 +1,6 @@
 Bianca Gauthier 
 GitHub :https://github.com/Biwanka/CART253/tree/main/topics/ArtJam_Bianca_Gauthier 
-Website online: 
+Website online: https://biwanka.github.io/CART253/topics/ArtJam_Bianca_Gauthier/ 
 
 
 Title: Cat PLay Time 
