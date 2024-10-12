@@ -123,6 +123,7 @@ function game() {
 
     moveFly();
     moveEvilFly();
+    moveSpecialFly();
     moveFrog();
     moveTongue();
 
@@ -133,6 +134,7 @@ function game() {
     drawScore();
     drawFly();
     drawEvilFly();
+    drawSpecialFly();
 }
 
 /**
@@ -150,10 +152,11 @@ function moveFly() {
     }
 }
 function moveEvilFly() {
-    // Move the Evil Flies
+    // The evil fly does not appear if the score is bellow 10
     if (score < 10) {
         EvilFly.speed === 0;
     }
+    //if the score is higher then 10 than the evil fly will apear to make it harder
     else if (score > 10) {
         EvilFly.x += EvilFly.speed;
     }
@@ -163,6 +166,16 @@ function moveEvilFly() {
         resetEvilFly();
     }
 
+}
+
+function moveSpecialFly() {
+    if (score < 20) {
+        SpecialFly.speed === 0;
+    }
+
+    else if (score > 20) {
+        SpecialFly.x += SpecialFly.speed;
+    }
 }
 
 /**
@@ -175,7 +188,7 @@ function drawFly() {
     ellipse(fly.x, fly.y, fly.size);
     pop();
 }
-
+//draws the evil fly
 function drawEvilFly() {
     push();
     noStroke();
@@ -185,6 +198,14 @@ function drawEvilFly() {
 
 }
 
+function drawSpecialFly() {
+    push();
+    noStroke();
+    fill("gold");
+    ellipse(SpecialFly.x, SpecialFly.y, SpecialFly.size);
+    pop();
+}
+//draws the players score
 function drawScore() {
     push();
     textAlign(RIGHT, TOP);
