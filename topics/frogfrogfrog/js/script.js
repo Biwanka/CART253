@@ -77,6 +77,13 @@ const EvilFly = {
     speed: 5,
 };
 
+//the Special fly is rare and makes player gain 5 points if caught  /[]
+const SpecialFly = {
+    x: 0,
+    y: 200,
+    size: 5,
+    speed: 15,
+}
 //the current score 
 let score = 0;
 
@@ -144,11 +151,18 @@ function moveFly() {
 }
 function moveEvilFly() {
     // Move the Evil Flies
-    EvilFly.x += EvilFly.speed;
+    if (score < 10) {
+        EvilFly.speed === 0;
+    }
+    else if (score > 10) {
+        EvilFly.x += EvilFly.speed;
+    }
+
     // Handle the evil fly going off the canvas
     if (EvilFly.x > width) {
         resetEvilFly();
     }
+
 }
 
 /**
