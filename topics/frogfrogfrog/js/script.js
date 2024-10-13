@@ -77,6 +77,13 @@ const EvilFly = {
     speed: 4
 };
 
+const GoldPoint = {
+    x: 0,
+    y: 200,
+    size: 10,
+    speed: 2
+}
+
 //the Special fly is rare and makes player gain 5 points if caught  /[]
 const SpecialFly = {
     x: 0,
@@ -99,6 +106,7 @@ function setup() {
     resetFly();
     resetEvilFly();
     resetSpecialFly();
+    resetGoldPoint();
 }
 
 function draw() {
@@ -110,7 +118,7 @@ function draw() {
         game();
     }
 
-    //reorder the position
+
 
 }
 
@@ -128,6 +136,7 @@ function game() {
     moveSpecialFly();
     moveFrog();
     moveTongue();
+    moveGoldPoint();
 
     checkTongueFlyOverlap();
     checkTongueEvilFlyOverlap();
@@ -137,7 +146,11 @@ function game() {
     drawFly();
     drawEvilFly();
     drawSpecialFly();
+    drawGoldPoint();
 }
+
+
+
 
 /**
  * Moves the fly according to its speed
@@ -183,7 +196,16 @@ function moveSpecialFly() {
         resetSpecialFly();
     }
 
+
 }
+function moveGoldPoint() {
+
+    if (score > 5) {
+        GoldPoint.x = frameCount;
+        GoldPoint.y = 30 * sin(GoldPoint.x * 0.1) + 50;
+    }
+}
+
 
 /**
  * Draws the fly as a black circle
@@ -212,6 +234,13 @@ function drawSpecialFly() {
     ellipse(SpecialFly.x, SpecialFly.y, SpecialFly.size);
     pop();
 }
+function drawGoldPoint() {
+    push();
+    fill("#000000")
+    ellipse(GoldPoint.x, GoldPoint.y, GoldPoint.size);
+    pop();
+
+}
 //draws the players score
 function drawScore() {
     push();
@@ -238,6 +267,11 @@ function resetEvilFly() {
 function resetSpecialFly() {
     SpecialFly.x = 0;
     SpecialFly.y = random(0, 400);
+}
+
+function resetGoldPoint() {
+    GoldPoint.x = 0;
+    GoldPoint.y = random(0, 400);
 }
 
 /**
