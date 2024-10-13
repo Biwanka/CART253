@@ -79,9 +79,9 @@ const EvilFly = {
 
 const GoldPoint = {
     x: 0,
-    y: 200,
+    y: 100,
     size: 10,
-    speed: 2
+    speed: 1
 }
 
 //the Special fly is rare and makes player gain 5 points if caught  /[]
@@ -203,9 +203,13 @@ function moveGoldPoint() {
     if (score > 5) {
         GoldPoint.x = frameCount;
         GoldPoint.y = 30 * sin(GoldPoint.x * 0.1) + 50;
+
+        // Handle the special fly going off the canvas
+        //  if (GoldPoint.x > width) {
+        //  resetGoldPoint();
+        //  }
     }
 }
-
 
 /**
  * Draws the fly as a black circle
@@ -271,7 +275,7 @@ function resetSpecialFly() {
 
 function resetGoldPoint() {
     GoldPoint.x = 0;
-    GoldPoint.y = random(0, 400);
+    GoldPoint.y = random(0, 100);
 }
 
 /**
