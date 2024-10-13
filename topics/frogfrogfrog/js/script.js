@@ -65,7 +65,7 @@ const frog = {
 const fly = {
     x: 0,
     y: 200, // Will be random
-    size: 10,
+    size: 12,
     speed: 3
 };
 
@@ -73,16 +73,16 @@ const fly = {
 const EvilFly = {
     x: 0,
     y: 100,
-    size: 15,
-    speed: 5,
+    size: 14,
+    speed: 4
 };
 
 //the Special fly is rare and makes player gain 5 points if caught  /[]
 const SpecialFly = {
     x: 0,
     y: 200,
-    size: 5,
-    speed: 15,
+    size: 10,
+    speed: 6
 }
 //the current score 
 let score = 0;
@@ -97,6 +97,8 @@ function setup() {
 
     // Give the fly its first random position
     resetFly();
+    resetEvilFly();
+    resetSpecialFly();
 }
 
 function draw() {
@@ -176,6 +178,11 @@ function moveSpecialFly() {
     else if (score > 20) {
         SpecialFly.x += SpecialFly.speed;
     }
+    // Handle the special fly going off the canvas
+    if (SpecialFly.x > width) {
+        resetSpecialFly();
+    }
+
 }
 
 /**
@@ -201,7 +208,7 @@ function drawEvilFly() {
 function drawSpecialFly() {
     push();
     noStroke();
-    fill("gold");
+    fill("#ffd700");
     ellipse(SpecialFly.x, SpecialFly.y, SpecialFly.size);
     pop();
 }
@@ -226,6 +233,11 @@ function resetFly() {
 function resetEvilFly() {
     EvilFly.x = 0;
     EvilFly.y = random(0, 400);
+}
+
+function resetSpecialFly() {
+    SpecialFly.x = 0;
+    SpecialFly.y = random(0, 400);
 }
 
 /**
