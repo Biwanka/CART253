@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
+
+    <title> Postherpetic Neuralgia</title>
+
+    <!-- CSS stylesheet(s) -->
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+
+
+    <link href="https://fonts.cdnfonts.com/css/maiandra-gd" rel="stylesheet">
+    <!-- Library script(s) -->
+
+    <!-- p5.min.js is the main p5 library -->
+    <script src="js/libraries/p5.min.js"></script>
+    <!-- p5.sound.min.js allows us to use sound -->
+    <script src="js/libraries/p5.sound.min.js"></script>
+
+    <!-- My script(s) -->
+    <script src="js/script.js"></script>
+</head>
+<!-- Header -->
+
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="images/logo2.png" alt="">
+
+            <div id="background">
+            </div>
+        </div>
+        <button class="nav-toggle" aria-label="toggle navigation">
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+            </div>
+        </button>
+
+        <nav class="nav">
+            <a href="index.html" class="nav__link">Introduction</a>
+            <a href="ADHD.html" class="nav__link">ADHD</a>
+            <a href="Dyslexia.html" class="nav__link">Dyslexia</a>
+            <a href="Anxiety.html" class="nav__link">Anxiety</a>
+            <a href="ChronicMigrain.html" class="nav__link">Chronic Migraine</a>
+            <a href="Postherpetic_Neuralgia.html" class="nav__link">Postherpetic Neuralgia</a>
+        </nav>
+
+
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="content">
+            <p>
+                Postherpetic neuralgia (PHN) is a painful condition that can occur after an episode of shingles,
+                resulting from nerve
+                damage caused by the varicella-zoster virus. For individuals who develop PHN, like yourself at the age
+                of 18, the
+                lingering pain can be profound and debilitating, affecting various aspects of daily life. In educational
+                settings, the
+                persistent discomfort can hinder concentration, making it difficult to engage fully with coursework and
+                participate in
+                discussions. The constant distraction of pain can lead to challenges in retaining information and
+                completing
+                assignments, which can be particularly frustrating for students who are eager to learn and succeed.
+
+            </p>
+
+        </div>
+
+        <div ide="canvasContainer"> </div>
+
+        <div class="content">
+            <p>
+            <h1>Postherpetic Neuralgia</h1>
+            In the realm of art, the impact of postherpetic neuralgia can be similarly significant. The pain and
+            sensitivity can
+            limit the ability to work on artistic projects, whether it’s painting, drawing, or other forms of
+            creative expression.
+            Tasks that require fine motor skills may become daunting, and the emotional toll of living with chronic
+            pain can stifle
+            creativity and inspiration. The experience of PHN can create a sense of isolation, as individuals may
+            struggle to share
+            their work or participate in group activities due to fear of exacerbating their symptoms or being unable
+            to keep up with
+            their peers.
+
+            </p>
+            <p>Moreover, the psychological impact of coping with chronic pain can lead to feelings of frustration and
+                sadness, which
+                can further complicate both learning and artistic pursuits. Engaging with others may become challenging,
+                as the
+                individual navigates the dual realities of seeking support while grappling with the limitations imposed
+                by their
+                condition. Ultimately, postherpetic neuralgia serves as a reminder of the resilience required to pursue
+                education and
+                art despite ongoing pain, and highlights the need for understanding and accommodations in both academic
+                and creative
+                environments.
+            </p>
+        </div>
+        <div class="workspace-section">
+            <a href="index.html" class="work-button">Time to Work</a>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script>
+
+        let paintBrush = {
+            x: 200,
+            y: 400,
+            isPickedUp: false,
+
+
+            image: undefined
+        };
+
+        function preload() {
+            paintBrush.image = loadImage("assets/images/Paint_Brush.png");
+        }
+
+        function setup() {
+            let canvas = createCanvas(620, 580);
+            canvas.parent('canvas_Container')
+            background(255);
+
+        }
+
+        function Draw() {
+            clear();
+            background(255);
+
+            movePaintBrush();
+            toggleMenu();
+
+            push();
+            imageMode(CENTER);
+            image(paintBrush.image, paintBrush.x, paintBrush.y);
+            pop();
+
+
+        }
+
+        function movePaintBrush() {
+            //true
+            if (paintBrush.isPickedUp = true) {
+                if (mouseIsPressed) {
+                    stroke(139, 69, 19);  //brown color, i need to change that
+                    strokeWeight(4);
+                    line(pmouseX, pmousey, mouseX, mouseY);
+                }
+                paintBrush.x = mouseX;
+                paintBrush.y = mouseY;
+            }
+
+
+            // else (paintBrush.isPickedUp = false)
+            // paintBrush.x = 0;
+            // paintBrush.y = 0;
+
+
+            //push();
+            //imageMode(CENTER);
+            //image(paintBrush.image, paintBrush.x, paintBrush.y, 50, 50);
+            //pop();
+        }
+
+        function mousePressed() {
+            let d = dist(mouseX, mouseY, paintBrush.x, paintBrush.y);
+            if (d < 25) {
+                paintBrush.isPickedUp = !paintBrush.isPickedUp;
+
+                if (!paintBrush.isPickedUp) {
+                    paintBrush.x = 200;
+                    paintBrush.y = 520;
+                }
+            }
+        }
+
+        function toggleMenu() {
+            document.querySelector('.nav').classList.toggle('active');
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>

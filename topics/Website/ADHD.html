@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html> <!--html lang = 'en'-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
+
+    <title> ADHD</title>
+
+    <!-- CSS stylesheet(s) -->
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+
+
+    <link href="https://fonts.cdnfonts.com/css/maiandra-gd" rel="stylesheet">
+    <!-- Library script(s) -->
+
+    <!-- p5.min.js is the main p5 library -->
+    <script src="js/libraries/p5.min.js"></script>
+    <!-- p5.sound.min.js allows us to use sound -->
+    <script src="js/libraries/p5.sound.min.js"></script>
+
+    <!-- My script(s) -->
+    <script src="js/script.js"></script>
+</head>
+<!-- Header -->
+<!-- popup-body {
+        height: 3000px;
+        /* To enable scrolling */
+        margin: 0;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }-->
+<style>
+    .popup {
+        position: fixed;
+        padding: 20px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: opacity 0.5s;
+        width: 200px;
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+    }
+</style>
+
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="images/logo2.png" alt="">
+
+            <div id="background">
+            </div>
+        </div>
+        <button class="nav-toggle" aria-label="toggle navigation">
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+            </div>
+        </button>
+
+        <nav class="nav">
+            <a href="index.html" class="nav__link">Introduction</a>
+            <a href="ADHD.html" class="nav__link">ADHD</a>
+            <a href="Dyslexia.html" class="nav__link">Dyslexia</a>
+            <a href="Anxiety.html" class="nav__link">Anxiety</a>
+            <a href="ChronicMigrain.html" class="nav__link">Chronic Migraine</a>
+            <a href="Postherpetic_Neuralgia.html" class="nav__link">Postherpetic Neuralgia</a>
+        </nav>
+
+
+    </header>
+
+    <!-- Main Content -->
+    <main>
+
+        <div class="content">
+            <h1>Scroll to see random pop-ups!</h1>
+
+            <p id="firstParagraph">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor,
+                nunc id aliquet tincidunt, nunc nunc tincidunt urna, nec tincidunt nunc
+                nunc nec nunc. Sed euismod, nunc id aliquet tincidunt, nunc nunc tincidunt
+                urna, nec tincidunt nunc nunc nec nunc. Sed euismod, nunc id aliquet
+                tincidunt, nunc nunc tincidunt urna, nec tincidunt nunc nunc nec nunc.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor,
+                nunc id aliquet tincidunt, nunc nunc tincidunt urna, nec tincidunt nunc
+                nunc nec nunc. Sed euismod, nunc id aliquet tincidunt, nunc nunc tincidunt
+                urna, nec tincidunt nunc nunc nec nunc. Sed euismod, nunc id aliquet
+                tincidunt, nunc nunc tincidunt urna, nec tincidunt nunc nunc nec nunc
+                nunc id aliquet tincidunt, nunc nunc tincidunt urna, nec tincidunt nunc
+                nunc nec nunc. Sed euismod, nunc id aliquet tincidunt, nunc nunc tincidunt
+                urna, nec tincidunt nunc nunc nec nunc. Sed euismod, nunc id aliquet
+                tincidunt, nunc nunc tincidunt urna, nec tincidunt nunc nunc nec nunc.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor,
+                nunc id aliquet tincidunt, nunc nunc tincidunt urna, nec tincidunt nunc
+                nunc nec nunc. Sed euismod, nunc id aliquet tincidunt, nunc nunc tincidunt
+                urna, nec tincidunt nunc nunc nec nunc. Sed euismod, nunc id aliquet
+                tincidunt, nunc nunc tincidunt urna, nec tincidunt nunc nunc nec nunc.
+            </p>
+
+            <h2>No more pop-ups below this point</h2>
+
+            <p>
+                Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere
+                cubilia curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper
+                sit amet ligula. Proin eget tortor risus. Mauris blandit aliquet elit, eget
+                tincidunt nibh pulvinar a. Curabitur aliquet quam id dui posuere blandit.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor,
+                nunc id aliquet tincidunt, nunc nunc tincidunt urna, nec tincidunt nunc
+                nunc nec nunc. Sed euismod, nunc id aliquet tincidunt, nunc nunc tincidunt
+                urna, nec tincidunt nunc nunc nec nunc. Sed euismod, nunc id aliquet
+                tincidunt, nunc nunc tincidunt urna, nec tincidunt nunc nunc nec nunc.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor,
+                nunc id aliquet tincidunt, nunc nunc tincidunt urna, nec tincidunt nunc
+                nunc nec nunc. Sed euismod, nunc id aliquet tincidunt, nunc nunc tincidunt
+                urna, nec tincidunt nunc nunc nec nunc. Sed euismod, nunc id aliquet
+                tincidunt, nunc nunc tincidunt urna, nec tincidunt nunc nunc nec nunc.
+            </p>
+
+            <p>
+                Nulla porttitor accumsan tincidunt. Curabitur aliquet quam id dui posuere
+                blandit. Vivamus magna justo, lacinia eget consectetur sed, convallis at
+                tellus. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor,
+                nunc id aliquet tincidunt, nunc nunc tincidunt urna, nec tincidunt nunc
+                nunc nec nunc. Sed euismod, nunc id aliquet tincidunt, nunc nunc tincidunt
+                urna, nec tincidunt nunc nunc nec nunc. Sed euismod, nunc id aliquet
+                tincidunt, nunc nunc tincidunt urna, nec tincidunt nunc nunc nec nunc.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor,
+                nunc id aliquet tincidunt, nunc nunc tincidunt urna, nec tincidunt nunc
+                nunc nec nunc. Sed euismod, nunc id aliquet tincidunt, nunc nunc tincidunt
+                urna, nec tincidunt nunc nunc nec nunc. Sed euismod, nunc id aliquet
+                tincidunt, nunc nunc tincidunt urna, nec tincidunt nunc nunc nec nunc.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor,
+                nunc id aliquet tincidunt, nunc nunc tincidunt urna, nec tincidunt nunc
+                nunc nec nunc. Sed euismod, nunc id aliquet tincidunt, nunc nunc tincidunt
+                urna, nec tincidunt nunc nunc nec nunc. Sed euismod, nunc id aliquet
+                tincidunt, nunc nunc tincidunt urna, nec tincidunt nunc nunc nec nunc.
+            </p>
+
+            <p>
+                Attention-Deficit/Hyperactivity Disorder (ADHD) is a neurodevelopmental condition that can profoundly
+                impact an
+                individual's ability to focus, organize, and manage time. For those who experience ADHD, navigating
+                educational
+                environments can often feel like an uphill battle. The challenges of maintaining attention and
+                controlling impulsivity
+                can lead to difficulties in completing assignments, participating in discussions, and retaining
+                information. When
+                effective medication is no longer working, as in your case with Concerta, the experience can become even
+                more
+                overwhelming. This shift can trigger feelings of frustration and inadequacy, particularly when the
+                individual is
+                accustomed to functioning at a higher level with the aid of medication.
+
+            </p>
+            <p>In the context of art and creativity, ADHD can present a complex interplay of challenges and strengths.
+                On one hand, the
+                impulsivity and hyperfocus that sometimes accompany ADHD can lead to bursts of creativity and
+                innovation. However, when
+                medication ceases to provide the needed support, the ability to channel that creativity effectively can
+                diminish. The
+                ongoing testing of new medications can create a sense of uncertainty and instability, as individuals
+                wait for a solution
+                that can restore their ability to engage fully in both educational and artistic pursuits.
+            </p>
+            <p>The emotional toll of managing ADHD, especially during periods of ineffective medication, can also lead
+                to heightened
+                anxiety and self-doubt. This emotional burden can stifle creativity and make participation in group
+                projects or classes
+                feel daunting. The desire to succeed and express oneself artistically remains strong, but the obstacles
+                presented by
+                ADHD can create a sense of disconnect between intention and execution. Ultimately, living with ADHD
+                requires ongoing
+                resilience and adaptability, as individuals navigate the challenges of their condition while striving to
+                pursue their
+                passions in both learning and art. The journey may be fraught with difficulties, but it also holds the
+                potential for
+                profound personal growth and creative exploration.</p>
+        </div>
+
+
+    </main>
+
+    <!-- JavaScript -->
+    <script>
+        function createPopup() {
+            const popup = document.createElement('div');
+            popup.className = 'popup';
+            popup.style.left = Math.random() * (window.innerWidth - 220) + 'px';
+            popup.style.top = Math.random() * (window.innerHeight - 170) + 'px';
+            popup.style.zIndex = Math.floor(Math.random() * 10) + 1;
+            popup.textContent = 'Pop-up ' + (document.querySelectorAll('.popup').length + 1);
+            document.body.appendChild(popup);
+
+            setTimeout(() => {
+                popup.style.opacity = '0';
+                setTimeout(() => popup.remove(), 500);
+            }, 5000);
+        }
+
+        let scrollTimeout;
+        let firstParagraph = document.getElementById('firstParagraph');
+        let limitY = firstParagraph.offsetTop + firstParagraph.offsetHeight;
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY <= limitY) {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(createPopup, 200);
+            }
+        });
+    </script>
+
+
+</body>
+
+</html>

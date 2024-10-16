@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
+
+    <title> Website MP</title>
+
+    <!-- CSS stylesheet(s) -->
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+
+
+
+    <link href="https://fonts.cdnfonts.com/css/maiandra-gd" rel="stylesheet">
+    <!-- Library script(s) -->
+
+    <!-- p5.min.js is the main p5 library -->
+    <script src="js/libraries/p5.min.js"></script>
+    <!-- p5.sound.min.js allows us to use sound -->
+    <script src="js/libraries/p5.sound.min.js"></script>
+
+    <!-- My script(s) -->
+    <script src="js/script.js"></script>
+</head>
+<!-- Header -->
+
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="images/logo2.png" alt="">
+
+            <div id="background">
+            </div>
+        </div>
+        <button class="nav-toggle" aria-label="toggle navigation">
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+            </div>
+        </button>
+
+        <nav class="nav">
+            <a href="index.html" class="nav__link">Introduction</a>
+            <a href="ADHD.html" class="nav__link">ADHD</a>
+            <a href="Dyslexia.html" class="nav__link">Dyslexia</a>
+            <a href="Anxiety.html" class="nav__link">Anxiety</a>
+            <a href="ChronicMigrain.html" class="nav__link">Chronic Migraine</a>
+            <a href="Postherpetic_Neuralgia.html" class="nav__link">Postherpetic Neuralgia</a>
+        </nav>
+
+
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="content">
+            <title>CSS - Blinking text </title>
+            </head>
+
+            <body>
+                <h1>
+                    Chronic Migraines
+                </h1>
+                <p id="blink_text">
+                    Chronic migraines are a debilitating neurological condition characterized by frequent and intense
+                    headache episodes,
+                    often accompanied by a range of distressing symptoms. Individuals experiencing chronic migraines may
+                    find their daily
+                    lives significantly impacted, especially in educational settings where focus and concentration are
+                    paramount. The
+                    unpredictability of migraine attacks can lead to missed classes and an inability to participate
+                    fully in discussions or
+                    projects, creating feelings of isolation and frustration.
+
+                </p>
+                <p>In an artistic context, chronic migraines can interfere with the creative process. The throbbing
+                    pain, visual
+                    disturbances, and heightened sensitivity to light and sound can stifle inspiration and make it
+                    challenging to engage in
+                    artistic endeavours. Additionally, vestibular migraines, which can cause dizziness and balance
+                    issues, further
+                    complicate artistic expression, as movements may be restricted and the environment overwhelming.
+                    Accompanying symptoms
+                    such as acid reflux and numbness can add layers of discomfort, making it difficult to fully immerse
+                    oneself in the
+                    art-making process.
+                </p>
+                <p>For individuals living with chronic migraines, heat sensitivity can exacerbate symptoms, leading to a
+                    constant awareness
+                    of environmental conditions. This vigilance can distract from both learning and creating, forcing a
+                    constant negotiation
+                    between health and engagement. The cumulative effect of these challenges often results in a profound
+                    sense of struggle,
+                    as the individual works to balance their passion for education and art with the realities of their
+                    condition.
+                    Ultimately, chronic migraines can shape not just how one learns and creates, but also how one
+                    interacts with the world, demanding resilience and adaptability in the face of ongoing adversity.
+                </p>
+            </body>
+
+            <h2>You have to write an essay for class</h2>
+            <textarea id="TextBox" placeholder="Start writing your essay here..."></textarea>
+        </div>
+
+        <TextBox></TextBox>
+        <input type="text">
+        </TextBox>
+
+        <div class="workspace-section">
+            <a href="Postherpetic_Neuralgia.html" class="work-button">Time to Work</a>
+        </div>
+
+    </main>
+
+
+
+    <!-- JavaScript -->
+    <script>
+        function toggleMenu() {
+            document.querySelector('.nav').classList.toggle('active');
+        }
+    </script>
+
+</body>
+
+</html>

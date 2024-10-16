@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
+
+    <title> Postherpetic Neuralgia</title>
+
+    <!-- CSS stylesheet(s) -->
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+
+
+
+
+    <link href="https://fonts.cdnfonts.com/css/maiandra-gd" rel="stylesheet">
+    <!-- Library script(s) -->
+
+    <!-- p5.min.js is the main p5 library -->
+    <script src="js/libraries/p5.min.js"></script>
+    <!-- p5.sound.min.js allows us to use sound -->
+    <script src="js/libraries/p5.sound.min.js"></script>
+
+    <!-- My script(s) -->
+    <script src="js/script.js"></script>
+</head>
+<!-- Header -->
+<!-- popup-body {
+        height: 3000px;
+        /* To enable scrolling */
+        margin: 0;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }-->
+<style>
+    .popup {
+        position: fixed;
+        padding: 10px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: opacity 0.5s;
+    }
+</style>
+
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="images/logo2.png" alt="">
+
+            <div id="background">
+            </div>
+        </div>
+        <button class="nav-toggle" aria-label="toggle navigation">
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+            </div>
+        </button>
+
+        <nav class="nav">
+            <a href="index.html" class="nav__link">Introduction</a>
+            <a href="ADHD.html" class="nav__link">ADHD</a>
+            <a href="Dyslexia.html" class="nav__link">Dyslexia</a>
+            <a href="Anxiety.html" class="nav__link">Anxiety</a>
+            <a href="ChronicMigrain.html" class="nav__link">Chronic Migraine</a>
+            <a href="Postherpetic_Neuralgia.html" class="nav__link">Postherpetic Neuralgia</a>
+        </nav>
+
+
+    </header>
+
+    <!-- Main Content -->
+</body>
+
+<body>
+    <main>
+
+        <div class="content">
+            <p>
+            <h1>Anxiety</h1>
+            High anxiety is a pervasive condition that can significantly impact daily life, often manifesting as
+            excessive worry,
+            restlessness, and physical symptoms such as a racing heart. In your case, the onset of shingles at a young
+            age is a
+            stark reminder of how intertwined mental and physical health can be, particularly when high levels of
+            anxiety persist.
+            For individuals with anxiety, educational environments can feel particularly daunting, where the pressure to
+            perform and
+            meet expectations can trigger overwhelming feelings of fear and self-doubt. The constant state of alertness
+            can hinder
+            the ability to concentrate, especially in situations that require social interaction or public speaking,
+            further
+            exacerbating challenges related to ADHD.
+
+            </p>
+            <p>In creative contexts, high anxiety can stifle artistic expression, as the fear of judgment or failure may
+                inhibit one’s
+                willingness to explore new ideas or take risks. This internal conflict can create a barrier to fully
+                engaging in
+                art-making, where vulnerability is often essential for growth and creativity. Additionally, the
+                challenges of managing
+                multiple disabilities—such as ADHD, dyslexia, and chronic migraines—can amplify anxiety levels, creating
+                a complex web
+                of stressors that affect both mental and emotional well-being.
+            </p>
+            <p>Furthermore, the ongoing medical tests to address your high heart rate add another layer of uncertainty
+                and concern. The
+                potential side effects of ADHD medication, combined with the physiological impacts of anxiety, can make
+                it difficult to
+                discern the root causes of physical symptoms. This uncertainty can exacerbate feelings of anxiety, as
+                one navigates the
+                complexities of managing both mental and physical health. Ultimately, the journey involves a continuous
+                balancing act,
+                requiring patience, self-compassion, and the recognition that seeking support is a vital part of
+                navigating these
+                intertwined challenges. Through this process, individuals can discover resilience and develop strategies
+                to cope with
+                anxiety, enabling them to pursue their passions in education and art despite the hurdles they face.
+            </p>
+        </div>
+        <div class="workspace-section">
+            <a href="ChronicMigrain.html" class="work-button">Time to Work</a>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script>
+        function toggleMenu() {
+            document.querySelector('.nav').classList.toggle('active');
+        }
+
+
+
+        function createPopup() {
+            const popup = document.createElement('div');
+            popup.className = 'popup';
+            popup.style.left = Math.random() * (window.innerWidth - 200) + 'px';
+            popup.style.top = Math.random() * (window.innerHeight - 100) + 'px';
+            popup.style.zIndex = Math.floor(Math.random() * 10) + 1;
+            popup.textContent = 'Pop-up ' + (document.querySelectorAll('.popup').length + 1);
+            document.body.appendChild(popup);
+
+            setTimeout(() => {
+                popup.style.opacity = '0';
+                setTimeout(() => popup.remove(), 500);
+            }, 5000);
+        }
+
+        let scrollTimeout;
+        window.addEventListener('wheel', () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(createPopup, 200);
+        });
+
+    </script>
+
+
+</body>
+
+</html>

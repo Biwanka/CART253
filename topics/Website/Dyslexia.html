@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
+
+    <title> Dyslexia</title>
+
+    <!-- CSS stylesheet(s) -->
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+
+
+    <link href="https://fonts.cdnfonts.com/css/maiandra-gd" rel="stylesheet">
+    <!-- Library script(s) -->
+
+    <!-- p5.min.js is the main p5 library -->
+    <script src="js/libraries/p5.min.js"></script>
+    <!-- p5.sound.min.js allows us to use sound -->
+    <script src="js/libraries/p5.sound.min.js"></script>
+
+    <!-- My script(s) -->
+    <script src="js/script.js"></script>
+</head>
+<!-- Header -->
+
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="images/logo2.png" alt="">
+
+            <div id="background">
+            </div>
+        </div>
+        <button class="nav-toggle" aria-label="toggle navigation">
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+            </div>
+        </button>
+
+        <nav class="nav">
+            <a href="index.html" class="nav__link">Introduction</a>
+            <a href="ADHD.html" class="nav__link">ADHD</a>
+            <a href="Dyslexia.html" class="nav__link">Dyslexia</a>
+            <a href="Anxiety.html" class="nav__link">Anxiety</a>
+            <a href="ChronicMigrain.html" class="nav__link">Chronic Migraine</a>
+            <a href="Postherpetic_Neuralgia.html" class="nav__link">Postherpetic Neuralgia</a>
+        </nav>
+
+
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="content">
+            <p>
+
+            </p>
+
+        </div>
+
+        <div class="content">
+            <p>
+            <h1>Dyslexia</h1>
+            Dyslexia is a specific learning disability that primarily affects reading and language processing, impacting
+            the ability
+            to decode words and comprehend written text. For individuals with dyslexia, traditional educational settings
+            can pose
+            significant challenges, particularly in subjects that rely heavily on reading and writing. However, many
+            individuals
+            discover that their unique way of thinking can provide distinct advantages in creative fields, such as
+            traditional art.
+            In these contexts, dyslexia may foster innovative problem-solving skills and a heightened ability to
+            visualize concepts,
+            allowing for a rich and expressive artistic practice.
+            </p>
+            <p>Yet, the transition to more technical disciplines, like coding, can present new hurdles. While art often
+                provides a
+                space for creative expression free from rigid structures, coding demands precision and a strong grasp of
+                language
+                syntax, which can be particularly challenging for someone with dyslexia. The complexities of programming
+                languages and
+                the need to understand detailed instructions can lead to frustration and feelings of inadequacy. As one
+                navigates this
+                learning curve, the pressure to perform can intensify, especially when comparing oneself to peers who
+                may find coding
+                more intuitive.
+            </p>
+            <p>The interplay between dyslexia and different learning environments highlights the importance of
+                adaptability and
+                perseverance. While the traditional art practice may feel like a safe haven where creativity can
+                flourish, coding can
+                require additional strategies and support. Finding effective tools—like visual coding platforms or
+                engaging in
+                collaborative projects—can help bridge the gap and make the learning process more accessible.
+                Ultimately, living with
+                dyslexia involves a continuous journey of self-discovery, where the strengths that emerge in creative
+                endeavors can also
+                inspire resilience and innovation in the face of new challenges, such as those found in coding.
+            </p>
+        </div>
+
+        <div class="workspace-section">
+            <a href="Anxiety.html" class="work-button">Time to Work</a>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script>
+        function toggleMenu() {
+            document.querySelector('.nav').classList.toggle('active');
+        }
+    </script>
+
+
+</body>
+
+</html>
