@@ -91,6 +91,14 @@ const SpecialFly = {
     size: 10,
     speed: 6
 }
+
+const lilyPad = {
+    x: 400,
+    y: 40,
+    width: 20,
+    height: 60,
+
+}
 //the current score 
 let score = 0;
 
@@ -147,6 +155,7 @@ function game() {
     drawEvilFly();
     drawSpecialFly();
     drawGoldPoint();
+    drawLilyPad();
 }
 
 
