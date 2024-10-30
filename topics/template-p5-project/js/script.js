@@ -106,3 +106,15 @@ function drawElement(element) {
     rect(element.x, element.y, element.width, element.height);
     pop();
 }
+
+
+
+
+
+
+
+///
+///I want to make a fly woble not be straight 
+////I want the frog tongue to flicker when he eats the red fly because they are dangerous, show the frog is hurt,
+////if eaten the evil fly more than 3 time its a game over 
+////I want a fly to be super zoomy, if it is caught the player 
