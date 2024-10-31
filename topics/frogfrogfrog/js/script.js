@@ -64,6 +64,7 @@ const frog = {
     tongue: {
         x: undefined,
         y: 480,
+        fill: "red",
         size: 20,
         speed: 20,
         // Determines how the tongue moves each frame
@@ -87,12 +88,13 @@ const evilFly = {
     size: 14,
     speed: 4
 };
-
+//draws a golden fly
 const goldPoint = {
     x: -10,
-    y: 80,
-    size: 10,
-    speed: 1
+    y: 100,
+    size: 20,
+    speed: 4,
+    wiggleAngle: 0
 };
 
 //the Special fly is rare and makes player gain 5 points if caught  /[]
@@ -106,6 +108,7 @@ const specialFly = {
 
 //the current score 
 let score = 0;
+let lives = 3;
 
 //the current state
 let state = "title"; //can be "title" or "game" or "WIN" "GameOver"
@@ -120,6 +123,7 @@ function setup() {
     resetEvilFly();
     resetSpecialFly();
     resetGoldPoint();
+    resetLilyPad();
 }
 
 function draw() {
@@ -129,6 +133,10 @@ function draw() {
 
     else if (state === "game") {
         game();
+    }
+
+    else if (state === "gameOver") {
+        gameOver();
     }
 
 
@@ -148,7 +156,6 @@ function game() {
     moveFly();
     moveEvilFly();
     moveSpecialFly();
-
     moveFrog();
     moveTongue();
     moveGoldPoint();
@@ -157,10 +164,12 @@ function game() {
     checkTongueFlyOverlap();
     checkTongueEvilFlyOverlap();
     checkTongueLilyPadOverlap();
+    gameOverScreen();
 
     drawLilyPad();
     drawFrog();
     drawScore();
+    drawLives();
     drawFly();
     drawEvilFly();
     drawSpecialFly();
@@ -169,10 +178,16 @@ function game() {
 
 }
 
+function gameOver() {
+    background("black");
+    text(GameOver);
+    textAlight(CENTER, CENTER);
+}
 
 function moveLilyPad() {
     lilyPad.x = lilyPad.x + lilyPad.velocity.x;
     lilyPad.y = lilyPad.y + lilyPad.velocity.y;
+    // check if it reaches the bottom
 
 }
 
@@ -194,11 +209,11 @@ function moveFly() {
 }
 function moveEvilFly() {
     // The evil fly does not appear if the score is bellow 10
-    if (score < 10) {
+    if (score < 1) {
         evilFly.speed === 0;
     }
     //if the score is higher then 10 than the evil fly will apear to make it harder
-    else if (score > 10) {
+    else if (score > 1) {
         evilFly.x += evilFly.speed;
     }
 
@@ -210,8 +225,9 @@ function moveEvilFly() {
 }
 
 function moveSpecialFly() {
-    if (score < 20) {
+    if (score <= 20) {
         specialFly.speed === 0;
+
     }
 
     else if (score > 20) {
@@ -228,16 +244,22 @@ function moveSpecialFly() {
 
 function moveGoldPoint() {
 
-    if (score > 5) {
-        goldPoint.x = frameCount;
-        goldPoint.y = 30 * sin(goldPoint.x * 0.1) + 50;
 
-        // Handle the special fly going off the canvas
-        //  if (GoldPoint.x > width) {
-        //  resetGoldPoint();
-        //  }
+    // Move on x
+    goldPoint.x += goldPoint.speed;
+    // Increase the wiggle angle (for sine)
+    goldPoint.wiggleAngle += 2;
+    // Calculate the number between -1 and 1 for the amount of wiggle
+    const wiggleAmount = sin(goldPoint.wiggleAngle);
+    // Convert from -1..1 to an actual distance between 0..100
+    goldPoint.y = map(wiggleAmount, -1, 1, 0, 200);
+
+    if (goldPoint.x > width) {
+        goldPoint.x = -10;
+
     }
 }
+
 function drawLilyPad() {
     push();
     rectMode(CENTER);
@@ -275,12 +297,15 @@ function drawSpecialFly() {
     pop();
 }
 function drawGoldPoint() {
+
     push();
-    fill("#000000")
+    fill("gold");
+    noStroke();
     ellipse(goldPoint.x, goldPoint.y, goldPoint.size);
     pop();
-
 }
+
+
 //draws the players score
 function drawScore() {
     push();
@@ -290,6 +315,17 @@ function drawScore() {
     textSize(128);
     text(score, width, 0);
     pop();
+}
+
+function drawLives() {
+    push();
+    textAlign(LEFT, TOP);
+    fill("red");
+    textStyle(BOLD);
+    textSize(128);
+    text(lives, 0, 0);
+    pop();
+
 }
 
 
@@ -302,19 +338,25 @@ function resetFly() {
     fly.y = random(0, 300);
 }
 
+function resetLilyPad() {
+    fly.x = random(10, 400)
+    fly.y = -10;
+}
+
+
 function resetEvilFly() {
-    evilFly.x = 0;
+    evilFly.x = -10;
     evilFly.y = random(0, 400);
 }
 
 function resetSpecialFly() {
-    specialFly.x = 0;
+    specialFly.x = -10;
     specialFly.y = random(0, 400);
 }
 
 function resetGoldPoint() {
-    goldPoint.x = 0;
-    goldPoint.y = random(0, 100);
+    goldPoint.x = -10;
+    goldPoint.y = random(0, 500);
 }
 
 /**
@@ -345,9 +387,11 @@ function moveTongue() {
     // If the tongue is inbound, it moves down
     else if (frog.tongue.state === "inbound") {
         frog.tongue.y += frog.tongue.speed;
+
         // The tongue stops if it hits the bottom
         if (frog.tongue.y >= height) {
             frog.tongue.state = "idle";
+            frog.tongue.fill = "red"
         }
     }
 }
@@ -358,7 +402,7 @@ function moveTongue() {
 function drawFrog() {
     // Draw the tongue tip
     push();
-    fill("#ff0000");
+    fill(frog.tongue.fill);
     noStroke();
     ellipse(frog.tongue.x, frog.tongue.y, frog.tongue.size);
     pop();
@@ -366,7 +410,7 @@ function drawFrog() {
     // Draw the rest of the tongue
 
     push();
-    stroke("#ff0000");
+    stroke(frog.tongue.fill);
     strokeWeight(frog.tongue.size);
     line(frog.tongue.x, frog.tongue.y, frog.body.x, frog.body.y);
     pop();
@@ -414,10 +458,13 @@ function checkTongueEvilFlyOverlap() {
     if (eaten) {
         // Decrease  the Score by 3
         score = score - 3; //score += 1; score++
+        lives = lives - 1;
+        frog.tongue.fill = "#87ceeb";
         // Reset the fly
         resetEvilFly();
         // Bring back the tongue
         frog.tongue.state = "inbound";
+
         //wanting ti make the tongue flicker to represent it being injured
 
     }
@@ -425,6 +472,14 @@ function checkTongueEvilFlyOverlap() {
 /**
  * Launch the tongue on click (if it's not launched yet)
  */
+function gameOverScreen() {
+    if (lives === 0) {
+        state = "gameOver"
+
+    }
+}
+
+
 
 function mousePressed() {
     if (state === "title") {
@@ -436,6 +491,7 @@ function mousePressed() {
         }
     }
 }
+
 
 
 /// MAKE ALL MY BEGINING OF CODES WITH A LOWER CASSE
