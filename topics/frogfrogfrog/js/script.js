@@ -78,7 +78,11 @@ const fly = {
     x: 0,
     y: 200, // Will be random
     size: 12,
-    speed: 3
+    speed: 2,
+    velocity: {
+        x: 2,
+        y: 3,
+    }
 };
 
 //the bad flies that makes player lose points
@@ -87,6 +91,7 @@ const evilFly = {
     y: 100,
     size: 14,
     speed: 4
+
 };
 //draws a golden fly
 const goldPoint = {
@@ -180,8 +185,10 @@ function game() {
 
 function gameOver() {
     background("black");
-    text(GameOver);
-    textAlight(CENTER, CENTER);
+    text("Game Over", 100, 100);
+    fill("red");
+    textSize(128);
+    textAlign(CENTER);
 }
 
 function moveLilyPad() {
@@ -198,7 +205,15 @@ function moveLilyPad() {
  * Resets the fly if it gets all the way to the right
  */
 function moveFly() {
-    // Move the fly
+    // Move the fly  
+    // Move the evil fly
+    fly.x += fly.velocity.x;
+    fly.y += fly.velocity.y;
+    let flyChange = random(1, 2);
+    if (flyChange >= 0.1) {
+        fly.velocity.y = random(-2, 2)
+    }
+
     fly.x += fly.speed;
     // Handle the fly going off the canvas
     if (fly.x > width) {
@@ -208,12 +223,14 @@ function moveFly() {
     }
 }
 function moveEvilFly() {
+    fly.x += fly.speed;
     // The evil fly does not appear if the score is bellow 10
-    if (score < 1) {
+    if (score < 10) {
         evilFly.speed === 0;
+
     }
     //if the score is higher then 10 than the evil fly will apear to make it harder
-    else if (score > 1) {
+    else if (score > 10) {
         evilFly.x += evilFly.speed;
     }
 
@@ -243,20 +260,27 @@ function moveSpecialFly() {
 
 
 function moveGoldPoint() {
-
-
     // Move on x
     goldPoint.x += goldPoint.speed;
     // Increase the wiggle angle (for sine)
-    goldPoint.wiggleAngle += 2;
+    goldPoint.wiggleAngle += 0.4;
     // Calculate the number between -1 and 1 for the amount of wiggle
     const wiggleAmount = sin(goldPoint.wiggleAngle);
     // Convert from -1..1 to an actual distance between 0..100
-    goldPoint.y = map(wiggleAmount, -1, 1, 0, 200);
+    goldPoint.y = map(wiggleAmount, -1, 1, 0, 100);
+
+    if (score < 15) {
+        goldPoint.speed === 0;
+        goldPoint.wiggleAngle === 0;
+
+    }
+
+    else if (score > 15) {
+        goldPoint.x += goldPoint.speed;
+    }
 
     if (goldPoint.x > width) {
-        goldPoint.x = -10;
-
+        resetGoldPoint();
     }
 }
 
