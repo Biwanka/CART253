@@ -45,7 +45,7 @@ let flies = [
         x: 0,
         y: 125,
         size: 10,
-        buzziness: 2
+        buzziness: 6
     },
     {
         x: 0,
@@ -57,8 +57,14 @@ let flies = [
         x: 0,
         y: 50,
         size: 12,
+        buzziness: 5
+    },
+    {
+        x: 0,
+        y: 50,
+        size: 13,
         buzziness: 3
-    }
+    },
 ];
 
 let lilyPad = {
@@ -165,7 +171,8 @@ function setup() {
     resetSpecialFly();
     resetGoldPoint();
     resetLilyPad();
-    showCommonFly();
+
+
 }
 
 function draw() {
@@ -218,6 +225,8 @@ function game() {
     for (let commonFly of flies) {
         moveCommonFly(commonFly);
         drawCommonFly(commonFly);
+        // resetCommonFly(commonFly);
+        showCommonFly(commonFly);
 
     };
 }
@@ -244,7 +253,11 @@ function moveLilyPad() {
     }
 }
 function moveCommonFly(commonFly) {
-    commonFly.x += random(-commonFly.buzziness, commonFly.buzziness);
+    commonFly.x += commonFly.buzziness
+    // if (commonFly.x >= 1000) {
+    //   resetCommonFly();
+
+    //}
 }
 
 
@@ -404,13 +417,16 @@ function drawLives() {
 
 }
 
-function showCommonFly(flies) {
+function showCommonFly(commonFly) {
     for (let i = 0; i < 10; i++) {
-        let newFly = createCommonfly();
-        flies.push(newFly);
+        let commonFly = createCommonFly();
+        flies.push(commonFly);
     }
 }
-
+//function resetCommonFly(commonFly) {
+//  commonFly.x = 0;
+// commonFly.y = random(0, 300);
+//}
 /**
  * Resets the fly to the left with a random y
  */
