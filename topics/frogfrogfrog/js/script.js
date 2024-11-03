@@ -225,8 +225,8 @@ function game() {
     for (let commonFly of flies) {
         moveCommonFly(commonFly);
         drawCommonFly(commonFly);
-        // resetCommonFly(commonFly);
         showCommonFly(commonFly);
+        // resetCommonFly(commonFly);
 
     };
 }
@@ -254,13 +254,14 @@ function moveLilyPad() {
 }
 function moveCommonFly(commonFly) {
     commonFly.x += commonFly.buzziness
-    // if (commonFly.x >= 1000) {
-    //   resetCommonFly();
+    // Handle the fly going off the canvas
+    if (commonFly.x > width) {
+        resetCommonFly(commonFly);
+        // state ="title "  this would mean that once one fly leaves the screen we are brougt back to title screen
+        //use it for a game over
+    }
 
-    //}
 }
-
-
 
 /**
  * Moves the fly according to its speed
@@ -424,12 +425,11 @@ function showCommonFly(commonFly) {
     }
 }
 //function resetCommonFly(commonFly) {
-//  commonFly.x = 0;
-// commonFly.y = random(0, 300);
+//  commonFly.x = -10;
+// commonFly.y = random(0,300)
+
 //}
-/**
- * Resets the fly to the left with a random y
- */
+
 function resetFly() {
     fly.x = 0;
     fly.y = random(0, 300);
@@ -592,10 +592,11 @@ function mousePressed() {
 
 
 /// MAKE ALL MY BEGINING OF CODES WITH A LOWER CASSE
-///I want to make a fly woble not be straight 
+///I want to make a fly woble not be straight
 ////I want the frog tongue to flicker when he eats the red fly because they are dangerous, show the frog is hurt,  (maybe see if the fill can change)
-////if eaten the evil fly more than 3 time its a game over 
-////I want a fly to be super zoomy like crazy. I want to act differently than the rest 
+////if eaten the evil fly more than 3 time its a game over
+////I want a fly to be super zoomy like crazy. I want to act differently than the rest
 //, if it is caught the player has to click a spefic key 10 time in a certain amount of time to win the game
-//I want multiple of the same fly to appear more than once at the same time random. 
+//I want multiple of the same fly to appear more than once at the same time random.
 //frog tobgue move angle
+
