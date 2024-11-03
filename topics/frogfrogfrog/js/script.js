@@ -40,8 +40,28 @@
 
 
 "use strict";
+let flies = [
+    {
+        x: 0,
+        y: 125,
+        size: 10,
+        buzziness: 2
+    },
+    {
+        x: 0,
+        y: 170,
+        size: 14,
+        buzziness: 4
+    },
+    {
+        x: 0,
+        y: 50,
+        size: 12,
+        buzziness: 3
+    }
+];
 
-const lilyPad = {
+let lilyPad = {
     x: 400,
     y: 40,
     size: 50,
@@ -49,7 +69,9 @@ const lilyPad = {
     velocity: {
         x: 0,
         y: 1,
-    }
+    },
+
+    image: undefined
 
 };
 // Our frog
@@ -98,7 +120,7 @@ const goldPoint = {
     x: -10,
     y: 100,
     size: 20,
-    speed: 4,
+    speed: 2,
     wiggleAngle: 0
 };
 
@@ -120,6 +142,20 @@ let state = "title"; //can be "title" or "game" or "WIN" "GameOver"
 /**
  * Creates the canvas and initializes the fly
  */
+
+function preload() {
+    lilyPad.image = loadImage("assets/images/block_lilyPad.png");
+}
+function createCommonFly() {
+    //generate a random fly
+    let commonFly = {
+        x: 0,
+        y: random(0, height),
+        size: flies.size,
+        buziness: random(2, 8)
+    };
+    return commonFly;
+}
 function setup() {
     createCanvas(640, 480);
 
@@ -129,6 +165,7 @@ function setup() {
     resetSpecialFly();
     resetGoldPoint();
     resetLilyPad();
+    showCommonFly();
 }
 
 function draw() {
@@ -143,8 +180,6 @@ function draw() {
     else if (state === "gameOver") {
         gameOver();
     }
-
-
 
 }
 
@@ -180,9 +215,18 @@ function game() {
     drawSpecialFly();
     drawGoldPoint();
 
+    for (let commonFly of flies) {
+        moveCommonFly(commonFly);
+        drawCommonFly(commonFly);
 
+    };
 }
-
+function drawLilyPad() {
+    push();
+    imageMode(CENTER);
+    image(lilyPad.image, lilyPad.x, lilyPad.y);
+    pop();
+}
 function gameOver() {
     background("black");
     text("Game Over", 100, 100);
@@ -195,7 +239,12 @@ function moveLilyPad() {
     lilyPad.x = lilyPad.x + lilyPad.velocity.x;
     lilyPad.y = lilyPad.y + lilyPad.velocity.y;
     // check if it reaches the bottom
-
+    if (lilyPad.y > 900) {
+        resetLilyPad();
+    }
+}
+function moveCommonFly(commonFly) {
+    commonFly.x += random(-commonFly.buzziness, commonFly.buzziness);
 }
 
 
@@ -263,43 +312,46 @@ function moveGoldPoint() {
     // Move on x
     goldPoint.x += goldPoint.speed;
     // Increase the wiggle angle (for sine)
-    goldPoint.wiggleAngle += 0.4;
+    goldPoint.wiggleAngle += 0.09;
     // Calculate the number between -1 and 1 for the amount of wiggle
     const wiggleAmount = sin(goldPoint.wiggleAngle);
     // Convert from -1..1 to an actual distance between 0..100
-    goldPoint.y = map(wiggleAmount, -1, 1, 0, 100);
-
+    goldPoint.y = map(wiggleAmount, -1, 0, 0, 100);
     if (score < 15) {
-        goldPoint.speed === 0;
-        goldPoint.wiggleAngle === 0;
+        goldPoint.speed = 0;
+
 
     }
 
     else if (score > 15) {
         goldPoint.x += goldPoint.speed;
+        goldPoint.speed = 2;
+
     }
 
-    if (goldPoint.x > width) {
+    if (goldPoint.x > 3000) {
         resetGoldPoint();
     }
 }
 
-function drawLilyPad() {
+/**
+ * Draws the fly parameter to canvas
+ */
+function drawCommonFly(commonFly) {
     push();
-    rectMode(CENTER);
-    fill("green");
     noStroke();
-    ellipse(lilyPad.x, lilyPad.y, lilyPad.size);
+    fill(0);
+    ellipse(commonFly.x, commonFly.y, commonFly.size);
     pop();
-
 }
+
 /**
  * Draws the fly as a black circle
  */
 function drawFly() {
     push();
     noStroke();
-    fill("#000000");
+    fill("grey");
     ellipse(fly.x, fly.y, fly.size);
     pop();
 }
@@ -352,7 +404,12 @@ function drawLives() {
 
 }
 
-
+function showCommonFly(flies) {
+    for (let i = 0; i < 10; i++) {
+        let newFly = createCommonfly();
+        flies.push(newFly);
+    }
+}
 
 /**
  * Resets the fly to the left with a random y
@@ -363,8 +420,8 @@ function resetFly() {
 }
 
 function resetLilyPad() {
-    fly.x = random(10, 400)
-    fly.y = -10;
+    lilyPad.x = random(10, 400)
+    lilyPad.y = -10;
 }
 
 
