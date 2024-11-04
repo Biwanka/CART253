@@ -225,7 +225,7 @@ function game() {
     for (let commonFly of flies) {
         moveCommonFly(commonFly);
         drawCommonFly(commonFly);
-        showCommonFly(commonFly);
+
         // resetCommonFly(commonFly);
 
     };
@@ -418,12 +418,12 @@ function drawLives() {
 
 }
 
-function showCommonFly(commonFly) {
-    for (let i = 0; i < 10; i++) {
-        let commonFly = createCommonFly();
-        flies.push(commonFly);
-    }
-}
+
+//for (let i = 0; i < 1; i++) {
+//  let commonFly = createCommonFly();
+// flies.push(commonFly);
+//}
+
 //function resetCommonFly(commonFly) {
 //  commonFly.x = -10;
 // commonFly.y = random(0,300)
