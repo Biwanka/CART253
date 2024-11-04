@@ -424,11 +424,11 @@ function drawLives() {
 // flies.push(commonFly);
 //}
 
-//function resetCommonFly(commonFly) {
-//  commonFly.x = -10;
-// commonFly.y = random(0,300)
+function resetCommonFly(commonFly) {
+    commonFly.x = -10;
+    commonFly.y = random(0, 300)
 
-//}
+}
 
 function resetFly() {
     fly.x = 0;
