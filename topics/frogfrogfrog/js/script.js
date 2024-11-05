@@ -89,25 +89,21 @@ let lilyPads = [
         x: 400,
         y: 40,
         size: 50,
-
+        image: undefined,
         velocity: {
             x: 0,
             y: 1,
-        },
-
-        image: undefined
+        }
     },
     {
         x: 400,
         y: 40,
-        size: 35,
-
+        size: 50,
+        image: undefined,
         velocity: {
             x: 0,
             y: 1,
-        },
-
-        image: undefined
+        }
     },
 ];
 // Our frog
@@ -146,7 +142,7 @@ const buzzyFly = {
 
 
 //draws a golden fly
-const goldPoint = {
+const specialFly = {
     x: -10,
     y: 100,
     size: 20,
@@ -155,7 +151,7 @@ const goldPoint = {
 };
 
 //the Special fly is rare and makes player gain 5 points if caught  /[]
-const specialFly = {
+const winningFly = {
     x: 0,
     y: 200,
     size: 10,
@@ -174,7 +170,7 @@ let state = "title"; //can be "title" or "game" or "WIN" "GameOver"
  */
 
 function preload() {
-    lilyPad.image = loadImage("assets/images/block_lilyPad.png");
+    lilyPads.image = loadImage("assets/images/block_lilyPad.png");
 }
 
 function setup() {
@@ -183,8 +179,8 @@ function setup() {
     // Give the fly its first random position
     resetBuzzyFly();
     resetSpecialFly();
-    resetGoldPoint();
-    resetLilyPad();
+    resetWinningFly();
+
 
 
 }
@@ -218,11 +214,11 @@ function game() {
     moveSpecialFly();
     moveFrog();
     moveTongue();
-    moveGoldPoint();
+    moveWinningFly();
 
 
     checkTongueBuzzyFlyOverlap();
-
+    checkTongueWinningFlyOverlap();
     checkTongueSpecialFlyOverlap();
 
 
@@ -234,7 +230,7 @@ function game() {
     drawLives();
     drawBuzzyFly();
     drawSpecialFly();
-    drawGoldPoint();
+    drawWinningFly();
 
     for (let commonFly of flies) {
         moveCommonFly(commonFly);
@@ -256,10 +252,10 @@ function game() {
     };
 
 }
-function drawLilyPad() {
+function drawLilyPad(lilyPad) {
     push();
     imageMode(CENTER);
-    image(lilyPad.image, lilyPad.x, lilyPad.y);
+    image(lilyPads.image, lilyPad.x, lilyPad.y);
     pop();
 }
 function gameOver() {
@@ -270,12 +266,12 @@ function gameOver() {
     textAlign(CENTER);
 }
 
-function moveLilyPad() {
+function moveLilyPad(lilyPad) {
     lilyPad.x = lilyPad.x + lilyPad.velocity.x;
     lilyPad.y = lilyPad.y + lilyPad.velocity.y;
     // check if it reaches the bottom
     if (lilyPad.y > 900) {
-        resetLilyPad();
+        resetLilyPad(lilyPad);
     }
 }
 function moveCommonFly(commonFly) {
@@ -337,7 +333,7 @@ function moveEvilFly(evilFly) {
 
 }
 
-function moveSpecialFly() {
+function moveWinningFly() {
     if (score <= 20) {
         specialFly.speed === 0;
         specialFly.x = -10;
@@ -349,36 +345,36 @@ function moveSpecialFly() {
     }
     // Handle the special fly going off the canvas
     if (specialFly.x > width) {
-        resetSpecialFly();
+        resetWinningFly();
     }
 
 
 }
 
 
-function moveGoldPoint() {
+function moveSpecialFly() {
     // Move on x
-    goldPoint.x += goldPoint.speed;
+    specialFly.x += specialFly.speed;
     // Increase the wiggle angle (for sine)
-    goldPoint.wiggleAngle += 0.09;
+    specialFly.wiggleAngle += 0.09;
     // Calculate the number between -1 and 1 for the amount of wiggle
-    const wiggleAmount = sin(goldPoint.wiggleAngle);
+    const wiggleAmount = sin(specialFly.wiggleAngle);
     // Convert from -1..1 to an actual distance between 0..100
-    goldPoint.y = map(wiggleAmount, -1, 0, 0, 100);
+    specialFly.y = map(wiggleAmount, -1, 0, 0, 100);
     if (score <= 15) {
-        goldPoint.speed = 0;
-        goldPoint.x = -10;
+        specialFly.speed = 0;
+        specialFly.x = -10;
 
     }
 
     else if (score > 15) {
-        goldPoint.x += goldPoint.speed;
-        goldPoint.speed = 2;
+        specialFly.x += goldPoint.speed;
+        specialFly.speed = 2;
 
     }
 
-    if (goldPoint.x > 3000) {
-        resetGoldPoint();
+    if (specialFly.x > 3000) {
+        resetSpecialFly();
     }
 }
 
@@ -413,19 +409,19 @@ function drawEvilFly(evilFly) {
 
 }
 
-function drawSpecialFly() {
+function drawWinningFly() {
     push();
     noStroke();
     fill("#ffd700");
-    ellipse(specialFly.x, specialFly.y, specialFly.size);
+    ellipse(winningFly.x, winningFly.y, winningFly.size);
     pop();
 }
-function drawGoldPoint() {
+function drawSpecialFly() {
 
     push();
     fill("gold");
     noStroke();
-    ellipse(goldPoint.x, goldPoint.y, goldPoint.size);
+    ellipse(specialFly.x, specialFly.y, specialFly.size);
     pop();
 }
 
@@ -469,19 +465,19 @@ function resetBuzzyFly() {
     buzzyFly.y = random(0, 300);
 }
 
-function resetLilyPad() {
-    lilyPad.x = random(10, 400)
+function resetLilyPad(lilyPad) {
+    lilyPad.x = random(10, 400);
     lilyPad.y = -10;
+}
+
+function resetWinningFly() {
+    winningFly.x = -10;
+    winningFly.y = random(0, 400);
 }
 
 function resetSpecialFly() {
     specialFly.x = -10;
-    specialFly.y = random(0, 400);
-}
-
-function resetGoldPoint() {
-    goldPoint.x = -10;
-    goldPoint.y = random(0, 500);
+    specialFly.y = random(0, 500);
 }
 
 /**
@@ -527,7 +523,7 @@ function moveTongue() {
 function drawFrog() {
     // Draw the tongue tip
     push();
-    fill("red");
+    fill(frog.tongue.fill);
     noStroke();
     ellipse(frog.tongue.x, frog.tongue.y, frog.tongue.size);
     pop();
@@ -535,7 +531,7 @@ function drawFrog() {
     // Draw the rest of the tongue
 
     push();
-    stroke("red");
+    stroke(frog.tongue.fill);
     strokeWeight(frog.tongue.size);
     line(frog.tongue.x, frog.tongue.y, frog.body.x, frog.body.y);
     pop();
@@ -547,7 +543,7 @@ function drawFrog() {
     ellipse(frog.body.x, frog.body.y, frog.body.size);
     pop();
 }
-function checkTongueLilyPadOverlap() {
+function checkTongueLilyPadOverlap(lilyPad) {
     // Get distance from tongue to fly
     const d = dist(frog.tongue.x, frog.tongue.y, lilyPad.x, lilyPad.y);
     // Check if it's an overlap
@@ -611,6 +607,19 @@ function checkTongueBuzzyFlyOverlap() {
 /**
  * Handles the tongue overlapping the fly
  */
+function checkTongueWinningFlyOverlap() {
+    // Get distance from tongue to fly
+    const d = dist(frog.tongue.x, frog.tongue.y, winningFly.x, winningFly.y);
+    // Check if it's an overlap
+    const eaten = (d < frog.tongue.size / 2 + winningFly.size / 2);
+    if (eaten) {
+        // Increase the Score
+
+    }
+}
+/**
+ * Handles the tongue overlapping the fly
+ */
 function checkTongueSpecialFlyOverlap() {
     // Get distance from tongue to fly
     const d = dist(frog.tongue.x, frog.tongue.y, specialFly.x, specialFly.y);
@@ -618,7 +627,7 @@ function checkTongueSpecialFlyOverlap() {
     const eaten = (d < frog.tongue.size / 2 + specialFly.size / 2);
     if (eaten) {
         // Increase the Score
-        score = score + 2; //score += 1; score++
+        score = score + 3; //score += 1; score++
         // Reset the fly
         resetSpecialFly();
         // Bring back the tongue
