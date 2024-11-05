@@ -2,7 +2,7 @@
  * Frogfrogfrog
  * Pippin Barr
  * 
- * A game of catching flies with your frog-tongue
+ * A game of catching flies with your frog-tonguevc  
  * 
  * Instructions:
  * - Move the frog with your mouse
@@ -66,7 +66,32 @@ let flies = [
         buzziness: 3
     },
 ];
+//the bad flies that makes player lose points
+let evilFlies = [
+    {
+        x: -10,
+        y: 100,
+        fill: "#800000",
+        size: 14,
+        speed: 4
+    },
+    {
+        x: -10,
+        y: 100,
+        fill: "#B22222",
+        size: 16,
+        speed: 4
+    },
+    {
+        x: -10,
+        y: 100,
+        fill: "#B22222",
+        size: 15,
+        speed: 4
+    },
 
+
+];
 let lilyPad = {
     x: 400,
     y: 40,
@@ -92,17 +117,21 @@ const frog = {
     tongue: {
         x: undefined,
         y: 480,
-        fill: "red",
+        fill: "#dc143c",//crimson
         size: 20,
         speed: 20,
         // Determines how the tongue moves each frame
-        state: "idle" // State can be: idle, outbound, inbound
+        state: "idle", // State can be: idle, outbound, inbound
+        fills: {
+            special: "",
+            injured: "#00ff00" //lime
+        },
     }
 };
 
 // Our fly
 // Has a position, size, and speed of horizontal movement
-const fly = {
+const buzzyFly = {
     x: 0,
     y: 200, // Will be random
     size: 12,
@@ -113,14 +142,7 @@ const fly = {
     }
 };
 
-//the bad flies that makes player lose points
-const evilFly = {
-    x: -10,
-    y: 100,
-    size: 14,
-    speed: 4
 
-};
 //draws a golden fly
 const goldPoint = {
     x: -10,
@@ -166,8 +188,7 @@ function setup() {
     createCanvas(640, 480);
 
     // Give the fly its first random position
-    resetFly();
-    resetEvilFly();
+    resetBuzzyFly();
     resetSpecialFly();
     resetGoldPoint();
     resetLilyPad();
@@ -200,35 +221,41 @@ function game() {
     background("#87ceeb");
 
     moveLilyPad();
-    moveFly();
-    moveEvilFly();
+    moveBuzzyFly();
     moveSpecialFly();
     moveFrog();
     moveTongue();
     moveGoldPoint();
 
 
-    checkTongueFlyOverlap();
-    checkTongueEvilFlyOverlap();
+    checkTongueBuzzyFlyOverlap();
     checkTongueLilyPadOverlap();
+    checkTongueSpecialFlyOverlap();
+
+
     gameOverScreen();
 
     drawLilyPad();
     drawFrog();
     drawScore();
     drawLives();
-    drawFly();
-    drawEvilFly();
+    drawBuzzyFly();
     drawSpecialFly();
     drawGoldPoint();
 
     for (let commonFly of flies) {
         moveCommonFly(commonFly);
         drawCommonFly(commonFly);
-
+        checkTongueCommonFlyOverlap(commonFly)
         // resetCommonFly(commonFly);
 
     };
+
+    for (let evilFly of evilFlies) {
+        drawEvilFly(evilFly);
+        moveEvilFly(evilFly);
+        checkTongueEvilFlyOverlap(evilFly);
+    }
 }
 function drawLilyPad() {
     push();
@@ -267,26 +294,26 @@ function moveCommonFly(commonFly) {
  * Moves the fly according to its speed
  * Resets the fly if it gets all the way to the right
  */
-function moveFly() {
+function moveBuzzyFly() {
     // Move the fly  
     // Move the evil fly
-    fly.x += fly.velocity.x;
-    fly.y += fly.velocity.y;
+    buzzyFly.x += buzzyFly.velocity.x;
+    buzzyFly.y += buzzyFly.velocity.y;
     let flyChange = random(1, 2);
     if (flyChange >= 0.1) {
-        fly.velocity.y = random(-2, 2)
+        buzzyFly.velocity.y = random(-2, 2)
     }
 
-    fly.x += fly.speed;
+    buzzyFly.x += buzzyFly.speed;
     // Handle the fly going off the canvas
-    if (fly.x > width) {
-        resetFly();
+    if (buzzyFly.x > width) {
+        resetBuzzyFly();
         // state ="title "  this would mean that once one fly leaves the screen we are brougt back to title screen
         //use it for a game over
     }
 }
-function moveEvilFly() {
-    fly.x += fly.speed;
+function moveEvilFly(evilFly) {
+    evilFly.x += evilFly.speed;
     // The evil fly does not appear if the score is bellow 10
     if (score < 10) {
         evilFly.speed === 0;
@@ -299,7 +326,7 @@ function moveEvilFly() {
 
     // Handle the evil fly going off the canvas
     if (evilFly.x > width) {
-        resetEvilFly();
+        resetEvilFly(evilFly);
     }
 
 }
@@ -362,18 +389,18 @@ function drawCommonFly(commonFly) {
 /**
  * Draws the fly as a black circle
  */
-function drawFly() {
+function drawBuzzyFly() {
     push();
     noStroke();
-    fill("grey");
-    ellipse(fly.x, fly.y, fly.size);
+    fill("#663399");
+    ellipse(buzzyFly.x, buzzyFly.y, buzzyFly.size);
     pop();
 }
 //draws the evil fly
-function drawEvilFly() {
+function drawEvilFly(evilFly) {
     push();
     noStroke();
-    fill("red");
+    fill(evilFly.fill);
     ellipse(evilFly.x, evilFly.y, evilFly.size);
     pop();
 
@@ -430,20 +457,19 @@ function resetCommonFly(commonFly) {
 
 }
 
-function resetFly() {
-    fly.x = 0;
-    fly.y = random(0, 300);
+function resetEvilFly(evilFly) {
+    evilFly.x = -10;
+    evilFly.y = random(0, 400);
+}
+
+function resetBuzzyFly() {
+    buzzyFly.x = 0;
+    buzzyFly.y = random(0, 300);
 }
 
 function resetLilyPad() {
     lilyPad.x = random(10, 400)
     lilyPad.y = -10;
-}
-
-
-function resetEvilFly() {
-    evilFly.x = -10;
-    evilFly.y = random(0, 400);
 }
 
 function resetSpecialFly() {
@@ -488,7 +514,7 @@ function moveTongue() {
         // The tongue stops if it hits the bottom
         if (frog.tongue.y >= height) {
             frog.tongue.state = "idle";
-            frog.tongue.fill = "red"
+            frog.tongue.fills = frog.tongue.fills.normal;
         }
     }
 }
@@ -499,7 +525,7 @@ function moveTongue() {
 function drawFrog() {
     // Draw the tongue tip
     push();
-    fill(frog.tongue.fill);
+    fill(frog.tongue.fills.normal);
     noStroke();
     ellipse(frog.tongue.x, frog.tongue.y, frog.tongue.size);
     pop();
@@ -529,25 +555,23 @@ function checkTongueLilyPadOverlap() {
         frog.tongue.state = "inbound";
     }
 }
-
-/**
- * Handles the tongue overlapping the fly
- */
-function checkTongueFlyOverlap() {
+function checkTongueCommonFlyOverlap(commonFly) {
     // Get distance from tongue to fly
-    const d = dist(frog.tongue.x, frog.tongue.y, fly.x, fly.y);
+    const d = dist(frog.tongue.x, frog.tongue.y, commonFly.x, commonFly.y);
     // Check if it's an overlap
-    const eaten = (d < frog.tongue.size / 2 + fly.size / 2);
+    const eaten = (d < frog.tongue.size / 2 + commonFly.size / 2);
     if (eaten) {
-        // Increase the Score
+        // Decrease  the Score by 3
         score = score + 1; //score += 1; score++
         // Reset the fly
-        resetFly();
+        resetCommonFly(commonFly);
         // Bring back the tongue
         frog.tongue.state = "inbound";
+
+
     }
 }
-function checkTongueEvilFlyOverlap() {
+function checkTongueEvilFlyOverlap(evilFly) {
     // Get distance from tongue to fly
     const d = dist(frog.tongue.x, frog.tongue.y, evilFly.x, evilFly.y);
     // Check if it's an overlap
@@ -556,9 +580,9 @@ function checkTongueEvilFlyOverlap() {
         // Decrease  the Score by 3
         score = score - 3; //score += 1; score++
         lives = lives - 1;
-        frog.tongue.fill = "#87ceeb";
+        frog.tongue.fills = frog.tongue.fills.injured;
         // Reset the fly
-        resetEvilFly();
+        resetEvilFly(evilFly);
         // Bring back the tongue
         frog.tongue.state = "inbound";
 
@@ -566,6 +590,41 @@ function checkTongueEvilFlyOverlap() {
 
     }
 }
+/**
+ * Handles the tongue overlapping the fly
+ */
+function checkTongueBuzzyFlyOverlap() {
+    // Get distance from tongue to fly
+    const d = dist(frog.tongue.x, frog.tongue.y, buzzyFly.x, buzzyFly.y);
+    // Check if it's an overlap
+    const eaten = (d < frog.tongue.size / 2 + buzzyFly.size / 2);
+    if (eaten) {
+        // Increase the Score
+        score = score + 1; //score += 1; score++
+        // Reset the fly
+        resetBuzzyFly();
+        // Bring back the tongue
+        frog.tongue.state = "inbound";
+    }
+}
+/**
+ * Handles the tongue overlapping the fly
+ */
+function checkTongueSpecialFlyOverlap() {
+    // Get distance from tongue to fly
+    const d = dist(frog.tongue.x, frog.tongue.y, specialFly.x, specialFly.y);
+    // Check if it's an overlap
+    const eaten = (d < frog.tongue.size / 2 + specialFly.size / 2);
+    if (eaten) {
+        // Increase the Score
+        score = score + 2; //score += 1; score++
+        // Reset the fly
+        resetSpecialFly();
+        // Bring back the tongue
+        frog.tongue.state = "inbound";
+    }
+}
+
 /**
  * Launch the tongue on click (if it's not launched yet)
  */
@@ -591,7 +650,7 @@ function mousePressed() {
 
 
 
-/// MAKE ALL MY BEGINING OF CODES WITH A LOWER CASSE
+
 ///I want to make a fly woble not be straight
 ////I want the frog tongue to flicker when he eats the red fly because they are dangerous, show the frog is hurt,  (maybe see if the fill can change)
 ////if eaten the evil fly more than 3 time its a game over
