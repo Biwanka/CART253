@@ -88,7 +88,7 @@ let lilyPads = [
     {
         x: 400,
         y: 40,
-        size: 50,
+        size: 70,
         image: undefined,
         velocity: {
             x: 0,
@@ -98,7 +98,7 @@ let lilyPads = [
     {
         x: 400,
         y: 40,
-        size: 50,
+        size: 70,
         image: undefined,
         velocity: {
             x: 0,
@@ -155,7 +155,11 @@ const winningFly = {
     x: 0,
     y: 200,
     size: 10,
-    speed: 6
+    speed: 6,
+    velocity: {
+        x: 2,
+        y: 3,
+    }
 };
 
 
@@ -334,13 +338,18 @@ function moveEvilFly(evilFly) {
 }
 
 function moveWinningFly() {
-    if (score <= 20) {
+    const r = random(0, 400);
+    if (r < 40) {
+        winningFly.velocity.x = random(-4, 4);
+        winningFly.velocity.y = random(-4, 4);
+    }
+    if (score <= 30) {
         specialFly.speed === 0;
         specialFly.x = -10;
 
     }
 
-    else if (score > 20) {
+    else if (score > 30) {
         specialFly.x += specialFly.speed;
     }
     // Handle the special fly going off the canvas
@@ -368,8 +377,7 @@ function moveSpecialFly() {
     }
 
     else if (score > 15) {
-        specialFly.x += goldPoint.speed;
-        specialFly.speed = 2;
+        specialFly.x += specialFly.speed = 2;
 
     }
 
