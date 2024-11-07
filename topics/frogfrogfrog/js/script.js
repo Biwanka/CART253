@@ -33,7 +33,7 @@
 
 "use strict";
 
-//this array will be for the commonFly were they are different black circles
+//this array will be for the commonFly were they are different black circles (4 of them)
 let flies = [
     {
         x: 0,
@@ -60,7 +60,7 @@ let flies = [
         buzziness: 4
     },
 ];
-//This array contains the evilFly that are red circle that will make the player loose points 
+//This array contains the evilFly that are red circle that will make the player loose points (3 of them) 
 let evilFlies = [
     {
         x: -10,
@@ -313,6 +313,10 @@ function game() {
     };
 
 }
+/**This is both of the end screen options 
+ * 
+ * 
+ */
 // This displayes the image that shows the GameOver screen that tell player they lost the game
 function gameOver() {
     background(gameOverBackground.image);
@@ -322,6 +326,13 @@ function winning() {
     background(winningBackground.image);
 }
 
+/**
+ * This is the drawing and the the movement of the lily Pads 
+ * 
+ * 
+ * 
+ * 
+ */
 //This draws the lilypad that will fall down from the sky and block the frog tongue. it uses an image
 function drawLilyPad(lilyPad) {
     push();
@@ -339,6 +350,28 @@ function moveLilyPad(lilyPad) {
         resetLilyPad(lilyPad);
     }
 }
+
+/**
+ * This Will be all the functions that will be moving each of the types of Flies 
+ * 
+ * there should be the 
+ * -commonFly
+ * -buzzyFly
+ * -evilFly
+ * -specialFly 
+ * -winningFly
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
+/**
+ * Moves the fly according to its speed
+ * Resets the fly if it gets all the way to the right
+ */
 // this will move the Common flies which are the black circles. they move in a stright line from left to right
 function moveCommonFly(commonFly) {
     commonFly.x += commonFly.buzziness
@@ -349,11 +382,7 @@ function moveCommonFly(commonFly) {
     }
 
 }
-
-/**
- * Moves the fly according to its speed
- * Resets the fly if it gets all the way to the right
- */
+//this makes the buzzy fly which is the purple circle move this fly move horizontally in a shaky movement
 function moveBuzzyFly() {
     // Move the buzzy fly  in a buzzy eratic movement 
     buzzyFly.x += buzzyFly.velocity.x;
@@ -364,12 +393,12 @@ function moveBuzzyFly() {
     }
     buzzyFly.x += buzzyFly.speed;
 
-    //if the score is lower or equal to 5 the evil flies will not appear
+    //if the score is lower or equal to 5 the buzzy fly will not appear
     if (score <= 5) {
         buzzyFly.speed === 0;
         buzzyFly.x = -10;
     }
-    //if the score is higher then 10 than the evil fly will apear to make it harder
+    //if the score is higher then 5 than the buzzy fly will appear. 
     else if (score > 5) {
         buzzyFly.x += buzzyFly.speed;
     }
@@ -380,6 +409,7 @@ function moveBuzzyFly() {
 
     }
 }
+// this will make the Evil flies which are the red cirlces move. The fly will be moving in a straight horizontal line
 function moveEvilFly(evilFly) {
     // The evil fly does not appear if the score is bellow or equal to 10
     if (score <= 10) {
@@ -391,14 +421,16 @@ function moveEvilFly(evilFly) {
         evilFly.x += evilFly.speed;
     }
 
-    // Handle the evil fly going off the canvas
+    // Handle the evil fly going off the canvas and reset it so it comes back
     if (evilFly.x > width) {
         resetEvilFly(evilFly);
     }
 
 }
 
+//this will make the winnign fly move which is the pink circle. this fly should move in a up and down wave
 function moveWinningFly() {
+    //this makes the fly move
     winningFly.x += winningFly.speed;
     // Increase the wiggle angle (for sine)
     winningFly.wiggleAngle += 0.05;
@@ -407,12 +439,14 @@ function moveWinningFly() {
     // Convert from -1..1 to an actual distance between 0..100
     winningFly.y = map(wiggleAmount, -1, 0, 0, 100);
 
+    // if the score is lower than 30, the fly will not appear
     if (score <= 5) {
         winningFly.speed === 0;
         winningFly.x = -10;
 
     }
 
+    //if the score is 30 or higher the fly will appear
     else if (score > 5) {
         winningFly.x += winningFly.speed;
     }
@@ -421,10 +455,9 @@ function moveWinningFly() {
         resetWinningFly();
     }
 
-
 }
 
-
+//this will make the special fly move which is a gold circle. This fly moves horizontally in a wave up and down motion
 function moveSpecialFly() {
     // Move on x
     specialFly.x += specialFly.speed;
@@ -434,44 +467,67 @@ function moveSpecialFly() {
     const wiggleAmount = sin(specialFly.wiggleAngle);
     // Convert from -1..1 to an actual distance between 0..100
     specialFly.y = map(wiggleAmount, -1, 0, 0, 100);
-    if (score <= 15) {
+
+    // if the score is lower than 15 than the fly will not appear 
+    if (score < 15) {
         specialFly.speed = 0;
         specialFly.x = -10;
 
     }
-
-    else if (score > 15) {
+    // if the score is equal or higher than 15 the fly will appear
+    else if (score >= 15) {
         specialFly.x += specialFly.speed = 2;
 
     }
-
-    if (specialFly.x > 2000) {
+    // this helps rest the fly. the amount is wider than the canvas, to make the fly take longuer to reappear on screen
+    if (specialFly.x > 4000) {
         resetSpecialFly();
     }
 }
 
 /**
- * Draws the fly parameter to canvas
+ *
+ *  Draws the fly parameter to canvas
+ * all the flies that will be drawn are 
+ * 
+ * -commonFly
+ * -buzzyFly
+ * -evilFly
+ * -specialFly
+ * -winningFly
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  */
+
+// this draws the CommonFly that are in the array. there should be 4 black circles of different sizes that should be drawn.
 function drawCommonFly(commonFly) {
     push();
     noStroke();
-    fill(0);
+    fill(0); // black
     ellipse(commonFly.x, commonFly.y, commonFly.size);
     pop();
 }
 
 /**
- * Draws the fly as a black circle
+ * Draws a purple small circle 
  */
 function drawBuzzyFly() {
     push();
     noStroke();
-    fill("#663399");
+    fill("#663399"); // purple
     ellipse(buzzyFly.x, buzzyFly.y, buzzyFly.size);
     pop();
 }
-//draws the evil fly
+
+//draws the evil flies. This contains the array. it should draw 3 circle of different shades of red and different sizes.
 function drawEvilFly(evilFly) {
     push();
     noStroke();
@@ -481,15 +537,17 @@ function drawEvilFly(evilFly) {
 
 }
 
+// Draws the winning fly. it should look like a small deep pink circle
 function drawWinningFly() {
     push();
     noStroke();
-    fill("#FF1493");
+    fill("#FF1493"); //deepPink
     ellipse(winningFly.x, winningFly.y, winningFly.size);
     pop();
 }
-function drawSpecialFly() {
 
+//Draws the special fly. It should look like a gold circle
+function drawSpecialFly() {
     push();
     fill("gold");
     noStroke();
@@ -497,8 +555,24 @@ function drawSpecialFly() {
     pop();
 }
 
+/**
+ * This will draw the different points
+ * this contains all of the scores 
+ * and heart images that demonstraits the point systems to the player
+ * 
+ * 
+ * -score
+ * -lives
+ * -heart
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
 
-//draws the players score
+//draws the players score. It starts at 0 and will go up. shows a big black number at the top right corner of the canvas
 function drawScore() {
     push();
     textAlign(RIGHT, TOP);
@@ -509,6 +583,7 @@ function drawScore() {
     pop();
 }
 
+//Draws the lives of the player. It starts at 5 and goes down to -1. shows a big pink number at the top left corner of the canvas
 function drawLives() {
     push();
     textAlign(LEFT, TOP);
@@ -517,16 +592,15 @@ function drawLives() {
     textSize(128);
     text(lives, 0, 0);
     pop();
-
 }
 
+// this will display the image of a pink heart that is at the right of the lives number at the top left.
 function drawHeart() {
     push();
     imageMode(TOP);
     image(heart.image, 90, 0);
     pop();
 }
-
 
 function drawWinPoint() {
     push();
@@ -536,7 +610,6 @@ function drawWinPoint() {
     textSize(1);
     text(winPoint, 100, 100);
     pop();
-
 }
 
 
