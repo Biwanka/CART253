@@ -1,24 +1,15 @@
 # Starting points
 
-
-Finding metro tickets on the ground and trying to sell them
-
 **Frog eating flies but it gets harder and harder to catch them**
 
-Swimming lessons but controlling your body is really hard
+**I want to make a fly woble not be straight**
 
-Crossing the street and it’s busy
+**I want the frog tongue to flicker when he eats the red fly because they are dangerous, show the frog is hurt,  (maybe see if the fill can change)**
 
-Riding a tricycle but the wheel keeps falling off
+**if eaten the evil fly more than 3 time its a game over**
 
-Shaving people’s heads in beautiful patterns and showing them at an art gallery
+**I want a fly to be super zoomy like crazy. I want to act differently than the rest if it is caught the player has to click a spefic key 10 time in a certain amount of time to win the game**
 
-Making cups out of clay and seeing what cafe customers say about them
+**I want multiple of the same fly to appear more than once at the same time random frog tongue move angle**
 
-Growing plants that eat you
 
-Keeping a computer mouse as a pet and looking after it
-
-Rewiring a light
-
-Cooking spaghetti with a dog
