@@ -32,6 +32,8 @@
 
 
 "use strict";
+
+//this array will be for the commonFly were they are different black circles
 let flies = [
     {
         x: 0,
@@ -58,7 +60,7 @@ let flies = [
         buzziness: 4
     },
 ];
-//the bad flies that makes player lose points
+//This array contains the evilFly that are red circle that will make the player loose points 
 let evilFlies = [
     {
         x: -10,
@@ -84,6 +86,27 @@ let evilFlies = [
 
 
 ];
+let titleScreen = {
+    x: 640,
+    y: 480,
+    image: undefined
+};
+let winningBackground = {
+    x: 640,
+    y: 480,
+    image: undefined
+};
+
+let gameOverBackground = {
+    x: 640,
+    y: 480,
+    image: undefined
+};
+let backgroundScreen = {
+    x: 0,
+    y: 300,
+    image: undefined
+};
 let lilyPads = [
     {
         x: 400,
@@ -132,7 +155,7 @@ const frog = {
 const buzzyFly = {
     x: 0,
     y: 200, // Will be random
-    size: 12,
+    size: 13,
     speed: 3,
     velocity: {
         x: 2,
@@ -162,10 +185,16 @@ const winningFly = {
     }
 };
 
+let heart = {
+    x: 0,
+    y: 0,
+    image: undefined,
+};
 
 //the current score 
 let score = 0;
 let lives = 5;
+let winPoint = 0;
 
 //the current state
 let state = "title"; //can be "title" or "game" or "WIN" "GameOver"
@@ -174,7 +203,13 @@ let state = "title"; //can be "title" or "game" or "WIN" "GameOver"
  */
 
 function preload() {
-    lilyPads.image = loadImage("assets/images/block_lilyPad.png");
+    lilyPads.image = loadImage("assets/images/block_lilyPad_big.png");
+    backgroundScreen.image = loadImage("assets/images/Game_Background.jpg");
+    titleScreen.image = loadImage("assets/images/Title_Screen.jpg");
+    gameOverBackground.image = loadImage("assets/images/GameOver_Screen.jpg");
+    winningBackground.image = loadImage("assets/images/Winning_Screen.jpg");
+    heart.image = loadImage("assets/images/Heart.png");
+
 }
 
 function setup() {
@@ -202,17 +237,22 @@ function draw() {
         gameOver();
     }
 
+    else if (state === "Win") {
+        winning();
+    }
+
+
 }
 
 function title() {
-    background("pink");
+    background(titleScreen.image);
 
-    text("Frog Frog Frog", 100, 100);
+
 }
 
 function game() {
-    background("#87ceeb");
 
+    background(backgroundScreen.image);
 
     moveBuzzyFly();
     moveSpecialFly();
@@ -227,11 +267,14 @@ function game() {
 
 
     gameOverScreen();
+    winningScreen();
 
-
+    //drawBackgroundScreen();
     drawFrog();
     drawScore();
     drawLives();
+    drawHeart();
+    drawWinPoint();
     drawBuzzyFly();
     drawSpecialFly();
     drawWinningFly();
@@ -256,20 +299,24 @@ function game() {
     };
 
 }
+// This displayes the image that shows the GameOver screen that tell player they lost the game
+function gameOver() {
+    background(gameOverBackground.image);
+}
+//this dsiplayes the image tthat show the Win screen that tell player they won the game
+function winning() {
+    background(winningBackground.image);
+}
+
+//This draws teh lilypad that will fall down from the sky and block the frog tongue
 function drawLilyPad(lilyPad) {
     push();
     imageMode(CENTER);
     image(lilyPads.image, lilyPad.x, lilyPad.y);
     pop();
 }
-function gameOver() {
-    background("black");
-    text("Game Over", 100, 100);
-    fill("red");
-    textSize(128);
-    textAlign(CENTER);
-}
 
+//this makes the lilypads move downwards from the top of the screen to the bottom
 function moveLilyPad(lilyPad) {
     lilyPad.x = lilyPad.x + lilyPad.velocity.x;
     lilyPad.y = lilyPad.y + lilyPad.velocity.y;
@@ -338,22 +385,24 @@ function moveEvilFly(evilFly) {
 }
 
 function moveWinningFly() {
-    const r = random(0, 400);
-    if (r < 40) {
-        winningFly.velocity.x = random(-4, 4);
-        winningFly.velocity.y = random(-4, 4);
-    }
-    if (score <= 30) {
-        specialFly.speed === 0;
-        specialFly.x = -10;
+
+    winningFly.velocity.x = + winningFly.speed;
+    winningFly.velocity.y = + winningFly.speed;
+
+    //  winningFly.x = constrain(winningFly.x, 0, width);
+    //  winningFly.y = constrain(winningFly.y, 0, height);
+
+    if (score <= 5) {
+        winningFly.speed === 0;
+        winningFly.x = -10;
 
     }
 
-    else if (score > 30) {
-        specialFly.x += specialFly.speed;
+    else if (score > 5) {
+        winningFly.x += winningFly.speed;
     }
     // Handle the special fly going off the canvas
-    if (specialFly.x > width) {
+    if (winningFly.x > width) {
         resetWinningFly();
     }
 
@@ -381,7 +430,7 @@ function moveSpecialFly() {
 
     }
 
-    if (specialFly.x > 3000) {
+    if (specialFly.x > 2000) {
         resetSpecialFly();
     }
 }
@@ -420,7 +469,7 @@ function drawEvilFly(evilFly) {
 function drawWinningFly() {
     push();
     noStroke();
-    fill("#ffd700");
+    fill("pink");
     ellipse(winningFly.x, winningFly.y, winningFly.size);
     pop();
 }
@@ -438,7 +487,7 @@ function drawSpecialFly() {
 function drawScore() {
     push();
     textAlign(RIGHT, TOP);
-    fill("pink");
+    fill("black");
     textStyle(BOLD);
     textSize(128);
     text(score, width, 0);
@@ -448,10 +497,29 @@ function drawScore() {
 function drawLives() {
     push();
     textAlign(LEFT, TOP);
-    fill("red");
+    fill("pink");
     textStyle(BOLD);
     textSize(128);
     text(lives, 0, 0);
+    pop();
+
+}
+
+function drawHeart() {
+    push();
+    imageMode(TOP);
+    image(heart.image, 90, 0);
+    pop();
+}
+
+
+function drawWinPoint() {
+    push();
+    textAlign(BOTTOM);
+    fill("white");
+    textStyle(BOLD);
+    textSize(1);
+    text(winPoint, 100, 100);
     pop();
 
 }
@@ -605,7 +673,7 @@ function checkTongueBuzzyFlyOverlap() {
     const eaten = (d < frog.tongue.size / 2 + buzzyFly.size / 2);
     if (eaten) {
         // Increase the Score
-        score = score + 1; //score += 1; score++
+        score = score + 3; //score += 1; score++
         // Reset the fly
         resetBuzzyFly();
         // Bring back the tongue
@@ -621,6 +689,7 @@ function checkTongueWinningFlyOverlap() {
     // Check if it's an overlap
     const eaten = (d < frog.tongue.size / 2 + winningFly.size / 2);
     if (eaten) {
+        winPoint = winPoint + 1;
         // Increase the Score
 
     }
@@ -635,7 +704,7 @@ function checkTongueSpecialFlyOverlap() {
     const eaten = (d < frog.tongue.size / 2 + specialFly.size / 2);
     if (eaten) {
         // Increase the Score
-        score = score + 3; //score += 1; score++
+        score = score + 5; //score += 1; score++
         // Reset the fly
         resetSpecialFly();
         // Bring back the tongue
@@ -653,6 +722,12 @@ function gameOverScreen() {
     }
 }
 
+function winningScreen() {
+    if (winPoint === 1) {
+        state = "winning"
+
+    }
+}
 
 
 function mousePressed() {
