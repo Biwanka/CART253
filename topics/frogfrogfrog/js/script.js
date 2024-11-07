@@ -1,19 +1,19 @@
 /**
  * Frogfrogfrog
- * Pippin Barr
+ * Bianca Gauthier
  * 
- * A game of catching flies with your frog-tonguevc  
+ * A game where a frog catches flies and is trying to catch the rarest one to be fully full and win the game. he eats a 
+ * variety of flies but be carefull not all are delicious and harmless. Only after reaching 30 points will the winning fly appear
  * 
  * Instructions:
  * - Move the frog with your mouse
  * - Click to launch the tongue
  * - Catch flies
+ * - Avoid the dangerous evil flies and cath the good flies
  * 
  * Made with p5
  * https://p5js.org/
  * 
- * Idea:
- * Add a score
  * 
  * Plan:
  * -everytime you catch a fly a number goes up by one
@@ -86,27 +86,35 @@ let evilFlies = [
 
 
 ];
+// this will be the Title Screen at the begging of the game that will have the title and instruction on the types of flies (uses and image)
 let titleScreen = {
     x: 640,
     y: 480,
     image: undefined
 };
+
+//this will be the You Win background screen that will appear when you cath the winning fly. (uses and image)
 let winningBackground = {
     x: 640,
     y: 480,
     image: undefined
 };
 
+//this will be the Game Over background screen that will appear when you run out of lives. (uses and image)
 let gameOverBackground = {
     x: 640,
     y: 480,
     image: undefined
 };
+
+//this is the background screen when we are in "game" state. this is just a visual thing (uses and image)
 let backgroundScreen = {
     x: 0,
     y: 300,
     image: undefined
 };
+
+//this array is for the lilyPads that will be falling from the top of the screen to block the frog tongue (uses an image)
 let lilyPads = [
     {
         x: 400,
@@ -164,7 +172,7 @@ const buzzyFly = {
 };
 
 
-//draws a golden fly
+//is a special fly that makes players gain more points 
 const specialFly = {
     x: -10,
     y: 100,
@@ -173,35 +181,34 @@ const specialFly = {
     wiggleAngle: 0
 };
 
-//the Special fly is rare and makes player gain 5 points if caught  /[]
+//the winning Fly will make players win the game if it is cought 
 const winningFly = {
     x: 0,
     y: 200,
-    size: 10,
-    speed: 6,
-    velocity: {
-        x: 2,
-        y: 3,
-    }
+    size: 12,
+    speed: 3,
+    wiggleAngle: 0
 };
-
+// will be the heart image next to the lives score. (uses and image)
 let heart = {
     x: 0,
     y: 0,
     image: undefined,
 };
 
-//the current score 
+//the current score
 let score = 0;
+
+//the lives of the player
 let lives = 5;
-let winPoint = 0;
 
-//the current state
+//let winPoint = 1;
+
+//the current state 
 let state = "title"; //can be "title" or "game" or "WIN" "GameOver"
-/**
- * Creates the canvas and initializes the fly
- */
 
+
+// All of the images that are used in the game if in the comment you see -> (uses and image) than this is where the image is called
 function preload() {
     lilyPads.image = loadImage("assets/images/block_lilyPad_big.png");
     backgroundScreen.image = loadImage("assets/images/Game_Background.jpg");
@@ -211,11 +218,14 @@ function preload() {
     heart.image = loadImage("assets/images/Heart.png");
 
 }
+/**
+ * Creates the canvas and initializes the fly
+ */
 
 function setup() {
     createCanvas(640, 480);
 
-    // Give the fly its first random position
+    // Give the flies its first random position and makes the flies reset if they are eaten
     resetBuzzyFly();
     resetSpecialFly();
     resetWinningFly();
@@ -223,7 +233,7 @@ function setup() {
 
 
 }
-
+// display the state of the game
 function draw() {
     if (state === "title") {
         title();
@@ -237,21 +247,22 @@ function draw() {
         gameOver();
     }
 
-    else if (state === "Win") {
+    else if (state === "Winning") {
         winning();
     }
 
 
 }
-
+//the title screen, this is where its image is called to be displayed
 function title() {
     background(titleScreen.image);
 
 
 }
-
+// this is what is present in the game state
 function game() {
 
+    //calls the background image 
     background(backgroundScreen.image);
 
     moveBuzzyFly();
@@ -267,18 +278,19 @@ function game() {
 
 
     gameOverScreen();
-    winningScreen();
+    //winningScreen();
 
-    //drawBackgroundScreen();
+
     drawFrog();
     drawScore();
     drawLives();
     drawHeart();
-    drawWinPoint();
+    //drawWinPoint();
     drawBuzzyFly();
     drawSpecialFly();
     drawWinningFly();
 
+    //array for the common flies
     for (let commonFly of flies) {
         moveCommonFly(commonFly);
         drawCommonFly(commonFly);
@@ -286,12 +298,14 @@ function game() {
         // resetCommonFly(commonFly);
 
     };
-
+    //array for the evil flies
     for (let evilFly of evilFlies) {
         moveEvilFly(evilFly);
         drawEvilFly(evilFly);
         checkTongueEvilFlyOverlap(evilFly);
     };
+
+    //array for the lilyPad
     for (let lilyPad of lilyPads) {
         moveLilyPad(lilyPad);
         drawLilyPad(lilyPad);
@@ -308,7 +322,7 @@ function winning() {
     background(winningBackground.image);
 }
 
-//This draws teh lilypad that will fall down from the sky and block the frog tongue
+//This draws the lilypad that will fall down from the sky and block the frog tongue. it uses an image
 function drawLilyPad(lilyPad) {
     push();
     imageMode(CENTER);
@@ -325,13 +339,13 @@ function moveLilyPad(lilyPad) {
         resetLilyPad(lilyPad);
     }
 }
+// this will move the Common flies which are the black circles. they move in a stright line from left to right
 function moveCommonFly(commonFly) {
     commonFly.x += commonFly.buzziness
-    // Handle the fly going off the canvas
+    // Handle the fly going off the canvas if it goes beyond the canvas it resets the flies
     if (commonFly.x > width) {
         resetCommonFly(commonFly);
-        // state ="title "  this would mean that once one fly leaves the screen we are brougt back to title screen
-        //use it for a game over
+
     }
 
 }
@@ -341,17 +355,16 @@ function moveCommonFly(commonFly) {
  * Resets the fly if it gets all the way to the right
  */
 function moveBuzzyFly() {
-    // Move the fly  
-    // Move the evil fly
+    // Move the buzzy fly  in a buzzy eratic movement 
     buzzyFly.x += buzzyFly.velocity.x;
     buzzyFly.y += buzzyFly.velocity.y;
     let flyChange = random(1, 2);
     if (flyChange >= 0.1) {
         buzzyFly.velocity.y = random(-2, 2)
     }
-
     buzzyFly.x += buzzyFly.speed;
-    // Handle the fly going off the canvas
+
+    //if the score is lower or equal to 5 the evil flies will not appear
     if (score <= 5) {
         buzzyFly.speed === 0;
         buzzyFly.x = -10;
@@ -360,14 +373,15 @@ function moveBuzzyFly() {
     else if (score > 5) {
         buzzyFly.x += buzzyFly.speed;
     }
+    //this will reset the buzzy fly. it isnt exctly at the end of the canvas as the fly needs to appear less regularly
+    //makes it that it takes longer for the fly to reset
     if (buzzyFly.x > 3000) {
         resetBuzzyFly();
-        // state ="title "  this would mean that once one fly leaves the screen we are brougt back to title screen
-        //use it for a game over
+
     }
 }
 function moveEvilFly(evilFly) {
-    // The evil fly does not appear if the score is bellow 10
+    // The evil fly does not appear if the score is bellow or equal to 10
     if (score <= 10) {
         evilFly.speed === 0;
         evilFly.x = -10;
@@ -385,12 +399,13 @@ function moveEvilFly(evilFly) {
 }
 
 function moveWinningFly() {
-
-    winningFly.velocity.x = + winningFly.speed;
-    winningFly.velocity.y = + winningFly.speed;
-
-    //  winningFly.x = constrain(winningFly.x, 0, width);
-    //  winningFly.y = constrain(winningFly.y, 0, height);
+    winningFly.x += winningFly.speed;
+    // Increase the wiggle angle (for sine)
+    winningFly.wiggleAngle += 0.05;
+    // Calculate the number between -1 and 1 for the amount of wiggle
+    const wiggleAmount = sin(winningFly.wiggleAngle);
+    // Convert from -1..1 to an actual distance between 0..100
+    winningFly.y = map(wiggleAmount, -1, 0, 0, 100);
 
     if (score <= 5) {
         winningFly.speed === 0;
@@ -469,7 +484,7 @@ function drawEvilFly(evilFly) {
 function drawWinningFly() {
     push();
     noStroke();
-    fill("pink");
+    fill("#FF1493");
     ellipse(winningFly.x, winningFly.y, winningFly.size);
     pop();
 }
@@ -614,7 +629,7 @@ function drawFrog() {
 
     // Draw the frog's body
     push();
-    fill("#00ff00");
+    fill("green");
     noStroke();
     ellipse(frog.body.x, frog.body.y, frog.body.size);
     pop();
@@ -689,8 +704,8 @@ function checkTongueWinningFlyOverlap() {
     // Check if it's an overlap
     const eaten = (d < frog.tongue.size / 2 + winningFly.size / 2);
     if (eaten) {
-        winPoint = winPoint + 1;
-        // Increase the Score
+        // winPoint = winPoint - 1;
+        state = "winning";
 
     }
 }
@@ -722,12 +737,12 @@ function gameOverScreen() {
     }
 }
 
-function winningScreen() {
-    if (winPoint === 1) {
-        state = "winning"
+//function winningScreen() {
+// if (winPoint === -1) {
+// state = "winning"
 
-    }
-}
+// }
+//}
 
 
 function mousePressed() {
