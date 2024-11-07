@@ -167,7 +167,7 @@ const frog = {
 
 // Has a position, size, and speed of horizontal movement and velocity position
 const buzzyFly = {
-    x: 0,
+    x: -10,
     y: 200, // Will be random
     size: 13,
     speed: 3,
@@ -421,7 +421,11 @@ function moveEvilFly(evilFly) {
     }
 
     // Handle the evil fly going off the canvas and reset it so it comes back
-    if (evilFly.x > width) {
+    if (evilFly.x > 1500 && score <= 15) {
+        resetEvilFly(evilFly);
+    }
+
+    else if (evilFly.x > width && score > 15) {
         resetEvilFly(evilFly);
     }
 }
@@ -448,7 +452,7 @@ function moveSpecialFly() {
     }
 
     // this helps rest the fly. the amount is wider than the canvas, to make the fly take longuer to reappear on screen
-    if (specialFly.x > 4000) {
+    if (specialFly.x > 2000) {
         resetSpecialFly();
     }
 }
@@ -629,7 +633,7 @@ function resetCommonFly(commonFly) {
 
 //resets the purple circle back to the left of the canvas when it goes past the right side of the canvas.
 function resetBuzzyFly() {
-    buzzyFly.x = 0;
+    buzzyFly.x = -50;
     //the fly will appear in a random y position
     buzzyFly.y = random(0, 300);
 }
@@ -643,7 +647,7 @@ function resetEvilFly(evilFly) {
 
 //resets the gold circle back to the left of the canvas when it goes past the right side of the canvas.
 function resetSpecialFly() {
-    specialFly.x = -10;
+    specialFly.x = -50;
     //the fly will appear in a random y position
     specialFly.y = random(0, 500);
 }
@@ -897,6 +901,7 @@ function mousePressed() {
         state = "title";
         score = 0;
         lives = 5;
+        resetLilyPad = resetLilyPad;
     }
 
     //if the player lose the game and are at the game Over screen they can click the mouse to bring them back to the title screen 
@@ -905,6 +910,7 @@ function mousePressed() {
         state = "title";
         score = 0;
         lives = 5;
+        resetLilyPad = resetLilyPad;
     }
     // if the state of the game is on the game screen then we can start playing the game (the clicking dosent do anything anymore)
     else if (state === "game") {
