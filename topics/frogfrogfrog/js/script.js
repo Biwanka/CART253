@@ -345,7 +345,7 @@ function drawLilyPad(lilyPad) {
 function moveLilyPad(lilyPad) {
     lilyPad.x = lilyPad.x + lilyPad.velocity.x;
     lilyPad.y = lilyPad.y + lilyPad.velocity.y;
-    // check if it reaches the bottom
+    // check if it reaches the bottom and then resets it 
     if (lilyPad.y > 900) {
         resetLilyPad(lilyPad);
     }
@@ -378,7 +378,6 @@ function moveCommonFly(commonFly) {
     // Handle the fly going off the canvas if it goes beyond the canvas it resets the flies
     if (commonFly.x > width) {
         resetCommonFly(commonFly);
-
     }
 
 }
@@ -388,9 +387,11 @@ function moveBuzzyFly() {
     buzzyFly.x += buzzyFly.velocity.x;
     buzzyFly.y += buzzyFly.velocity.y;
     let flyChange = random(1, 2);
+
     if (flyChange >= 0.1) {
         buzzyFly.velocity.y = random(-2, 2)
     }
+
     buzzyFly.x += buzzyFly.speed;
 
     //if the score is lower or equal to 5 the buzzy fly will not appear
@@ -398,10 +399,12 @@ function moveBuzzyFly() {
         buzzyFly.speed === 0;
         buzzyFly.x = -10;
     }
+
     //if the score is higher then 5 than the buzzy fly will appear. 
     else if (score > 5) {
         buzzyFly.x += buzzyFly.speed;
     }
+
     //this will reset the buzzy fly. it isnt exctly at the end of the canvas as the fly needs to appear less regularly
     //makes it that it takes longer for the fly to reset
     if (buzzyFly.x > 3000) {
@@ -443,13 +446,13 @@ function moveWinningFly() {
     if (score <= 5) {
         winningFly.speed === 0;
         winningFly.x = -10;
-
     }
 
     //if the score is 30 or higher the fly will appear
     else if (score > 5) {
         winningFly.x += winningFly.speed;
     }
+
     // Handle the special fly going off the canvas
     if (winningFly.x > width) {
         resetWinningFly();
@@ -472,13 +475,13 @@ function moveSpecialFly() {
     if (score < 15) {
         specialFly.speed = 0;
         specialFly.x = -10;
-
     }
+
     // if the score is equal or higher than 15 the fly will appear
     else if (score >= 15) {
         specialFly.x += specialFly.speed = 2;
-
     }
+
     // this helps rest the fly. the amount is wider than the canvas, to make the fly take longuer to reappear on screen
     if (specialFly.x > 4000) {
         resetSpecialFly();
@@ -534,7 +537,6 @@ function drawEvilFly(evilFly) {
     fill(evilFly.fill);
     ellipse(evilFly.x, evilFly.y, evilFly.size);
     pop();
-
 }
 
 // Draws the winning fly. it should look like a small deep pink circle
@@ -612,40 +614,76 @@ function drawWinPoint() {
     pop();
 }
 
-
-function resetCommonFly(commonFly) {
-    commonFly.x = -10;
-    commonFly.y = random(0, 300)
-
-}
-
-function resetEvilFly(evilFly) {
-    evilFly.x = -20;
-    evilFly.y = random(0, 400);
-}
-
-function resetBuzzyFly() {
-    buzzyFly.x = 0;
-    buzzyFly.y = random(0, 300);
-}
-
+/**
+ * this will contain all of the functions that will resets the flies
+ * will also reset the lilypads 
+ * 
+ * -commonFly
+ * -buzzyFly
+ * -evilFly
+ * -specialFly
+ * -winningFly
+ * -lilyPad
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+// resets the lilyPads back to the top of the screen when it goes past the bottom of the canvas
 function resetLilyPad(lilyPad) {
+    //the lilypads will reappear at a random x position
     lilyPad.x = random(10, 400);
     lilyPad.y = -10;
 }
 
+//resets the black circles back to the left of the canvas when it goes past the right side of the canvas.
+function resetCommonFly(commonFly) {
+    commonFly.x = -10;
+    //the fly will appear in a random y position
+    commonFly.y = random(0, 300);
+}
+
+//resets the red circles back to the left of the canvas when it goes past the right side of the canvas.
+function resetEvilFly(evilFly) {
+    evilFly.x = -20;
+    //the fly will appear in a random y position
+    evilFly.y = random(0, 400);
+}
+
+//resets the purple circle back to the left of the canvas when it goes past the right side of the canvas.
+function resetBuzzyFly() {
+    buzzyFly.x = 0;
+    //the fly will appear in a random y position
+    buzzyFly.y = random(0, 300);
+}
+
+//resets the pink circle back to the left of the canvas when it goes past the right side of the canvas.
 function resetWinningFly() {
     winningFly.x = -10;
+    //the fly will appear in a random y position
     winningFly.y = random(0, 400);
 }
 
+//resets the gold circle back to the left of the canvas when it goes past the right side of the canvas.
 function resetSpecialFly() {
     specialFly.x = -10;
+    //the fly will appear in a random y position
     specialFly.y = random(0, 500);
 }
 
 /**
  * Moves the frog to the mouse position on x
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  */
 function moveFrog() {
     frog.body.x = mouseX;
