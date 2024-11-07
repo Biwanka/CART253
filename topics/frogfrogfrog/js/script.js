@@ -216,7 +216,7 @@ let state = "title"; //can be "title" or "game" or "WIN" "GameOver"
 function preload() {
     lilyPads.image = loadImage("assets/images/block_lilyPad_big.png");
     backgroundScreen.image = loadImage("assets/images/Game_Background.jpg");
-    titleScreen.image = loadImage("assets/images/Title_Screen.jpg");
+    titleScreen.image = loadImage("assets/images/New_Title.jpg");
     gameOverBackground.image = loadImage("assets/images/GameOver_Screen.jpg");
     winningBackground.image = loadImage("assets/images/Winning_Screen.jpg");
     heart.image = loadImage("assets/images/Heart.png");
@@ -927,13 +927,4 @@ function mousePressed() {
 }
 
 
-
-
-///I want to make a fly woble not be straight
-////I want the frog tongue to flicker when he eats the red fly because they are dangerous, show the frog is hurt,  (maybe see if the fill can change)
-////if eaten the evil fly more than 3 time its a game over
-////I want a fly to be super zoomy like crazy. I want to act differently than the rest
-//, if it is caught the player has to click a spefic key 10 time in a certain amount of time to win the game
-//I want multiple of the same fly to appear more than once at the same time random.
-//frog tobgue move angle
 

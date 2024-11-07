@@ -13,3 +13,11 @@
 **I want multiple of the same fly to appear more than once at the same time random frog tongue move angle**
 
 
+what was added and reason.
+
+I found my inspiration to the appraoch to the arcade games in webkinz. I thought of making the tongue move in a demi circle bakc and forth but ended up doing other things. 
+
+I added a scoring system and a life system.
+for the lives it was suppose to be only 3 lives and when we end up a 0 we get a game over. However when i had an error somehwere my lives ended up going to -1 and I found it interesting as it is such a common knowledge that at 0 it would be a game Over . Therefore i ended up making my lives go down to -1. wanting to kind of take the players by suprise. 
+
+i added a variety of different flies to work around having a variety of different movement and working with the code. 
