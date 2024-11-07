@@ -1,5 +1,5 @@
 # Starting points
-
+ some of my ideas 
 **Frog eating flies but it gets harder and harder to catch them**
 
 **I want to make a fly woble not be straight**
