@@ -1,5 +1,5 @@
 /**
- * Frogfrogfrog
+ * Yummy Buffet!
  * Bianca Gauthier
  * 
  * A game where a frog catches flies and is trying to catch the rarest one to be fully full and win the game. he eats a 
@@ -10,6 +10,7 @@
  * - Click to launch the tongue
  * - Catch flies
  * - Avoid the dangerous evil flies and cath the good flies
+ * -try to eat the rarest pink fly (winningFly) to win the game
  * 
  * Made with p5
  * https://p5js.org/
@@ -17,14 +18,9 @@
  * 
  * Plan:
  * -everytime you catch a fly a number goes up by one
+ * -if teh frog touches the evil fly he loses a life, at -1 becomes gameOver
  * 
  * 
- * Show the score somewhere on the screen as a number (top corner)
- * -(other idea: you could lose points fors escaped flies.if you miss a fly you loose points )
- * 
- * (other idea: movement, missing,.....)
- * 
- * pseudocode:
  * 
  * 
  * 
