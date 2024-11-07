@@ -22,7 +22,9 @@
  * 
  * 
  * 
- * 
+ * ps: some of my comments are seperated  with alot if * to help group thing and seperate them in group to 
+ * make it easier for me to read or edit without by accident merging the workd and functions
+ * to help with my dyslexia and adhd
  * 
  */
 
