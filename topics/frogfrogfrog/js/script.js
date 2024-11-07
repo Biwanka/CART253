@@ -256,6 +256,8 @@ function draw() {
 //the title screen, this is where its image is called to be displayed
 function title() {
     background(titleScreen.image);
+    score = 0;
+    lives = 5;
 }
 
 // this is what is present in the game state
@@ -406,6 +408,7 @@ function moveBuzzyFly() {
     if (buzzyFly.x > 3000) {
         resetBuzzyFly();
     }
+
 }
 
 // this will make the Evil flies which are the red cirlces move. The fly will be moving in a straight horizontal line
@@ -893,6 +896,7 @@ function gameOverScreen() {
 function mousePressed() {
     if (state === "title") {
         state = "game";
+
     }
 
     // if the player won the game and are at the winning screen they can click the mouse to bring them back to the title screen.
@@ -901,7 +905,7 @@ function mousePressed() {
         state = "title";
         score = 0;
         lives = 5;
-        resetLilyPad = resetLilyPad;
+
     }
 
     //if the player lose the game and are at the game Over screen they can click the mouse to bring them back to the title screen 
@@ -910,7 +914,7 @@ function mousePressed() {
         state = "title";
         score = 0;
         lives = 5;
-        resetLilyPad = resetLilyPad;
+
     }
     // if the state of the game is on the game screen then we can start playing the game (the clicking dosent do anything anymore)
     else if (state === "game") {
