@@ -247,7 +247,7 @@ function draw() {
         gameOver();
     }
 
-    else if (state === "Winning") {
+    else if (state === "winning") {
         winning();
     }
 
@@ -674,9 +674,14 @@ function resetSpecialFly() {
 }
 
 /**
- * Moves the frog to the mouse position on x
  * 
+ * this contains the aspects of the frog
  * 
+ * it will draw teh frog body, tongue seperatly 
+ * 
+ * it will also move the frog body 
+ * 
+ * it will also move the tongue 
  * 
  * 
  * 
@@ -685,6 +690,8 @@ function resetSpecialFly() {
  * 
  * 
  */
+
+//Moves the frog to the mouse position on x
 function moveFrog() {
     frog.body.x = mouseX;
 }
@@ -695,10 +702,12 @@ function moveFrog() {
 function moveTongue() {
     // Tongue matches the frog's x
     frog.tongue.x = frog.body.x;
+
     // If the tongue is idle, it doesn't do anything
     if (frog.tongue.state === "idle") {
         // Do nothing
     }
+
     // If the tongue is outbound, it moves up
     else if (frog.tongue.state === "outbound") {
         frog.tongue.y += -frog.tongue.speed;
@@ -707,6 +716,7 @@ function moveTongue() {
             frog.tongue.state = "inbound";
         }
     }
+
     // If the tongue is inbound, it moves down
     else if (frog.tongue.state === "inbound") {
         frog.tongue.y += frog.tongue.speed;
@@ -745,92 +755,121 @@ function drawFrog() {
     ellipse(frog.body.x, frog.body.y, frog.body.size);
     pop();
 }
+
+/**
+ * 
+ * this contains all of the overlaps
+ * it checks to see if the tongue of the frog comes in contact with a fly or the lilypad
+ * 
+ * it also adds the aspects of if the tongue does come in contact what happens
+ * 
+ * elements that will check for overlap:
+ * 
+ * -lilyPad
+ * -commonFly
+ * -buzzyFly
+ * -evilFly
+ * -specialFly
+ * -winningFly
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
+//checks if the frog tongue come in contact with the lilypad, if it does the tongue will be blocked and go back down
 function checkTongueLilyPadOverlap(lilyPad) {
-    // Get distance from tongue to fly
+    // Get distance from tongue to the lilypad
     const d = dist(frog.tongue.x, frog.tongue.y, lilyPad.x, lilyPad.y);
     // Check if it's an overlap
     const block = (d < frog.tongue.size / 2 + lilyPad.size / 2);
+    //if the tongue does come in contact then it is blocked and goes back down
     if (block) {
-
         frog.tongue.state = "inbound";
     }
 }
+
+//checks if the frog tongue comes in contact with the common fly(black circles), if it does then the fly is eaten and points go up
 function checkTongueCommonFlyOverlap(commonFly) {
     // Get distance from tongue to fly
     const d = dist(frog.tongue.x, frog.tongue.y, commonFly.x, commonFly.y);
     // Check if it's an overlap
     const eaten = (d < frog.tongue.size / 2 + commonFly.size / 2);
+
     if (eaten) {
-        // Decrease  the Score by 3
-        score = score + 1; //score += 1; score++
+        // Increase  the Score by 1
+        score = score + 1;
         // Reset the fly
         resetCommonFly(commonFly);
         // Bring back the tongue
         frog.tongue.state = "inbound";
-
-
     }
 }
+
+//check if the frog tongue comes in contact with evil flies (red circle), if it does the tongue, score and lives are effected
 function checkTongueEvilFlyOverlap(evilFly) {
     // Get distance from tongue to fly
     const d = dist(frog.tongue.x, frog.tongue.y, evilFly.x, evilFly.y);
     // Check if it's an overlap
     const eaten = (d < frog.tongue.size / 2 + evilFly.size / 2);
+
     if (eaten) {
-        // Decrease  the Score by 3
-        score = score - 3; //score += 1; score++
+        // Decrease the Score by 3
+        score = score - 3;
+        // Decrease the lives by 1
         lives = lives - 1;
+        //the tongue will become white to depict the frog being injured
         frog.tongue.fill = "white";
         // Reset the fly
         resetEvilFly(evilFly);
         // Bring back the tongue
         frog.tongue.state = "inbound";
-        //wanting ti make the tongue flicker to represent it being injured
-
     }
 }
-/**
- * Handles the tongue overlapping the fly
- */
+
+// checks if the frog tongue come in contact with the buzzy fly (purple circle), if it does the score will be effected
 function checkTongueBuzzyFlyOverlap() {
     // Get distance from tongue to fly
     const d = dist(frog.tongue.x, frog.tongue.y, buzzyFly.x, buzzyFly.y);
     // Check if it's an overlap
     const eaten = (d < frog.tongue.size / 2 + buzzyFly.size / 2);
+
     if (eaten) {
-        // Increase the Score
-        score = score + 3; //score += 1; score++
+        // Increase the Score by 3
+        score = score + 3;
         // Reset the fly
         resetBuzzyFly();
         // Bring back the tongue
         frog.tongue.state = "inbound";
     }
 }
-/**
- * Handles the tongue overlapping the fly
- */
+
+// check if the frog tongue come in contact with the winning fly, if it dies the state of the game will be effected
 function checkTongueWinningFlyOverlap() {
     // Get distance from tongue to fly
     const d = dist(frog.tongue.x, frog.tongue.y, winningFly.x, winningFly.y);
     // Check if it's an overlap
     const eaten = (d < frog.tongue.size / 2 + winningFly.size / 2);
+
     if (eaten) {
         // winPoint = winPoint - 1;
+        //if it overlaps the game finishes and the player wins. therefore the You win screen will appear.
         state = "winning";
-
     }
 }
-/**
- * Handles the tongue overlapping the fly
- */
+
+// checks if the frog tongue comes in contact with the special fly (yellow circle) if it does the score will be effected
 function checkTongueSpecialFlyOverlap() {
     // Get distance from tongue to fly
     const d = dist(frog.tongue.x, frog.tongue.y, specialFly.x, specialFly.y);
     // Check if it's an overlap
     const eaten = (d < frog.tongue.size / 2 + specialFly.size / 2);
+
     if (eaten) {
-        // Increase the Score
-        score = score + 5; //score += 1; score++
+        // Increase the Score by 5
+        score = score + 5;
         // Reset the fly
         resetSpecialFly();
         // Bring back the tongue
@@ -839,32 +878,66 @@ function checkTongueSpecialFlyOverlap() {
 }
 
 /**
- * Launch the tongue on click (if it's not launched yet)
+ * 
+ * 
+ * this is how the state of teh screen. what is displayed will chnage
+ * 
+ * if we are at the title,
+ * if we are at the game 
+ * if we are at the game over screen
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  */
+
+// if the lives end up at -2 the screen will show a game over screen. to show players ahve lost the game
 function gameOverScreen() {
     if (lives === -2) {
         state = "gameOver"
-
     }
 }
 
 //function winningScreen() {
-// if (winPoint === -1) {
-// state = "winning"
-
-// }
+//if (winPoint === -1) {
+//state = "winning"
+//}
 //}
 
+//to get players from the title screen to the game play
 
+//starts at the title if we click the mouse when we are at the title screen, this will then bring the player to the game screen 
 function mousePressed() {
     if (state === "title") {
         state = "game";
     }
+
+    // if the player won the game and are at the winning screen they can click the mouse to bring them back to the title screen.
+    //if they want to replay the game
+    else if (state === "winning") {
+        state = "title";
+        score = 0;
+        lives = 5;
+    }
+
+    //if the player lose the game and are at the game Over screen they can click the mouse to bring them back to the title screen 
+    //if they want to replay the game
+    else if (state === "gameOver") {
+        state = "title";
+        score = 0;
+        lives = 5;
+    }
+    // if the state of the game is on the game screen then we can start playing the game (the clicking dosent do anything anymore)
     else if (state === "game") {
         if (frog.tongue.state === "idle") {
             frog.tongue.state = "outbound";
         }
     }
+
+
 }
 
 
