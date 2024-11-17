@@ -92,6 +92,7 @@ function draw() {
 
     drawPaddle(paddle);
     drawBall(ball)
+    drawBricks();
 
 }
 
@@ -128,9 +129,6 @@ function handleBounce(ball, paddle) {
     }
 }
 
-
-
-
 function drawPaddle(paddle) {
     push();
     rectMode(CENTER);
@@ -148,6 +146,29 @@ function drawBall(ball) {
     pop();
 }
 
+function drawBricks() {
+    let brick = {
+        x: 50,
+        y: 100,
+        width: 40,
+        height: 25,
+        fill: "red"
+    }
+    let x = 50
+
+
+    while (x <= width) {
+        fill(brick.fill);
+        noStroke();
+        rect(brick.x, brick.y, brick.width, brick.height);
+
+        x = x + 20;
+        brick = brick + 1;
+
+
+
+    }
+}
 
 /**
  * Draws the paddle on the canvas
