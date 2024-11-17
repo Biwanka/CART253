@@ -55,8 +55,9 @@ const ball = {
     x: 500,
     y: 500,
     fill: "white",
-    width: 15,
-    height: 15,
+    size: 20,
+    // width: 15,
+    // height: 15,
     velocity: {
         x: 0,
         y: 2
@@ -115,27 +116,19 @@ function moveBall(ball) {
 }
 
 function handleBounce(ball, paddle) {
-    const overlap = centredRectanglesOverlap(ball, paddle);
+    //const overlap = centredRectanglesOverlap(ball, paddle);
+    const d = dist(ball.x, ball.y, paddle.x, paddle.y);
+    // Check if it's an overlap
+    const overlap = (d < ball.size / 2 + paddle.width / 2 + paddle.height / 2);
     if (overlap) {
 
-        ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
+        ball.y = paddle.y - paddle.height / 2 - ball.size / 2;
         ball.velocity.y *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
 
     }
 }
 
-/**
-* Returns true if a and b overlap, and false otherwise
-* Assumes a and b have properties x, y, width and height to describe
-* their rectangles, and that a and b are displayed centred on their
-* x,y coordinates.
-*/
-function centredRectanglesOverlap(a, b) {
-    return (a.x + a.width / 2 > b.x - b.width / 2 &&
-        a.x - a.width / 2 < b.x + b.width / 2 &&
-        a.y + a.height / 2 > b.y - b.height / 2 &&
-        a.y - a.height / 2 < b.y + b.height / 2);
-}
+
 
 
 function drawPaddle(paddle) {
@@ -144,6 +137,14 @@ function drawPaddle(paddle) {
     noStroke();
     fill(paddle.fill);
     rect(paddle.x, paddle.y, paddle.width, paddle.height);
+    pop();
+}
+
+function drawBall(ball) {
+    push();
+    noStroke();
+    fill(ball.fill);
+    ellipse(ball.x, ball.y, ball.size);
     pop();
 }
 
@@ -159,4 +160,17 @@ function drawElement(element) {
     rect(element.x, element.y, element.width, element.height);
     pop();
 }
+*/
+/**
+* Returns true if a and b overlap, and false otherwise
+* Assumes a and b have properties x, y, width and height to describe
+* their rectangles, and that a and b are displayed centred on their
+* x,y coordinates.
+function centredRectanglesOverlap(a, b) {
+    return (a.x + a.size / 2 > b.x - b.width / 2 &&
+        a.x - a.size / 2 < b.x + b.width / 2 &&
+        a.y + a.size / 2 > b.y - b.height / 2 &&
+        a.y - a.size / 2 < b.y + b.height / 2);
+}
+
 */
