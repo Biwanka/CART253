@@ -77,7 +77,7 @@ function handleBounce(ball, paddle) {
     const overlap = centredRectanglesOverlap(ball, paddle);
     if (overlap) {
 
-        ball.y = paddle.y - padlle.height / 2 - ball.height / 2;
+        ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
         ball.velocity.y *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
 
     }
@@ -113,8 +113,3 @@ function drawElement(element) {
 
 
 
-///
-///I want to make a fly woble not be straight 
-////I want the frog tongue to flicker when he eats the red fly because they are dangerous, show the frog is hurt,
-////if eaten the evil fly more than 3 time its a game over 
-////I want a fly to be super zoomy, if it is caught the player 
