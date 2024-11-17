@@ -64,6 +64,19 @@ const ball = {
     }
 };
 
+const square = {
+    x: 600,
+    y: 300,
+    fill: "white",
+    width: 15,
+    height: 15,
+    velocity: {
+        x: 0,
+        y: 2
+    }
+
+};
+
 // Our paddle
 const paddle = {
     x: 500,
@@ -86,12 +99,15 @@ function draw() {
     background("grey");
 
     movePaddle(paddle);
-    moveBall(ball);
+    // moveBall(ball);
+    moveSquare(square);
 
-    handleBounce(ball, paddle);
+    // handleBounce(ball, paddle);
+    handleSquareBounce(square, paddle);
 
     drawPaddle(paddle);
-    drawBall(ball)
+    // drawBall(ball);
+    drawSquare(square);
     drawBricks();
 
 }
@@ -106,7 +122,7 @@ function movePaddle(paddle) {
 
 /**
  * Moves the ball
- */
+
 function moveBall(ball) {
 
     ball.velocity.y = ball.velocity.y + gravity;
@@ -115,7 +131,15 @@ function moveBall(ball) {
     ball.y = ball.y + ball.velocity.y;
 
 }
+ */
+function moveSquare(square) {
+    square.velocity.y = square.velocity.y + gravity;
 
+    square.x = square.x + square.velocity.x;
+    square.y = square.y + square.velocity.y;
+
+}
+/** 
 function handleBounce(ball, paddle) {
     //const overlap = centredRectanglesOverlap(ball, paddle);
     const d = dist(ball.x, ball.y, paddle.x, paddle.y);
@@ -128,6 +152,18 @@ function handleBounce(ball, paddle) {
 
     }
 }
+*/
+function handleSquareBounce(square, paddle) {
+    const overlap = centredRectanglesOverlap(square, paddle);
+
+    if (overlap) {
+
+        square.y = paddle.y - paddle.height / 2 - square.height / 2;
+        square.velocity.y *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
+
+    }
+}
+
 
 function drawPaddle(paddle) {
     push();
@@ -137,12 +173,21 @@ function drawPaddle(paddle) {
     rect(paddle.x, paddle.y, paddle.width, paddle.height);
     pop();
 }
-
+/**
 function drawBall(ball) {
     push();
     noStroke();
     fill(ball.fill);
     ellipse(ball.x, ball.y, ball.size);
+    pop();
+}
+*/
+function drawSquare(square) {
+    push();
+    rectMode(CENTER);
+    noStroke();
+    fill(square.fill);
+    rect(square.x, square.y, square.width, square.height);
     pop();
 }
 
@@ -153,8 +198,9 @@ function drawBricks() {
         width: 40,
         height: 25,
         fill: "red"
-    }
-    let x = 50
+    };
+    let x = 50;
+    let y = 100;
 
 
     while (x <= width) {
@@ -162,12 +208,25 @@ function drawBricks() {
         noStroke();
         rect(brick.x, brick.y, brick.width, brick.height);
 
-        x = x + 20;
-        brick = brick + 1;
+        x = x + 40;
+        y = y + 25;
+
 
 
 
     }
+}
+
+/**
+* Returns true if a and b overlap, and false otherwise
+* Assumes a and b have properties x, y, width and height to describe
+* their rectangles, and that a and b are displayed centred on their
+* x,y coordinates.*/
+function centredRectanglesOverlap(a, b) {
+    return (a.x + a.height / 2 > b.x - b.width / 2 &&
+        a.x - a.height / 2 < b.x + b.width / 2 &&
+        a.y + a.height / 2 > b.y - b.height / 2 &&
+        a.y - a.height / 2 < b.y + b.height / 2);
 }
 
 /**
@@ -182,16 +241,4 @@ function drawElement(element) {
     pop();
 }
 */
-/**
-* Returns true if a and b overlap, and false otherwise
-* Assumes a and b have properties x, y, width and height to describe
-* their rectangles, and that a and b are displayed centred on their
-* x,y coordinates.
-function centredRectanglesOverlap(a, b) {
-    return (a.x + a.size / 2 > b.x - b.width / 2 &&
-        a.x - a.size / 2 < b.x + b.width / 2 &&
-        a.y + a.size / 2 > b.y - b.height / 2 &&
-        a.y - a.size / 2 < b.y + b.height / 2);
-}
 
-*/
