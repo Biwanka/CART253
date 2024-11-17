@@ -86,6 +86,23 @@ const paddle = {
     height: 10
 };
 
+let bricks = [
+    {
+        x: 50,
+        y: 100,
+        width: 40,
+        height: 25,
+        fill: "red"
+    },
+    {
+        x: 90,
+        y: 125,
+        width: 40,
+        height: 25,
+        fill: "red"
+    },
+];
+
 const gravity = 0.1;
 
 //
@@ -108,8 +125,12 @@ function draw() {
     drawPaddle(paddle);
     // drawBall(ball);
     drawSquare(square);
-    drawBricks();
 
+
+
+    for (let brick of bricks) {
+        drawBrick(brick);
+    };
 }
 
 /**
@@ -191,27 +212,18 @@ function drawSquare(square) {
     pop();
 }
 
-function drawBricks() {
-    let brick = {
-        x: 50,
-        y: 100,
-        width: 40,
-        height: 25,
-        fill: "red"
-    };
-    let x = 50;
-    let y = 100;
+function drawBrick(brick) {
 
+    brick.x = 150;
+    brick.y = 100;
 
-    while (x <= width) {
+    while (brick.x <= 850 && brick.y <= 400) {
+
         fill(brick.fill);
-        noStroke();
+        noStroke(0);
         rect(brick.x, brick.y, brick.width, brick.height);
 
-        x = x + 40;
-        y = y + 25;
-
-
+        brick.x = brick.x + 60;
 
 
     }
