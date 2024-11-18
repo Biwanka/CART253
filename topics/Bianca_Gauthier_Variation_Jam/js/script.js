@@ -86,22 +86,37 @@ const paddle = {
     height: 10
 };
 
-let bricks = [
-    {
+const bricks = {
+    lineOne: {
         x: 50,
         y: 100,
-        width: 40,
+        width: 50,
         height: 25,
         fill: "red"
     },
-    {
-        x: 90,
-        y: 125,
-        width: 40,
+    lineTwo: {
+        x: undefined,
+        y: undefined,
+        width: 50,
         height: 25,
         fill: "red"
     },
-];
+    lineTree: {
+        x: undefined,
+        y: undefined,
+        width: 50,
+        height: 25,
+        fill: "red"
+    },
+    lineFour: {
+        x: undefined,
+        y: undefined,
+        width: 50,
+        height: 25,
+        fill: "red"
+    },
+
+};
 
 const gravity = 0.1;
 
@@ -126,11 +141,9 @@ function draw() {
     // drawBall(ball);
     drawSquare(square);
 
+    drawBricks(bricks);
 
 
-    for (let brick of bricks) {
-        drawBrick(brick);
-    };
 }
 
 /**
@@ -212,20 +225,19 @@ function drawSquare(square) {
     pop();
 }
 
-function drawBrick(brick) {
+function drawBricks(bricks) {
 
-    brick.x = 150;
-    brick.y = 100;
+    bricks.lineOne.x = 150;
+    bricks.lineTwo.x = 120;
 
-    while (brick.x <= 850 && brick.y <= 400) {
 
-        fill(brick.fill);
+    while (bricks.lineOne.x <= 850) {
+
+        fill(bricks.lineOne.fill);
         noStroke(0);
-        rect(brick.x, brick.y, brick.width, brick.height);
+        rect(bricks.lineOne.x, bricks.lineOne.y, bricks.lineOne.width, bricks.lineOne.height);
 
-        brick.x = brick.x + 60;
-
-
+        bricks.lineOne.x = bricks.lineOne.x + 60;
     }
 }
 
