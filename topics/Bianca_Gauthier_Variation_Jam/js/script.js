@@ -87,42 +87,39 @@ const paddle = {
 };
 
 const bricks = {
+    width: 60,
+    height: 35,
+    fill: "red",
+
     lineOne: {
         x: undefined,
-        y: 100,
-        width: 50,
-        height: 25,
-        fill: "red"
-    },
-    lineTwo: {
-        x: undefined,
-        y: 126,
-        width: 50,
-        height: 25,
-        fill: "red"
-    },
-    lineThree: {
-        x: undefined,
-        y: 153,
-        width: 50,
-        height: 25,
-        fill: "red"
-    },
-    lineFour: {
-        x: undefined,
-        y: 179,
-        width: 50,
-        height: 25,
-        fill: "red"
-    },
-    lineFive: {
-        x: undefined,
-        y: 206,
-        width: 50,
-        height: 25,
-        fill: "red"
+        y: 100
     },
 
+    lineTwo: {
+        x: undefined,
+        y: 140,
+    },
+
+    lineThree: {
+        x: undefined,
+        y: 180,
+    },
+
+    lineFour: {
+        x: undefined,
+        y: 220,
+    },
+
+    lineFive: {
+        x: undefined,
+        y: 260,
+    },
+
+    lineSix: {
+        x: undefined,
+        y: 300,
+    },
 };
 
 const gravity = 0.1;
@@ -234,55 +231,57 @@ function drawSquare(square) {
 
 function drawBricks(bricks) {
 
+    fill(bricks.fill);
+    noStroke(0);
+
+
     bricks.lineOne.x = 150;
     bricks.lineTwo.x = 120;
     bricks.lineThree.x = 150;
     bricks.lineFour.x = 120;
     bricks.lineFive.x = 150;
+    bricks.lineSix.x = 120;
 
     while (bricks.lineOne.x <= 850) {
 
-        fill(bricks.lineOne.fill);
-        noStroke(0);
-        rect(bricks.lineOne.x, bricks.lineOne.y, bricks.lineOne.width, bricks.lineOne.height);
+        rect(bricks.lineOne.x, bricks.lineOne.y, bricks.width, bricks.height);
 
-        bricks.lineOne.x = bricks.lineOne.x + 60;
+        bricks.lineOne.x = bricks.lineOne.x + 65;
     };
 
     while (bricks.lineTwo.x <= 850) {
 
-        fill(bricks.lineTwo.fill);
-        noStroke(0);
-        rect(bricks.lineTwo.x, bricks.lineTwo.y, bricks.lineTwo.width, bricks.lineTwo.height);
+        rect(bricks.lineTwo.x, bricks.lineTwo.y, bricks.width, bricks.height);
 
-        bricks.lineTwo.x = bricks.lineTwo.x + 60;
+        bricks.lineTwo.x = bricks.lineTwo.x + 65;
     };
 
     while (bricks.lineThree.x <= 850) {
 
-        fill(bricks.lineThree.fill);
-        noStroke(0);
-        rect(bricks.lineThree.x, bricks.lineThree.y, bricks.lineThree.width, bricks.lineThree.height);
+        rect(bricks.lineThree.x, bricks.lineThree.y, bricks.width, bricks.height);
 
-        bricks.lineThree.x = bricks.lineThree.x + 60;
+        bricks.lineThree.x = bricks.lineThree.x + 65;
     };
 
     while (bricks.lineFour.x <= 850) {
 
-        fill(bricks.lineFour.fill);
-        noStroke(0);
-        rect(bricks.lineFour.x, bricks.lineFour.y, bricks.lineFour.width, bricks.lineFour.height);
+        rect(bricks.lineFour.x, bricks.lineFour.y, bricks.width, bricks.height);
 
-        bricks.lineFour.x = bricks.lineFour.x + 60;
+        bricks.lineFour.x = bricks.lineFour.x + 65;
     };
 
     while (bricks.lineFive.x <= 850) {
 
-        fill(bricks.lineFive.fill);
-        noStroke(0);
-        rect(bricks.lineFive.x, bricks.lineFive.y, bricks.lineFive.width, bricks.lineFive.height);
+        rect(bricks.lineFive.x, bricks.lineFive.y, bricks.width, bricks.height);
 
-        bricks.lineFive.x = bricks.lineFive.x + 60;
+        bricks.lineFive.x = bricks.lineFive.x + 65;
+    };
+
+    while (bricks.lineSix.x <= 850) {
+
+        rect(bricks.lineSix.x, bricks.lineSix.y, bricks.width, bricks.height);
+
+        bricks.lineSix.x = bricks.lineSix.x + 65;
     };
 
 }
