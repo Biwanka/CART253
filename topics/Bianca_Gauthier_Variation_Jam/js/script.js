@@ -88,7 +88,7 @@ const paddle = {
 
 const bricks = {
     lineOne: {
-        x: 50,
+        x: undefined,
         y: 100,
         width: 50,
         height: 25,
@@ -96,21 +96,28 @@ const bricks = {
     },
     lineTwo: {
         x: undefined,
-        y: undefined,
+        y: 126,
         width: 50,
         height: 25,
         fill: "red"
     },
-    lineTree: {
+    lineThree: {
         x: undefined,
-        y: undefined,
+        y: 153,
         width: 50,
         height: 25,
         fill: "red"
     },
     lineFour: {
         x: undefined,
-        y: undefined,
+        y: 179,
+        width: 50,
+        height: 25,
+        fill: "red"
+    },
+    lineFive: {
+        x: undefined,
+        y: 206,
         width: 50,
         height: 25,
         fill: "red"
@@ -229,7 +236,9 @@ function drawBricks(bricks) {
 
     bricks.lineOne.x = 150;
     bricks.lineTwo.x = 120;
-
+    bricks.lineThree.x = 150;
+    bricks.lineFour.x = 120;
+    bricks.lineFive.x = 150;
 
     while (bricks.lineOne.x <= 850) {
 
@@ -238,7 +247,44 @@ function drawBricks(bricks) {
         rect(bricks.lineOne.x, bricks.lineOne.y, bricks.lineOne.width, bricks.lineOne.height);
 
         bricks.lineOne.x = bricks.lineOne.x + 60;
-    }
+    };
+
+    while (bricks.lineTwo.x <= 850) {
+
+        fill(bricks.lineTwo.fill);
+        noStroke(0);
+        rect(bricks.lineTwo.x, bricks.lineTwo.y, bricks.lineTwo.width, bricks.lineTwo.height);
+
+        bricks.lineTwo.x = bricks.lineTwo.x + 60;
+    };
+
+    while (bricks.lineThree.x <= 850) {
+
+        fill(bricks.lineThree.fill);
+        noStroke(0);
+        rect(bricks.lineThree.x, bricks.lineThree.y, bricks.lineThree.width, bricks.lineThree.height);
+
+        bricks.lineThree.x = bricks.lineThree.x + 60;
+    };
+
+    while (bricks.lineFour.x <= 850) {
+
+        fill(bricks.lineFour.fill);
+        noStroke(0);
+        rect(bricks.lineFour.x, bricks.lineFour.y, bricks.lineFour.width, bricks.lineFour.height);
+
+        bricks.lineFour.x = bricks.lineFour.x + 60;
+    };
+
+    while (bricks.lineFive.x <= 850) {
+
+        fill(bricks.lineFive.fill);
+        noStroke(0);
+        rect(bricks.lineFive.x, bricks.lineFive.y, bricks.lineFive.width, bricks.lineFive.height);
+
+        bricks.lineFive.x = bricks.lineFive.x + 60;
+    };
+
 }
 
 /**
