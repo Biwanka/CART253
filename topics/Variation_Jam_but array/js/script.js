@@ -49,7 +49,57 @@
  */
 
 "use strict";
+let bricks = [
+    {
+        x: 150,
+        y: 100,
+        fill: "red",
+        width: 60,
+        height: 35
+    },
 
+    {
+        x: 120,
+        y: 140,
+        fill: "red",
+        width: 60,
+        height: 35
+    },
+
+    {
+        x: 150,
+        y: 180,
+        fill: "red",
+        width: 60,
+        height: 35
+    },
+
+    {
+        x: 120,
+        y: 220,
+        fill: "red",
+        width: 60,
+        height: 35
+    },
+
+    {
+        x: 150,
+        y: 260,
+        fill: "red",
+        width: 60,
+        height: 35,
+    },
+
+    {
+        x: 120,
+        y: 300,
+        fill: "red",
+        width: 60,
+        height: 35,
+    },
+
+
+];
 // Our ball
 const ball = {
     x: 500,
@@ -65,7 +115,7 @@ const ball = {
 };
 
 const square = {
-    x: 150,
+    x: 900,
     y: 330,
     fill: "white",
     width: 15,
@@ -86,45 +136,7 @@ const paddle = {
     height: 10
 };
 
-const bricks = {
-    x: undefined,
-    y: undefined,
-    width: 60,
-    height: 35,
-    fill: "red",
 
-    lineOne: {
-        x: undefined,
-        y: 100
-    },
-
-    lineTwo: {
-        x: undefined,
-        y: 140,
-    },
-
-    lineThree: {
-        x: undefined,
-        y: 180,
-    },
-
-    lineFour: {
-        x: undefined,
-        y: 220,
-    },
-
-    lineFive: {
-        x: undefined,
-        y: 260,
-    },
-
-    lineSix: {
-        x: 150,
-        y: 300,
-        width: 60,
-        height: 35
-    },
-};
 
 const gravity = 0.1;
 
@@ -144,15 +156,17 @@ function draw() {
 
     // handleBounce(ball, paddle);
     handleSquareBounce(square, paddle);
-    handleBricksDestroy(bricks, square);
+
 
     drawPaddle(paddle);
     // drawBall(ball);
     drawSquare(square);
 
-    drawBricks(bricks);
 
-
+    for (let brick of bricks) {
+        drawBrick(brick);
+        handleBrickDestroy(brick, square);
+    };
 }
 
 /**
@@ -224,61 +238,20 @@ function drawSquare(square) {
     pop();
 }
 
-function drawBricks(bricks) {
+function drawBrick(brick) {
 
-    fill(bricks.fill);
+    rectMode(CENTER);
+    fill(brick.fill);
     noStroke(0);
+    rect(brick.x, brick.y, brick.width, brick.height);
+
+    while (brick.x <= 850) {
+
+        rect(brick.x, brick.y, brick.width, brick.height);
 
 
-    bricks.lineOne.x = 150;
-    bricks.lineTwo.x = 120;
-    bricks.lineThree.x = 150;
-    bricks.lineFour.x = 120;
-    bricks.lineFive.x = 150;
-    bricks.lineSix.x = 120;
-
-    while (bricks.lineOne.x <= 850) {
-
-        rect(bricks.lineOne.x, bricks.lineOne.y, bricks.width, bricks.height);
-
-        bricks.lineOne.x = bricks.lineOne.x + 65;
+        brick.x = brick.x + 65;
     };
-
-    while (bricks.lineTwo.x <= 850) {
-
-        rect(bricks.lineTwo.x, bricks.lineTwo.y, bricks.width, bricks.height);
-
-        bricks.lineTwo.x = bricks.lineTwo.x + 65;
-    };
-
-    while (bricks.lineThree.x <= 850) {
-
-        rect(bricks.lineThree.x, bricks.lineThree.y, bricks.width, bricks.height);
-
-        bricks.lineThree.x = bricks.lineThree.x + 65;
-    };
-
-    while (bricks.lineFour.x <= 850) {
-
-        rect(bricks.lineFour.x, bricks.lineFour.y, bricks.width, bricks.height);
-
-        bricks.lineFour.x = bricks.lineFour.x + 65;
-    };
-
-    while (bricks.lineFive.x <= 850) {
-
-        rect(bricks.lineFive.x, bricks.lineFive.y, bricks.width, bricks.height);
-
-        bricks.lineFive.x = bricks.lineFive.x + 65;
-    };
-
-    while (bricks.lineSix.x <= 850) {
-
-        rect(bricks.lineSix.x, bricks.lineSix.y, bricks.lineSix.width, bricks.lineSix.height);
-
-        bricks.lineSix.x = bricks.lineSix.x + 65;
-    };
-
 }
 
 function handleSquareBounce(square, paddle) {
@@ -292,13 +265,16 @@ function handleSquareBounce(square, paddle) {
     }
 }
 
-function handleBricksDestroy(bricks, square) {
-    const overlap = centredRectanglesOverlap(bricks.lineSix, square);
+function handleBrickDestroy(brick, square) {
+    const overlap = centredRectanglesOverlap(brick, square);
 
     if (overlap) {
 
-        square.y = bricks.lineSix.y - bricks.lineSix.height / 2 - square.height / 2;
-        bricks.fill = "black";
+        square.y = brick.y - brick.height / 2 - square.height / 2;
+
+        // I dont know how to make the brick dissapear without a reset?????????????
+        //so made the colour to see if it comes in contact.
+        brick.fill = "black";
     }
 }
 
