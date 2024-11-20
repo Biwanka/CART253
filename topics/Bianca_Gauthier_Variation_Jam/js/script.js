@@ -142,9 +142,9 @@ const gravity = 0.1;
 
 let col = 0;
 let row = 0;
-let numberOfColumns = 0;
-let numberOfRows = 9;
-let newBrick = createAllBrick(col * bricks.width, row * bricks.height);
+let numberOfColumns = 6;
+let numberOfRows = 6;
+//let newBrick = createAllBrick(col * bricks.width, row * bricks.height);
 
 
 
@@ -275,7 +275,7 @@ function createAllBrick(brick) {
         for (let row = 0; row < numberOfRows; row++) {
             // We can work out each brick's x and y by its position in the rows and columns
             let newBrick = createAllBrick(col * brick.width, row * brick.height);
-            bricks.push(newBrick);
+            brick.push(newBrick);
         }
     }
 }
