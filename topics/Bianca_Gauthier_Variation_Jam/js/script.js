@@ -142,8 +142,8 @@ const gravity = 0.1;
 
 let col = 0;
 let row = 0;
-let numberOfColumns = 6;
-let numberOfRows = 6;
+let numberOfColumns = 1;
+let numberOfRows = 1;
 //let newBrick = createAllBrick(col * bricks.width, row * bricks.height);
 
 
