@@ -50,57 +50,6 @@
 
 "use strict";
 
-let bricks = [
-    {
-        x: 150,
-        y: 100,
-        fill: "red",
-        width: 60,
-        height: 35
-    },
-
-    {
-        x: 120,
-        y: 140,
-        fill: "red",
-        width: 60,
-        height: 35
-    },
-
-    {
-        x: 150,
-        y: 180,
-        fill: "red",
-        width: 60,
-        height: 35
-    },
-
-    {
-        x: 120,
-        y: 220,
-        fill: "red",
-        width: 60,
-        height: 35
-    },
-
-    {
-        x: 150,
-        y: 260,
-        fill: "red",
-        width: 60,
-        height: 35,
-    },
-
-    {
-        x: 120,
-        y: 300,
-        fill: "red",
-        width: 60,
-        height: 35,
-    },
-
-
-];
 // Our ball
 const ball = {
     x: 500,
@@ -128,7 +77,6 @@ const square = {
 
 };
 
-
 // Our paddle
 const paddle = {
     x: 500,
@@ -137,17 +85,48 @@ const paddle = {
     width: 110,
     height: 10
 };
+
+const bricks = {
+    x: undefined,
+    y: undefined,
+    width: 60,
+    height: 35,
+    fill: "red",
+
+    lineOne: {
+        x: undefined,
+        y: 100
+    },
+
+    lineTwo: {
+        x: undefined,
+        y: 140,
+    },
+
+    lineThree: {
+        x: undefined,
+        y: 180,
+    },
+
+    lineFour: {
+        x: undefined,
+        y: 220,
+    },
+
+    lineFive: {
+        x: undefined,
+        y: 260,
+    },
+
+    lineSix: {
+        x: 150,
+        y: 300,
+        width: 60,
+        height: 35
+    },
+};
+
 const gravity = 0.1;
-
-
-let col = 0;
-let row = 0;
-let numberOfColumns = 0;
-let numberOfRows = 9;
-let newBrick = createAllBrick(col * bricks.width, row * bricks.height);
-
-
-
 
 //
 function setup() {
@@ -165,18 +144,13 @@ function draw() {
 
     // handleBounce(ball, paddle);
     handleSquareBounce(square, paddle);
-
+    handleBricksDestroy(bricks, square);
 
     drawPaddle(paddle);
     // drawBall(ball);
     drawSquare(square);
 
-    for (let brick of bricks) {
-        drawBrick(brick);
-        handleBrickDestroy(brick, square);
-        createAllBrick(brick);
-    };
-
+    drawBricks(bricks);
 
 
 }
@@ -222,16 +196,7 @@ function handleBounce(ball, paddle) {
     }
 }
 */
-function handleSquareBounce(square, paddle) {
-    const overlap = centredRectanglesOverlap(square, paddle);
 
-    if (overlap) {
-
-        square.y = paddle.y - paddle.height / 2 - square.height / 2;
-        square.velocity.y *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
-
-    }
-}
 
 function drawPaddle(paddle) {
     push();
@@ -259,35 +224,81 @@ function drawSquare(square) {
     pop();
 }
 
-function drawBrick(brick) {
+function drawBricks(bricks) {
 
-    push();
-    rectMode(CENTER);
-    fill(brick.fill);
+    fill(bricks.fill);
     noStroke(0);
-    rect(brick.x, brick.y, brick.width, brick.height);
-    pop();
 
+
+    bricks.lineOne.x = 150;
+    bricks.lineTwo.x = 120;
+    bricks.lineThree.x = 150;
+    bricks.lineFour.x = 120;
+    bricks.lineFive.x = 150;
+    bricks.lineSix.x = 120;
+
+    while (bricks.lineOne.x <= 850) {
+
+        rect(bricks.lineOne.x, bricks.lineOne.y, bricks.width, bricks.height);
+
+        bricks.lineOne.x = bricks.lineOne.x + 65;
+    };
+
+    while (bricks.lineTwo.x <= 850) {
+
+        rect(bricks.lineTwo.x, bricks.lineTwo.y, bricks.width, bricks.height);
+
+        bricks.lineTwo.x = bricks.lineTwo.x + 65;
+    };
+
+    while (bricks.lineThree.x <= 850) {
+
+        rect(bricks.lineThree.x, bricks.lineThree.y, bricks.width, bricks.height);
+
+        bricks.lineThree.x = bricks.lineThree.x + 65;
+    };
+
+    while (bricks.lineFour.x <= 850) {
+
+        rect(bricks.lineFour.x, bricks.lineFour.y, bricks.width, bricks.height);
+
+        bricks.lineFour.x = bricks.lineFour.x + 65;
+    };
+
+    while (bricks.lineFive.x <= 850) {
+
+        rect(bricks.lineFive.x, bricks.lineFive.y, bricks.width, bricks.height);
+
+        bricks.lineFive.x = bricks.lineFive.x + 65;
+    };
+
+    while (bricks.lineSix.x <= 850) {
+
+        rect(bricks.lineSix.x, bricks.lineSix.y, bricks.lineSix.width, bricks.lineSix.height);
+
+        bricks.lineSix.x = bricks.lineSix.x + 65;
+    };
 
 }
-function createAllBrick(brick) {
-    for (let col = 0; col < numberOfColumns; col++) {
-        for (let row = 0; row < numberOfRows; row++) {
-            // We can work out each brick's x and y by its position in the rows and columns
-            let newBrick = createAllBrick(col * brick.width, row * brick.height);
-            bricks.push(newBrick);
-        }
-    }
-}
 
-
-function handleBrickDestroy(brick, square) {
-    const overlap = centredRectanglesOverlap(brick, square);
+function handleSquareBounce(square, paddle) {
+    const overlap = centredRectanglesOverlap(square, paddle);
 
     if (overlap) {
 
-        square.y = brick.y - brick.height / 2 - square.height / 2;
-        brick.fill = "black";
+        square.y = paddle.y - paddle.height / 2 - square.height / 2;
+        square.velocity.y *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
+
+    }
+}
+
+function handleBricksDestroy(bricks, square) {
+    const overlap = centredRectanglesOverlap(bricks.lineSix, square);
+
+    if (overlap) {
+
+        square.y = bricks.lineSix.y - bricks.lineSix.height / 2 - square.height / 2;
+        bricks.fill = "black";
     }
 }
 

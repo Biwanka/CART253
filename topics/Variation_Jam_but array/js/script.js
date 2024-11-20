@@ -49,6 +49,7 @@
  */
 
 "use strict";
+
 let bricks = [
     {
         x: 150,
