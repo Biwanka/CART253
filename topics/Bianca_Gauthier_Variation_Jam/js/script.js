@@ -122,7 +122,7 @@ const square = {
     width: 15,
     height: 15,
     velocity: {
-        x: 0,
+        x: 2,
         y: 2
     }
 
@@ -137,13 +137,13 @@ const paddle = {
     width: 110,
     height: 10
 };
-const gravity = 0.1;
+//const gravity = 0.6;
 
 
 let col = 0;
 let row = 0;
-let numberOfColumns = 1;
-let numberOfRows = 1;
+let numberOfColumns = 6;
+let numberOfRows = 6;
 //let newBrick = createAllBrick(col * bricks.width, row * bricks.height);
 
 
@@ -152,6 +152,7 @@ let numberOfRows = 1;
 //
 function setup() {
     createCanvas(1000, 800);
+    //createAllBricks(bricks);
 }
 
 
@@ -174,7 +175,6 @@ function draw() {
     for (let brick of bricks) {
         drawBrick(brick);
         handleBrickDestroy(brick, square);
-        createAllBrick(brick);
     };
 
 
@@ -202,10 +202,18 @@ function moveBall(ball) {
 }
  */
 function moveSquare(square) {
-    square.velocity.y = square.velocity.y + gravity;
+    square.velocity.y = square.velocity.y;
 
     square.x = square.x + square.velocity.x;
     square.y = square.y + square.velocity.y;
+
+    if (square.x > width || square.x < 0) {
+        square.velocity.x *= -1;
+    }
+
+    if (square.y < 0) {
+        square.velocity.y *= -1;
+    }
 
 }
 /** 
@@ -270,16 +278,16 @@ function drawBrick(brick) {
 
 
 }
-function createAllBrick(brick) {
+/**function createAllBricks(brick) {
     for (let col = 0; col < numberOfColumns; col++) {
         for (let row = 0; row < numberOfRows; row++) {
             // We can work out each brick's x and y by its position in the rows and columns
-            let newBrick = createAllBrick(col * brick.width, row * brick.height);
+            let newBrick = createAllBricks(col * brick.width, row * brick.height);
             brick.push(newBrick);
         }
     }
 }
-
+*/
 
 function handleBrickDestroy(brick, square) {
     const overlap = centredRectanglesOverlap(brick, square);
