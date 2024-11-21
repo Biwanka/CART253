@@ -297,6 +297,7 @@ function handleBrickDestroy(brick, square) {
         //square.y = brick.y - brick.height / 2 - square.height / 2;
         brick.fill = "black";
         brick.active = false;
+        square.velocity.y *= -1;
     }
     if (brick.active === false) {
 
