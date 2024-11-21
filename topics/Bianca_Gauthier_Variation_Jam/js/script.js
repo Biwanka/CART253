@@ -52,66 +52,29 @@
 
 let bricks = [
     {
-        x: 150,
-        y: 100,
-        fill: "red",
-        width: 60,
-        height: 35
-    },
-
-    {
-        x: 120,
-        y: 140,
-        fill: "red",
-        width: 60,
-        height: 35
-    },
-
-    {
-        x: 150,
-        y: 180,
-        fill: "red",
-        width: 60,
-        height: 35
-    },
-
-    {
-        x: 120,
-        y: 220,
-        fill: "red",
-        width: 60,
-        height: 35
-    },
-
-    {
-        x: 150,
-        y: 260,
+        x: undefined,
+        y: undefined,
         fill: "red",
         width: 60,
         height: 35,
+        active: true
     },
 
-    {
-        x: 120,
-        y: 300,
-        fill: "red",
-        width: 60,
-        height: 35,
-    },
 
 
 ];
 
 const brickStartX = 150;
 const brickStartY = 100;
-const brickGapX = 65;
-const brickGapY = 35;
+const brickGapX = 5;
+const brickGapY = 5;
 const brickWidth = 60;
 const brickHeight = 35;
+
 const active = true;
 
 // Our ball
-const ball = {
+/**const ball = {
     x: 500,
     y: 290,
     fill: "white",
@@ -123,7 +86,7 @@ const ball = {
         y: 2
     }
 };
-
+*/
 const square = {
     x: 500,
     y: 400,
@@ -151,8 +114,9 @@ const paddle = {
 
 let col = 0;
 let row = 0;
-let numberOfColumns = 6;
+let numberOfColumns = 11;
 let numberOfRows = 6;
+let offset = brickWidth / 4;
 //let newBrick = createAllBrick(col * bricks.width, row * bricks.height);
 
 
@@ -182,8 +146,10 @@ function draw() {
     drawSquare(square);
 
     for (let brick of bricks) {
-        drawBrick(brick);
-        handleBrickDestroy(brick, square);
+        if (brick.active === true) {
+            drawBrick(brick);
+            handleBrickDestroy(brick, square);
+        }
     };
 
 
@@ -296,18 +262,29 @@ function drawBrick(brick) {
 }
 
 function createAllBricks() {
-    for (let col = 0; col < numberOfColumns; col++) {
-        for (let row = 0; row < numberOfRows; row++) {
+    for (let row = 0; row < numberOfRows; row++) {
+        if (row % 2 === 0) {
+            col = 12;
+            offset = brickWidth / 4;
+        }
+        else {
+            col = 11;
+            offset = 0;
+        }
+        for (let col = 0; col < numberOfColumns; col++) {
+
             // We can work out each brick's x and y by its position in the rows and columns
             let newBrick = {
-                x: brickStartX + 65 + col * brickWidth + brickGapX,
-                y: brickStartY + row * brickHeight + brickGapY,
+                x: brickStartX + offset + col * (brickWidth + brickGapX),
+                y: brickStartY + row * (brickHeight + brickGapY),
                 width: brickWidth,
                 height: brickHeight,
-                fill: "red"
+                fill: "red",
+                active: true
             }
             bricks.push(newBrick);
         }
+
 
     }
 }
@@ -319,8 +296,16 @@ function handleBrickDestroy(brick, square) {
 
         //square.y = brick.y - brick.height / 2 - square.height / 2;
         brick.fill = "black";
+        brick.active = false;
+    }
+    if (brick.active === false) {
+
+    }
+    else {
+
     }
 }
+
 
 /**
  * function handleBrickDestroy(brick, ball) {
