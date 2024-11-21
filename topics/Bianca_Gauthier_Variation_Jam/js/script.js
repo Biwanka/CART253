@@ -101,6 +101,15 @@ let bricks = [
 
 
 ];
+
+const brickStartX = 150;
+const brickStartY = 100;
+const brickGapX = 65;
+const brickGapY = 35;
+const brickWidth = 60;
+const brickHeight = 35;
+const active = true;
+
 // Our ball
 const ball = {
     x: 500,
@@ -152,7 +161,7 @@ let numberOfRows = 6;
 //
 function setup() {
     createCanvas(1000, 800);
-    //createAllBricks(bricks);
+    createAllBricks(bricks);
 }
 
 
@@ -161,15 +170,15 @@ function draw() {
     background("grey");
 
     movePaddle(paddle);
-    moveBall(ball);
+    //moveBall(ball);
     moveSquare(square);
 
-    handleBounce(ball, paddle);
+    //handleBounce(ball, paddle);
     handleSquareBounce(square, paddle);
 
 
     drawPaddle(paddle);
-    drawBall(ball);
+    //  drawBall(ball);
     drawSquare(square);
 
     for (let brick of bricks) {
@@ -257,20 +266,20 @@ function drawPaddle(paddle) {
     pop();
 }
 
-function drawBall(ball) {
+/** function drawBall(ball) {
     push();
     noStroke();
     fill(ball.fill);
     ellipse(ball.x, ball.y, ball.size);
     pop();
-}
+}*/
 
 function drawSquare(square) {
     push();
     rectMode(CENTER);
     noStroke();
     fill(square.fill);
-    rect(square.x, square.y, square.width, square.height);
+    ellipse(square.x, square.y, square.width, square.height);
     pop();
 }
 
@@ -286,16 +295,22 @@ function drawBrick(brick) {
 
 }
 
-function createAllBricks(brick) {
+function createAllBricks() {
     for (let col = 0; col < numberOfColumns; col++) {
         for (let row = 0; row < numberOfRows; row++) {
             // We can work out each brick's x and y by its position in the rows and columns
-            let newBrick = createAllBricks(col * brick.width, row * brick.height);
-            brick.push(newBrick);
+            let newBrick = {
+                x: brickStartX + 65 + col * brickWidth + brickGapX,
+                y: brickStartY + row * brickHeight + brickGapY,
+                width: brickWidth,
+                height: brickHeight,
+                fill: "red"
+            }
+            bricks.push(newBrick);
         }
+
     }
 }
-
 
 function handleBrickDestroy(brick, square) {
     const overlap = centredRectanglesOverlap(brick, square);
@@ -306,6 +321,22 @@ function handleBrickDestroy(brick, square) {
         brick.fill = "black";
     }
 }
+
+/**
+ * function handleBrickDestroy(brick, ball) {
+ * 
+ *  const d = dist(ball.x, ball.y, brick.x, brick.y);
+    // Check if it's an overlap
+    const overlap = (d < ball.size / 2 + paddle.width / 2 + paddle.height / 2);
+    if (overlap) {
+ 
+        ball.y = paddle.y - paddle.height / 2 - ball.size / 2;
+        ball.velocity.y *= -1; 
+ * 
+ * 
+ * }
+ * 
+ */
 
 /**
 * Returns true if a and b overlap, and false otherwise
