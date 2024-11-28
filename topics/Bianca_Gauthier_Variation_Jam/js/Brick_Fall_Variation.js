@@ -61,21 +61,18 @@ let bricks = [
         velocity: {
             x: 0,
             y: 2,
-        },
+        }
 
     },
 
-
-
 ];
 
-const brickStartX = 150;
-const brickStartY = 100;
+const brickStartX = 170;
+const brickStartY = 85;
 const brickGapX = 5;
 const brickGapY = 5;
-const brickWidth = 60;
-const brickHeight = 35;
-const brickVelocity = 1;
+const brickWidth = 55;
+const brickHeight = 30;
 
 const active = true;
 
@@ -84,11 +81,11 @@ const ball = {
     x: 500,
     y: 400,
     fill: "white",
-    width: 15,
-    height: 15,
+    width: 12,
+    height: 12,
     velocity: {
-        x: 4,
-        y: 4
+        x: 3,
+        y: 3
     }
 
 };
@@ -97,7 +94,7 @@ const ball = {
 // Our paddle
 const paddle = {
     x: 500,
-    y: 750,
+    y: 665,
     fill: "black",
     width: 110,
     height: 10
@@ -114,7 +111,6 @@ let offset = brickWidth / 4;
 
 
 
-
 //
 function setup() {
     createCanvas(1000, 680);
@@ -127,7 +123,7 @@ function draw() {
     background("grey");
 
     movePaddle(paddle);
-    stopPaddle(paddle);
+
 
     moveBall(ball);
 
@@ -155,13 +151,10 @@ function draw() {
  * Moves the paddle
  */
 function movePaddle(paddle) {
-    paddle.x = mouseX;
+    paddle.x = constrain(mouseX, 30, 970);
 
 }
 
-function stopPaddle(paddle) {
-
-}
 
 /** Moves the ball*/
 
@@ -280,7 +273,7 @@ function handlePaddleBlock(brick, paddle) {
     // Check if it's an overlap
     const block = (d < paddle.size / 2 + brick.size / 2);
     if (block) {
-
+        paddle.x = contrain(mouseX, brick.x)
     }
 }
 
@@ -297,7 +290,7 @@ function handleBrickCaught(brick, paddle) {
     if (brick.active === false) {
 
     }
-    else if (brick.y === 785) {
+    else if (brick.y === 665) {
         brick.active = true;
         brick.velocity.y = 0;
 
