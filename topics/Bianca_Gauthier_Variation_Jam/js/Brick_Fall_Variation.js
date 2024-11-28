@@ -53,11 +53,16 @@
 let bricks = [
     {
         x: undefined,
-        y: undefined,
+        y: 100,
         fill: "red",
         width: 60,
         height: 35,
-        active: true
+        active: true,
+        velocity: {
+            x: 0,
+            y: 2,
+        },
+
     },
 
 
@@ -70,6 +75,7 @@ const brickGapX = 5;
 const brickGapY = 5;
 const brickWidth = 60;
 const brickHeight = 35;
+const brickVelocity = 1;
 
 const active = true;
 
@@ -171,7 +177,7 @@ function moveBall(ball) {
 
 
 function handleBallBounce(ball, paddle) {
-    const overlap = centredRectanglesOverlap(square, paddle);
+    const overlap = centredRectanglesOverlap(ball, paddle);
 
     if (overlap) {
 
@@ -231,7 +237,11 @@ function createAllBricks() {
                 width: brickWidth,
                 height: brickHeight,
                 fill: "red",
-                active: true
+                active: true,
+                velocity: {
+                    x: 0,
+                    y: 0,
+                }
             }
             bricks.push(newBrick);
         }
@@ -247,8 +257,11 @@ function handleBrickFall(brick, ball) {
 
         //square.y = brick.y - brick.height / 2 - square.height / 2;
         ball.velocity.y *= -1;
-        brick.y *= -1;
+        brick.velocity.y = 2;
+        brick.y += brick.velocity.y;
+
     }
+
 
 }
 
@@ -258,16 +271,14 @@ function handleBrickCaught(brick, paddle) {
 
     if (overlap) {
 
-        //square.y = brick.y - brick.height / 2 - square.height / 2;
+
         brick.active = false;
-        ball.velocity.y *= -1;
+
     }
     if (brick.active === false) {
 
     }
-    else {
 
-    }
 
 }
 
