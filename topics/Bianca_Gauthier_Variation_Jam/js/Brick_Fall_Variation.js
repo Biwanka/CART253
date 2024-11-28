@@ -117,7 +117,7 @@ let offset = brickWidth / 4;
 
 //
 function setup() {
-    createCanvas(1000, 800);
+    createCanvas(1000, 680);
     createAllBricks(bricks);
 }
 
@@ -275,8 +275,13 @@ function handleBrickFall(brick, ball) {
 }
 
 function handlePaddleBlock(brick, paddle) {
-    const overlap = centredRectanglesOverlap(brick, paddle);
 
+    const d = dist(paddle.x, paddle.y, brick.x, brick.y);
+    // Check if it's an overlap
+    const block = (d < paddle.size / 2 + brick.size / 2);
+    if (block) {
+
+    }
 }
 
 function handleBrickCaught(brick, paddle) {
@@ -292,7 +297,7 @@ function handleBrickCaught(brick, paddle) {
     if (brick.active === false) {
 
     }
-    else if (brick.y === 800) {
+    else if (brick.y === 785) {
         brick.active = true;
         brick.velocity.y = 0;
 
