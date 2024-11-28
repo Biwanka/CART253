@@ -133,7 +133,8 @@ function draw() {
     for (let brick of bricks) {
         if (brick.active === true) {
             drawBrick(brick);
-            handleBrickDestroy(brick, ball);
+            handleBrickFall(brick, ball);
+            handleBrickCaught(brick, paddle);
         }
     };
 
@@ -239,13 +240,25 @@ function createAllBricks() {
     }
 }
 
-function handleBrickDestroy(brick, ball) {
+function handleBrickFall(brick, ball) {
     const overlap = centredRectanglesOverlap(brick, ball);
 
     if (overlap) {
 
         //square.y = brick.y - brick.height / 2 - square.height / 2;
-        brick.fill = "black";
+        ball.velocity.y *= -1;
+        brick.y *= -1;
+    }
+
+}
+
+function handleBrickCaught(brick, paddle) {
+    const overlap = centredRectanglesOverlap(brick, paddle);
+
+
+    if (overlap) {
+
+        //square.y = brick.y - brick.height / 2 - square.height / 2;
         brick.active = false;
         ball.velocity.y *= -1;
     }
@@ -255,6 +268,7 @@ function handleBrickDestroy(brick, ball) {
     else {
 
     }
+
 }
 
 
