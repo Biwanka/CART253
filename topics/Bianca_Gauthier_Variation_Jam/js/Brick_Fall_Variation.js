@@ -127,10 +127,12 @@ function draw() {
     background("grey");
 
     movePaddle(paddle);
+    stopPaddle(paddle);
 
     moveBall(ball);
 
     handleBallBounce(ball, paddle);
+
 
 
     drawPaddle(paddle);
@@ -141,6 +143,7 @@ function draw() {
             drawBrick(brick);
             handleBrickFall(brick, ball);
             handleBrickCaught(brick, paddle);
+            handlePaddleBlock(brick, paddle);
         }
     };
 
@@ -153,6 +156,10 @@ function draw() {
  */
 function movePaddle(paddle) {
     paddle.x = mouseX;
+
+}
+
+function stopPaddle(paddle) {
 
 }
 
@@ -252,16 +259,23 @@ function createAllBricks() {
 
 function handleBrickFall(brick, ball) {
     const overlap = centredRectanglesOverlap(brick, ball);
+    brick.y = brick.y + brick.velocity.y;
+
 
     if (overlap) {
 
         //square.y = brick.y - brick.height / 2 - square.height / 2;
         ball.velocity.y *= -1;
         brick.velocity.y = 2;
-        brick.y += brick.velocity.y;
+
 
     }
 
+
+}
+
+function handlePaddleBlock(brick, paddle) {
+    const overlap = centredRectanglesOverlap(brick, paddle);
 
 }
 
@@ -276,6 +290,11 @@ function handleBrickCaught(brick, paddle) {
 
     }
     if (brick.active === false) {
+
+    }
+    else if (brick.y === 800) {
+        brick.active = true;
+        brick.velocity.y = 0;
 
     }
 
