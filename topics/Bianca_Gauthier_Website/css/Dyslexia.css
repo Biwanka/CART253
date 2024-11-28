@@ -1,0 +1,63 @@
+ .dyslexia-wave {
+     animation: wave 1s ease-in-out infinite;
+     display: inline-block;
+ }
+
+ @keyframes wave {
+
+     0%,
+     100% {
+         transform: translateY(0);
+     }
+
+     50% {
+         transform: translateY(-3px);
+     }
+ }
+
+ .dyslexia-blur {
+     filter: blur(1px);
+     transition: filter 0.2s;
+ }
+
+ .dyslexia-blur:hover {
+     filter: blur(0);
+ }
+
+ .dyslexia-text {
+     font-family: Arial, sans-serif;
+     font-size: 20px;
+     line-height: 1.5;
+ }
+
+ body {
+     font-family: Arial, sans-serif;
+     background: #f4f4f4;
+     margin: 0;
+     padding: 20px;
+ }
+
+ .text-container {
+     position: relative;
+     margin: 50px auto;
+     padding: 20px;
+     max-width: px;
+
+     background: white;
+
+ }
+
+ .floating-letter {
+     position: absolute;
+     color: rgba(73, 50, 124, 0.9);
+     font-size: 2rem;
+     pointer-events: none;
+     z-index: 10;
+     transition: transform 0.1s ease;
+ }
+
+ #title-text {
+     font-size: 2.5rem;
+     letter-spacing: 0.05em;
+     transition: letter-spacing 0.5s ease;
+ }

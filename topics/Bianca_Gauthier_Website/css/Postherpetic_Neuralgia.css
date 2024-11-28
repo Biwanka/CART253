@@ -1,0 +1,221 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #bbbaba;
+    text-align: center;
+    line-height: 1.6;
+    padding-top: 0;
+    margin: 0;
+}
+
+
+
+.burning-effect {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 0, 0, 0.5);
+    animation: burnAnimation 1s infinite alternate;
+    pointer-events: none;
+    box-sizing: border-box;
+}
+
+@keyframes burnAnimation {
+    0% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+}
+
+h2 {
+    margin-top: 20px;
+}
+
+.description {
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.flicker-effect {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(53, 51, 51, 0.1);
+    animation: flicker 0.5s infinite;
+    pointer-events: none;
+    box-sizing: border-box;
+}
+
+@keyframes flicker {
+    0% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+
+    100% {
+        opacity: 0.3;
+    }
+}
+
+h2 {
+    margin-top: 20px;
+}
+
+.description {
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.tingle-effect {
+    position: fixed;
+    background: rgba(0, 0, 0, 0.1);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    animation: tingleAnimation 1s infinite alternate;
+    pointer-events: none;
+    box-sizing: border-box;
+}
+
+@keyframes tingleAnimation {
+    0% {
+        transform: translateX(0) translateY(0);
+    }
+
+    100% {
+        transform: translateX(10px) translateY(10px);
+        opacity: 0.5;
+    }
+}
+
+h2 {
+    margin-top: 20px;
+}
+
+.description {
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.blurred {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    filter: blur(5px);
+    pointer-events: none;
+
+}
+
+.numb-text {
+    position: relative;
+    font-size: 18px;
+
+}
+
+.neuralgia-noise {
+    position: relative;
+    color: black;
+}
+
+.neuralgia-noise::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAAFJREFUGFdj+A8AAAAFAAJCBB0AAAAASUVORK5CYII=');
+    background-size: cover;
+    opacity: 0.1;
+    animation: noise 0.1s infinite;
+    pointer-events: none;
+}
+
+@keyframes noise {
+
+    0%,
+    100% {
+        opacity: 0.1;
+    }
+
+    50% {
+        opacity: 0.2;
+    }
+}
+
+.neuralgia-jitter {
+    animation: jitter 0.05s infinite;
+    display: inline-block;
+}
+
+@keyframes jitter {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(1px, -1px);
+    }
+
+    50% {
+        transform: translate(-1px, 1px);
+    }
+
+    75% {
+        transform: translate(1px, 1px);
+    }
+}
+
+#neuralgia-text {
+    font-size: 1.8rem;
+    transition: color 0.5s ease;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        color: #a83232;
+    }
+
+    50% {
+        color: #e57373;
+    }
+}
+
+#neuralgia-text {
+    font-size: 1.8rem;
+    transition: color 0.5s ease;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        color: #a83232;
+    }
+
+    50% {
+        color: #e57373;
+    }
+}

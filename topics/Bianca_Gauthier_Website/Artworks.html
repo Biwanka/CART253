@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
+
+    <title> Website MP</title>
+
+    <!-- CSS stylesheet(s) -->
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+
+
+
+    <link href="https://fonts.cdnfonts.com/css/maiandra-gd" rel="stylesheet">
+    <!-- Library script(s) -->
+
+    <!-- p5.min.js is the main p5 library -->
+    <script src="js/libraries/p5.min.js"></script>
+    <!-- p5.sound.min.js allows us to use sound -->
+    <script src="js/libraries/p5.sound.min.js"></script>
+
+    <!-- My script(s) -->
+    <script src="js/script.js"></script>
+</head>
+<!-- Header -->
+
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href="Menu.html" class="nav__link"> <img src="assets/images/Logo_Menu.png" alt="">
+            </a>
+            >
+
+            <div id="background">
+            </div>
+        </div>
+
+
+        <button class="nav-toggle" aria-label="toggle navigation">
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </button>
+
+
+
+        <nav class="nav">
+            <a href="Menu.html" class="nav__link">Menu</a>
+            <a href="index.html" class="nav__link">Introduction</a>
+            <a href="Artworks.html" class="nav__link">Artworks</a>
+            <a href="ADHD.html" class="nav__link">ADHD</a>
+            <a href="Dyslexia.html" class="nav__link">Dyslexia</a>
+            <a href="Anxiety.html" class="nav__link">Anxiety</a>
+            <a href="ChronicMigrain.html" class="nav__link">Chronic Migraine</a>
+            <a href="Postherpetic_Neuralgia.html" class="nav__link">Postherpetic Neuralgia</a>
+        </nav>
+
+    </header>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #d3d3d3;
+            /* Grey background */
+            background-image: url(assets/images/Menu_Background.jpg);
+            /* Placeholder for your doodles */
+            background-position: center;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .container h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #492e7c;
+            margin-bottom: 20px;
+        }
+
+        .artwork-card {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 2px dashed black;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .artwork-card h2 {
+            font-size: 2rem;
+            color: #492e7c;
+            margin-bottom: 10px;
+        }
+
+        .artwork-card p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .artwork-card img {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .artwork-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        /* Responsive Design */
+        @media (min-width: 768px) {
+            .artwork-card {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+
+            .artwork-card img {
+                flex: 1;
+                margin-right: 20px;
+            }
+
+            .artwork-card .artwork-details {
+                flex: 2;
+            }
+        }
+    </style>
+
+    <body>
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <h1>My Disability-Inspired Artwork</h1>
+                <div class="artwork-grid">
+                    <!-- Artwork 1 -->
+                    <div class="artwork-card">
+                        <img src="assets/images/3.jpg" alt="Artwork 1" />
+                        <div class="artwork-details">
+                            <h2> What is That?</h2>
+                            <p>
+                                This painting subject is of the memory, from when I was a child, of discovering that I
+                                had learning disabilities.
+                                Portraying this out-of-body
+                                experience of fear until a minute later, I realized I didn't know what they meant.
+                                Bringing forth this absurd alienation
+                                that is put towards the label of 'different' when it's not a bad thing.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Artwork 2 -->
+                    <div class="artwork-card">
+                        <img src="assets/images/10.the Unknown.jpg" alt="Artwork 2" />
+                        <div class="artwork-details">
+                            <h2> The Unknown</h2>
+                            <p>
+                                Digital drawing educates people on ADHD. Many people do not know about learning
+                                disability therefore they act harshly. I
+                                have ADHD and have been labelled and shunned for it. ADHD does not make me different and
+                                I want to make people aware of
+                                this with my drawing.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Artwork 3 -->
+                    <div class="artwork-card">
+                        <img src="assets/images/IMG_6294.jpg" alt="Artwork 3" />
+                        <div class="artwork-details">
+                            <h2> Invisible Purple Acceptance</h2>
+                            <p>
+                                This painting is a self-portrait. This painting depicts some of my non-visual
+                                disabilities. I have chronic Migraines and
+                                Nerve Damage from having shingles at the age of 19. Specifically, these two disabilities
+                                affect my day-to-day life, as
+                                they affect my productivity and more. Therefore, with art, I have to adapt. With art and
+                                my family, I have been able to
+                                adapt to these new changes, however, these are still daily pains that I live with. I
+                                have come to an acceptance of these
+                                new changes and this painting doesn't show how painful it is. This demonstrates my
+                                tiredness and acceptance. The purple
+                                me helps depict the look of my migraines and nerves, I also wanted to depict the
+                                specific places affected by these small
+                                nerve-like lines.(Bianca Gauthier, September 2023, 30x40 inch, Acrylic Painting)
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Artwork 4 -->
+                    <div class="artwork-card">
+                        <img src="assets/images/6.The Unseen Mind.jpg" alt="Artwork 2" />
+                        <div class="artwork-details">
+                            <h2> The Unseen Mind</h2>
+                            <p>
+                                Description: This artwork captures the fragmented thought patterns caused by ADHD, with
+                                scattered,
+                                vibrant shapes symbolizing
+                                the energy and disarray of the mind.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Artwork 5 -->
+                    <div class="artwork-card">
+                        <img src="assets/images/1300_resolution.png" alt="Artwork 2" />
+                        <div class="artwork-details">
+                            <h2></h2>
+                            <p>
+
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Artwork 6 -->
+                    <div class="artwork-card">
+                        <img src="assets/images/15. Deepest fear.png" alt="Artwork 6" />
+                        <div class="artwork-details">
+                            <h2>Title: Deepest Fear</h2>
+                            <p>
+                                This represents my fear of failure. I have been to a low point when I was younger
+                                because of my learning disabilities. I
+                                have worked hard to the top, but when I went into art with no experience, I was scared
+                                to return to the bottom.This work utilizes graphite to create contrast between a range
+                                of dark tones
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Artwork 7 -->
+                    <div class="artwork-card">
+                        <img src="assets/images/Disability.png" alt="Artwork 7" />
+                        <div class="artwork-details">
+                            <h2></h2>
+                            <p>
+
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Artwork 8 -->
+                    <div class="artwork-card">
+                        <img src="assets/images/me 17.png" alt="Artwork 8" />
+                        <div class="artwork-details">
+                            <h2></h2>
+                            <p>
+
+                            </p>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+            <div class="workspace-section">
+                <a href="adhd.html" class="work-button">Time to Work</a>
+            </div>
+        </main>
+
+        <!-- JavaScript -->
+        <script>
+            function toggleMenu() {
+                document.querySelector('.nav').classList.toggle('active');
+            }
+        </script>
+
+
+    </body>
+
+</html>

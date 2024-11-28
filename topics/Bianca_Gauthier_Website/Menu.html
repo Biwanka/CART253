@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
+
+    <title> Disability Experience</title>
+
+    <!-- CSS stylesheet(s) -->
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+
+
+    <link href="https://fonts.cdnfonts.com/css/maiandra-gd" rel="stylesheet">
+    <!-- Library script(s) -->
+
+    <!-- p5.min.js is the main p5 library -->
+    <script src="js/libraries/p5.min.js"></script>
+    <!-- p5.sound.min.js allows us to use sound -->
+    <script src="js/libraries/p5.sound.min.js"></script>
+
+    <!-- My script(s) -->
+    <script src="js/script.js"></script>
+</head>
+<!-- Header -->
+
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href="Menu.html" class="nav__link"> <img src="assets/images/Logo_Menu.png" alt="">
+            </a>
+            >
+            <div id="background">
+            </div>
+        </div>
+        <button class="nav-toggle" aria-label="toggle navigation">
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+            </div>
+        </button>
+
+        <nav class="nav">
+            <a href="Menu.html" class="nav__link">Menu</a>
+            <a href="index.html" class="nav__link">Introduction</a>
+            <a href="Artworks.html" class="nav__link">Artworks</a>
+            <a href="ADHD.html" class="nav__link">ADHD</a>
+            <a href="Dyslexia.html" class="nav__link">Dyslexia</a>
+            <a href="Anxiety.html" class="nav__link">Anxiety</a>
+            <a href="ChronicMigrain.html" class="nav__link">Chronic Migraine</a>
+            <a href="Postherpetic_Neuralgia.html" class="nav__link">Postherpetic Neuralgia</a>
+        </nav>
+
+    </header>
+
+    <!-- Main Content -->
+    <main>
+
+        <body>
+            <div class="container">
+                <h1>Welcome to My Disability Experience</h1>
+                <p>
+                    This website aims to share my personal experiences with various disabilities, not to create a "good"
+                    experience or
+                    simulate these challenges perfectly. It is not meant for diagnosis or sympathy but to provide
+                    insight into how I
+                    navigate life, work, and creativity while managing these conditions. Each user may experience it
+                    differently, and the
+                    goal is to help others understand the adaptations and hurdles I face daily.
+
+                    This website offers an exploration of my disabilities, their impact,
+                    and how they shape my creative and academic work. Choose how you’d like to proceed.
+                </p>
+                <div class="warning">
+                    <h3>Trigger Warning:</h3>
+                    <p> Some of the effects on this site may be intense or disorienting, especially for
+                        users who experience
+                        visual, sensory, or neurological sensitivities. Please choose the path that feels right for you
+                        and proceed with
+                        caution. Some effects that could be triggering have buttons as you can se below to activate and
+                        deactivate them to
+                        make them more accessible. The eyes are for visual effects and the
+                        sound logo is for audio effects.
+
+                    </p>
+                    <button>
+                        <input type="image" src="assets/images/Button_Sound.png" />
+                    </button>
+                    <button>
+                        <input type="image" src="assets/images/Button_Visual.png" />
+                    </button>
+
+                    <p>
+
+                </div>
+                <h3>Custom Experience: </h3>
+                <p>Use the menu icon at the top right to select specific conditions you
+                    want to explore individually.
+                    This option is ideal if you’d like to avoid particular effects or tailor the experience to your
+                    preferences.
+                </p>
+
+                <div class="button-box">
+                    <div class="button-container">
+                        <p>
+                            This path will guide you through a detailed explanation of each condition, along background
+                            information on the purpose of this project and my own
+                            experience.
+                        </p>
+                        <div class="buttons">
+                            <a href="index.html">
+                                <button onclick>Information</button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="button-container">
+                        <p>This option takes you directly into a sensory journey, allowing you to feel some of the
+                            effects associated with each
+                            condition through immersive visuals, sounds, and interactions.</p>
+                        <div class="buttons">
+                            <a href="ADHD.html">
+                                <button onclick>Experience</button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="button-container">
+                        <p>This option will take you to some of my other artworks, which touch on my
+                            disabilities. Exploring different
+                            aspects and experiences.
+
+                        </p>
+                        <br>
+                        <div class="buttons">
+                            <a href="Artworks.html">
+                                <button onclick>Artworks</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+        </body>
+    </main>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #d3d3d3;
+            /* Grey background */
+            background-image: url(assets/images/Menu_Background.jpg);
+            /* Placeholder for your doodles */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            background-color: #ffffff;
+            /* White box for content */
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 1000px;
+            text-align: center;
+            margin-top: 100px;
+
+        }
+
+        .container h1 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+            color: #492e7c;
+            /* Matches button color scheme */
+        }
+
+        .container p {
+            font-size: 0.8rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .warning {
+            font-size: 1rem;
+            color: #ff3333;
+            margin-bottom: 20px;
+        }
+
+        .button-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .button-container {
+            background: rgba(255, 255, 255, 0.8);
+            /* Slight transparency for layered effect */
+            padding: 20px;
+            border: 2px dashed black;
+            border-radius: 10px;
+            max-width: 250px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .button-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .button-container p {
+            font-size: 0.7rem;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .buttons button {
+            position: relative;
+            padding: 1rem 1rem;
+            font-size: 1rem;
+            font-weight: bold;
+            color: white;
+            background: rgba(73, 50, 124, 0.9);
+            /* Primary purple button color */
+            border: 2px solid white;
+            border-radius: 30px;
+            /* Rounded edges */
+            text-decoration: none;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+        }
+
+        .buttons button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: rgba(93, 63, 158, 0.95);
+            /* Darker shade on hover */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .button-container {
+                max-width: 100%;
+            }
+
+            .buttons button {
+                font-size: 1rem;
+                padding: 1rem 1.8rem;
+            }
+        }
+
+        .nav__link:hover {
+            background: #555;
+            border-radius: 2px;
+        }
+    </style>
+    <!-- JavaScript -->
+    <script>
+        function toggleMenu() {
+            document.querySelector('.nav').classList.toggle('active');
+        }
+    </script>
+
+
+</body>
+
+</html>
