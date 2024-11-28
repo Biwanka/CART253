@@ -188,12 +188,12 @@ function draw() {
  */
 function movePaddle(paddle) {
 
-    if (paddle.orientation === "vertical") {
+    if (paddle.position = "horizontal") {
         paddle.x = constrain(mouseX, 30, 970);
     }
 
 
-    if (paddle.orientation === "horizontal") {
+    if (paddle.position = "vertical") {
         paddle.y = constrain(mouseY, 30, 650);
     }
 
