@@ -102,7 +102,9 @@ const paddle = {
         min: 30,
         max: 970,
     }
+
 };
+
 //const gravity = 0.6;
 
 
@@ -142,8 +144,8 @@ function draw() {
         if (brick.active === true) {
             drawBrick(brick);
             handleBrickFall(brick, ball);
-            handleBrickCaught(brick, paddle);
-            handlePaddleBlock(brick, paddle);
+            // handleBrickCaught(brick, paddle);
+            // handlePaddleBlock(brick, paddle);
             handleBrickLand(brick);
         }
     };
@@ -156,7 +158,7 @@ function draw() {
  * Moves the paddle
  */
 function movePaddle(paddle) {
-    paddle.x = constrain(mouseX, paddle.min, paddle.max);
+    paddle.x = constrain(mouseX, paddle.constraints.min, paddle.constraints.max);
 
 }
 
@@ -265,18 +267,16 @@ function handleBrickFall(brick, ball) {
         //square.y = brick.y - brick.height / 2 - square.height / 2;
         ball.velocity.y *= -1;
         brick.velocity.y = 2;
-
-
     }
 
 
 }
 
-function handlePaddleBlock(brick, paddle) {
+/**function handlePaddleBlock(brick, paddle) {
 
     const d = dist(paddle.x, paddle.y, brick.x, brick.y);
     // Check if it's an overlap
-    const block = (d < paddle.size / 2 + brick.size / 2);
+    const block = (d < paddle.width / 2 + brick.width / 2);
     if (block) {
         paddle.x = contrain(mouseX, brick.x)
     }
@@ -288,35 +288,40 @@ function handleBrickCaught(brick, paddle) {
     const overlap = centredRectanglesOverlap(brick, paddle);
 
 
-    if (overlap && brick.velocity.y === 0) {
+    if (brick.velocity.y === 0 && overlap) {
 
-        if () {
+        if ("paddle overlaps a brick to the right") {
             paddle.constraints.max = brick.x + brick.width / 2;
         }
 
-        else if () {
+        else if ("paddle overlaps a brick to the left") {
             paddle.constraints.min = brick.x + brick.width / 2;
         }
 
     }
 
-    else {
-        brick.active = false
-    }
-    if (brick.active === false) {
-
-    }
-    else if (brick.y === 665) {
-        brick.active = true;
-        brick.velocity.y = 0;
-
-    }
 
 
 }
-
+*/
 
 function handleBrickLand(brick) {
+
+    if (brick.y === 665) {
+        brick.velocity.y = 0;
+    }
+    for (let otherBrick of bricks) {
+        if (brick === otherBrick) {
+            continue;
+        }
+        // Otherwise check if they overlap
+        const overlap = centredRectanglesOverlap(brick, otherBrick);
+
+        if (brick.y === 665 && overlap) {
+            brick.velocity.y = 0;
+            otherBrick.velocity.y = 0;
+        }
+    }
 
 }
 
