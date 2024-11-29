@@ -317,7 +317,7 @@ function handleBrickDestroy(brick, ball) {
 }
 
 
-function mousePressed() {
+/**function mousePressed() {
     if (mousePressed) {
         moveBall(ball);
     }
@@ -329,7 +329,7 @@ function mousePressed() {
         ball.y = random(100, 500)
     }
 
-}
+}*/
 
 /**
 * Returns true if a and b overlap, and false otherwise

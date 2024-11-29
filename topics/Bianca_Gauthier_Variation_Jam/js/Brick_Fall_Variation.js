@@ -97,7 +97,11 @@ const paddle = {
     y: 665,
     fill: "black",
     width: 110,
-    height: 10
+    height: 10,
+    constraints: {
+        min: 0,
+        max: 1000,
+    }
 };
 //const gravity = 0.6;
 
@@ -140,6 +144,7 @@ function draw() {
             handleBrickFall(brick, ball);
             handleBrickCaught(brick, paddle);
             handlePaddleBlock(brick, paddle);
+            handleBrickLand(brick);
         }
     };
 
