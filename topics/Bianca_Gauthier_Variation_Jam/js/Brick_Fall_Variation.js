@@ -99,8 +99,8 @@ const paddle = {
     width: 110,
     height: 10,
     constraints: {
-        min: 0,
-        max: 1000,
+        min: 30,
+        max: 970,
     }
 };
 //const gravity = 0.6;
@@ -156,7 +156,7 @@ function draw() {
  * Moves the paddle
  */
 function movePaddle(paddle) {
-    paddle.x = constrain(mouseX, 30, 970);
+    paddle.x = constrain(mouseX, paddle.min, paddle.max);
 
 }
 
@@ -282,19 +282,26 @@ function handlePaddleBlock(brick, paddle) {
     }
 }
 
-function handleBrickLand(brick) {
 
-}
 
 function handleBrickCaught(brick, paddle) {
     const overlap = centredRectanglesOverlap(brick, paddle);
 
 
-    if (overlap) {
+    if (overlap && brick.velocity.y === 0) {
 
+        if () {
+            paddle.constraints.max = brick.x + brick.width / 2;
+        }
 
-        brick.active = false;
+        else if () {
+            paddle.constraints.min = brick.x + brick.width / 2;
+        }
 
+    }
+
+    else {
+        brick.active = false
     }
     if (brick.active === false) {
 
@@ -309,7 +316,9 @@ function handleBrickCaught(brick, paddle) {
 }
 
 
+function handleBrickLand(brick) {
 
+}
 
 
 /**
