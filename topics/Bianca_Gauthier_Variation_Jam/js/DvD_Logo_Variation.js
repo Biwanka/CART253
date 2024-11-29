@@ -74,16 +74,17 @@ const brickHeight = 30;
 const active = true;
 
 
-const ball = {
+let ball = {
     x: 500,
     y: 400,
     fill: "white",
-    width: 12,
-    height: 12,
+    width: 18,
+    height: 18,
     velocity: {
         x: 3,
         y: 3
-    }
+    },
+    image: undefined
 
 };
 
@@ -108,7 +109,9 @@ let offset = brickWidth / 4;
 
 
 
-
+function preload() {
+    ball.image = loadImage("assets/images/Logo_DVD.png");
+}
 //
 function setup() {
     createCanvas(1000, 680);
@@ -201,7 +204,7 @@ function drawBall(ball) {
     rectMode(CENTER);
     noStroke();
     fill(ball.fill);
-    ellipse(ball.x, ball.y, ball.width, ball.height);
+    image(ball.image, ball.x, ball.y,);
     pop();
 }
 
