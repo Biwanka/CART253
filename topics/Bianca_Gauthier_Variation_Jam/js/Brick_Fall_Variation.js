@@ -282,6 +282,10 @@ function handlePaddleBlock(brick, paddle) {
     }
 }
 
+function handleBrickLand(brick) {
+
+}
+
 function handleBrickCaught(brick, paddle) {
     const overlap = centredRectanglesOverlap(brick, paddle);
 
