@@ -92,7 +92,7 @@ const ball = {
 let paddles = [
     //bottom paddle 
     {
-        x: 500,
+        x: 300,
         y: 665,
         fill: "black",
         width: 110,
@@ -110,6 +110,31 @@ let paddles = [
         height: 10,
         orientation: "horizontal"
     },
+    {
+        x: 100,
+        y: 20,
+        fill: "black",
+        width: 110,
+        height: 10,
+        orientation: "horizontal"
+    },
+
+    {
+        x: 700,
+        y: 20,
+        fill: "black",
+        width: 110,
+        height: 10,
+        orientation: "horizontal"
+    },
+    {
+        x: 900,
+        y: 20,
+        fill: "black",
+        width: 110,
+        height: 10,
+        orientation: "horizontal"
+    },
 
     //Left Paddle
     {
@@ -119,18 +144,30 @@ let paddles = [
         width: 10,
         height: 110,
         orientation: "vertical",
+
     },
-
-
-    //Right paddle 
     {
-        x: 980,
-        y: 300,
+        x: 20,
+        y: 500,
         fill: "black",
         width: 10,
         height: 110,
         orientation: "vertical",
-    }
+
+    },
+    {
+        x: 20,
+        y: 100,
+        fill: "black",
+        width: 10,
+        height: 110,
+        orientation: "vertical",
+
+    },
+
+
+
+
 ];
 //const gravity = 0.6;
 
@@ -225,16 +262,21 @@ function moveBall(ball) {
 
 function handleBallBounce(ball, paddle) {
     const overlap = centredRectanglesOverlap(ball, paddle);
-    if (paddle.width === 110) {
-        if (overlap) {
+
+    if (overlap) {
+        if (paddle.orientation === "horizontal") {
 
             ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
-            ball.velocity.y *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
+            ball.velocity.y *= -1;
+        }
+        if (paddle.orientation === "vertical") {
+            if (ball.x > (paddle.x - paddle.height / 2 - ball.height / 2) || ball.x < (paddle.x - paddle.height / 2 - ball.height / 2)) {
+                ball.velocity.x *= -1;
+            }
 
         }
     }
 }
-
 function drawPaddle(paddle) {
     push();
     rectMode(CENTER);
@@ -322,14 +364,14 @@ function handleBrickDestroy(brick, ball) {
     if (mousePressed) {
         moveBall(ball);
     }
-
+ 
     else {
         ball.velocity.x = 0;
         ball.velocity.y = 0;
         ball.x = random(100, 900)
         ball.y = random(100, 500)
     }
-
+ 
 }*/
 
 /**
@@ -343,4 +385,3 @@ function centredRectanglesOverlap(a, b) {
         a.y + a.height / 2 > b.y - b.height / 2 &&
         a.y - a.height / 2 < b.y + b.height / 2);
 }
-

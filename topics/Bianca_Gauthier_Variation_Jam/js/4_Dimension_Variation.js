@@ -233,25 +233,22 @@ function handleBallBounce(ball, paddle) {
         if (paddle.placement === "top") {
 
             ball.x = paddle.x - paddle.height / 2 - ball.height / 2;
-            ball.velocity.y *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
+            ball.velocity.y *= -1;
 
         }
 
         if (paddle.placement === "bottom") {
             ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
-            ball.velocity.y *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
-
+            ball.velocity.y *= -1;
         }
 
         if (paddle.placement === "left") {
             ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
-            ball.velocity.x *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
-
+            ball.velocity.x *= -1;
         }
         if (paddle.placement === "right") {
             ball.x = paddle.x - paddle.height / 2 - ball.height / 2;
-            ball.velocity.x *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
-
+            ball.velocity.x *= -1;
         }
     }
 }

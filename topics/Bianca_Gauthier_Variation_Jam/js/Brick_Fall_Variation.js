@@ -189,8 +189,7 @@ function handleBallBounce(ball, paddle) {
     if (overlap) {
 
         ball.y = paddle.y - ball.height / 2 - ball.height / 2;
-        ball.velocity.y *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
-
+        ball.velocity.y *= -1;
     }
 }
 

@@ -227,25 +227,27 @@ function moveBall(ball) {
 
 
 function handleBallBounce(ball, paddle) {
-
-    let collisionLeft = paddle.x - paddle.width / 2 - ball.width / 2;
-    let collisionRight = paddle.x + paddle.width / 2 + ball.width / 2;
-    let collisionTop = paddle.y - paddle.height / 2 - ball.height / 2;
-    let collisionBottom = paddle.y + paddle.height / 2 + ball.height / 2;
-
     const overlap = centredRectanglesOverlap(ball, paddle);
-    if (ball.x >= collisionLeft &&
-        ball.x <= collisionRight &&
-        ball.y >= collisionTop &&
-        ball.y <= collisionBottom) {
+    /**   let collisionLeft = paddle.x - paddle.width / 2 - ball.height / 2;
+       let collisionRight = paddle.x + paddle.width / 2 + ball.width / 2;
+       let collisionTop = paddle.y - paddle.height / 2 - ball.height / 2;
+       let collisionBottom = paddle.y + paddle.height / 2 + ball.height / 2;*/
 
-        ball.velocity.x = -ball.velocity.x;
-        ball.velocity.y = (ball.y - paddle.y) / 20;
-
-
-    }
-
-
+    /**     if (overlap) {
+    
+            if (paddle.placement === "bottom") {
+    
+    
+                if (ball.x >= collisionLeft &&
+                    ball.x <= collisionRight &&
+                    ball.y >= collisionTop) {
+    
+                    ball.velocity.x = -ball.velocity.x;
+                    ball.velocity.y *= -1;
+                }
+    
+            }
+        }*/
     if (overlap) {
         if (paddle.placement === "top") {
 
@@ -255,17 +257,20 @@ function handleBallBounce(ball, paddle) {
         }
 
         if (paddle.placement === "bottom") {
+
             ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
             ball.velocity.y *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
 
         }
 
         if (paddle.placement === "left") {
+
             ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
             ball.velocity.x *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
 
         }
         if (paddle.placement === "right") {
+
             ball.x = paddle.x - paddle.height / 2 - ball.height / 2;
             ball.velocity.x *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
 
@@ -340,12 +345,21 @@ function createAllBricks() {
 function handleBrickDestroy(brick, ball) {
     const overlap = centredRectanglesOverlap(brick, ball);
 
+    let horizontalSides = brick.y
+
     if (overlap) {
 
-        //square.y = brick.y - brick.height / 2 - square.height / 2;
+        if (ball.y = brick.y - brick.height / 2 - ball.height / 2)
 
-        brick.active = false;
+            brick.active = false;
         ball.velocity.y *= -1;
+
+        if (ball.x = brick.x - brick.width / 2 - ball.width / 2) {
+            brick.active = fasle;
+            ball.velocity.x *= -1;
+
+        }
+
     }
     if (brick.active === false) {
 
