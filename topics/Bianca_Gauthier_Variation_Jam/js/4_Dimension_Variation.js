@@ -64,19 +64,19 @@ let bricks = [
 
 ];
 
-const brickStartX = 170;
-const brickStartY = 85;
+const brickStartX = 250;
+const brickStartY = 250;
 const brickGapX = 5;
 const brickGapY = 5;
-const brickWidth = 55;
-const brickHeight = 30;
+const brickWidth = 50;
+const brickHeight = 25;
 
 const active = true;
 
 
 const ball = {
-    x: 500,
-    y: 400,
+    x: 700,
+    y: 500,
     fill: "white",
     width: 12,
     height: 12,
@@ -164,11 +164,11 @@ function draw() {
 
     moveBall(ball);
 
-    //handleBounce(ball, paddle);
-
-
-
     drawBall(ball);
+
+
+
+
 
     for (let brick of bricks) {
         if (brick.active === true) {
@@ -232,8 +232,8 @@ function handleBallBounce(ball, paddle) {
     if (overlap) {
         if (paddle.placement === "top") {
 
-            ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
-            ball.velocity.y *= 1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
+            ball.x = paddle.x - paddle.height / 2 - ball.height / 2;
+            ball.velocity.y *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
 
         }
 
@@ -287,7 +287,7 @@ function drawBrick(brick) {
 
 }
 function resetBall(ball) {
-    ball.y = 300;
+    ball.y = 500;
     //the fly will appear in a random y position
     ball.x = random(100, 900);
 }
