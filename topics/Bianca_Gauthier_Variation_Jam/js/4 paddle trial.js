@@ -64,54 +64,91 @@ let bricks = [
 
 ];
 
-const brickStartX = 170;
-const brickStartY = 85;
+const brickStartX = 250;
+const brickStartY = 250;
 const brickGapX = 5;
 const brickGapY = 5;
-const brickWidth = 55;
-const brickHeight = 30;
+const brickWidth = 50;
+const brickHeight = 25;
 
 const active = true;
 
 
-let ball = {
-    x: 500,
-    y: 400,
+const ball = {
+    x: 700,
+    y: 500,
     fill: "white",
     width: 12,
     height: 12,
     velocity: {
-        x: 2,
-        y: 2
-    },
-    image: undefined
+        x: 3,
+        y: 3
+    }
 
 };
 
 
 // Our paddle
-const paddle = {
-    x: 500,
-    y: 665,
-    fill: "black",
-    width: 110,
-    height: 10
-};
+let paddles = [
+    //bottom paddle 
+    {
+        x: 500,
+        y: 665,
+        fill: "black",
+        width: 110,
+        height: 10,
+        orientation: "horizontal",
+        placement: "bottom"
+
+    },
+
+    //Top Paddle 
+    {
+        x: 500,
+        y: 20,
+        fill: "black",
+        width: 110,
+        height: 10,
+        orientation: "horizontal",
+        placement: "top"
+    },
+
+    //Left Paddle
+    {
+        x: 20,
+        y: 300,
+        fill: "black",
+        width: 10,
+        height: 110,
+        orientation: "vertical",
+        placement: "left"
+    },
+
+
+    //Right paddle 
+    {
+        x: 980,
+        y: 300,
+        fill: "black",
+        width: 10,
+        height: 110,
+        orientation: "vertical",
+        placement: "right"
+    }
+];
 //const gravity = 0.6;
 
 
 let col = 0;
 let row = 0;
-let numberOfColumns = 11;
+let numberOfColumns = 10;
 let numberOfRows = 6;
 let offset = brickWidth / 4;
 //let newBrick = createAllBrick(col * bricks.width, row * bricks.height);
 
 
 
-function preload() {
-    ball.image = loadImage("assets/images/Logo_DVD.png");
-}
+
 //
 function setup() {
     createCanvas(1000, 680);
@@ -124,15 +161,14 @@ function setup() {
 function draw() {
     background("grey");
 
-    movePaddle(paddle);
+
     moveBall(ball);
 
-    //handleBounce(ball, paddle);
-    handleBallBounce(ball, paddle);
-
-
-    drawPaddle(paddle);
     drawBall(ball);
+
+
+
+
 
     for (let brick of bricks) {
         if (brick.active === true) {
@@ -141,6 +177,12 @@ function draw() {
         }
     };
 
+    for (let paddle of paddles) {
+        movePaddle(paddle);
+        drawPaddle(paddle);
+        handleBallBounce(ball, paddle);
+
+    };
 
 
 }
@@ -149,7 +191,16 @@ function draw() {
  * Moves the paddle
  */
 function movePaddle(paddle) {
-    paddle.x = constrain(mouseX, 30, 970);
+
+    if (paddle.orientation === "horizontal") {
+        paddle.x = constrain(mouseX, 30, 970);
+    };
+
+
+    if (paddle.orientation === "vertical") {
+        paddle.y = constrain(mouseY, 30, 650);
+    }
+
 
 }
 /** Moves the ball*/
@@ -163,29 +214,62 @@ function moveBall(ball) {
 
 
     // makes the ball bounce off the right and left side of the canvas
-    if (ball.x > 935 || ball.x < 0) {
-        ball.velocity.x *= -1;
+    if (ball.x > width || ball.x < 0) {
+        resetBall(ball)
     }
     //makes the ball bounce off the top of the canvas
-    if (ball.y < 0) {
-        ball.velocity.y *= -1;
-    }
-
-    if (ball.y > 690) {
+    if (ball.y > height || ball.y < 0) {
         resetBall(ball);
     }
+
 
 }
 
 
 function handleBallBounce(ball, paddle) {
+
+    let collisionLeft = paddle.x - paddle.width / 2 - ball.width / 2;
+    let collisionRight = paddle.x + paddle.width / 2 + ball.width / 2;
+    let collisionTop = paddle.y - paddle.height / 2 - ball.height / 2;
+    let collisionBottom = paddle.y + paddle.height / 2 + ball.height / 2;
+
     const overlap = centredRectanglesOverlap(ball, paddle);
+    if (ball.x >= collisionLeft &&
+        ball.x <= collisionRight &&
+        ball.y >= collisionTop &&
+        ball.y <= collisionBottom) {
+
+        ball.velocity.x = -ball.velocity.x;
+        ball.velocity.y = (ball.y - paddle.y) / 20;
+
+
+    }
+
 
     if (overlap) {
+        if (paddle.placement === "top") {
 
-        ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
-        ball.velocity.y *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
+            ball.x = paddle.x - paddle.height / 2 - ball.height / 2;
+            ball.velocity.y *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
 
+        }
+
+        if (paddle.placement === "bottom") {
+            ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
+            ball.velocity.y *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
+
+        }
+
+        if (paddle.placement === "left") {
+            ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
+            ball.velocity.x *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
+
+        }
+        if (paddle.placement === "right") {
+            ball.x = paddle.x - paddle.height / 2 - ball.height / 2;
+            ball.velocity.x *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
+
+        }
     }
 }
 
@@ -204,7 +288,7 @@ function drawBall(ball) {
     rectMode(CENTER);
     noStroke();
     fill(ball.fill);
-    image(ball.image, ball.x, ball.y,);
+    ellipse(ball.x, ball.y, ball.width, ball.height);
     pop();
 }
 
@@ -220,7 +304,7 @@ function drawBrick(brick) {
 
 }
 function resetBall(ball) {
-    ball.y = 300;
+    ball.y = 500;
     //the fly will appear in a random y position
     ball.x = random(100, 900);
 }
@@ -273,7 +357,6 @@ function handleBrickDestroy(brick, ball) {
 
 
 /**function mousePressed() {
-
     if (mousePressed) {
         moveBall(ball);
     }
@@ -287,7 +370,6 @@ function handleBrickDestroy(brick, ball) {
 
 }*/
 
-
 /**
 * Returns true if a and b overlap, and false otherwise
 * Assumes a and b have properties x, y, width and height to describe
@@ -299,17 +381,4 @@ function centredRectanglesOverlap(a, b) {
         a.y + a.height / 2 > b.y - b.height / 2 &&
         a.y - a.height / 2 < b.y + b.height / 2);
 }
-
-/**
- * Draws the paddle on the canvas
- 
-function drawElement(element) {
-    push();
-    rectMode(CENTER);
-    noStroke();
-    fill(element.fill);
-    rect(element.x, element.y, element.width, element.height);
-    pop();
-}
-*/
 
