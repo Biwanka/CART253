@@ -97,7 +97,8 @@ let paddles = [
         fill: "black",
         width: 110,
         height: 10,
-        orientation: "horizontal"
+        orientation: "horizontal",
+        placement: "bottom"
 
     },
 
@@ -108,7 +109,8 @@ let paddles = [
         fill: "black",
         width: 110,
         height: 10,
-        orientation: "horizontal"
+        orientation: "horizontal",
+        placement: "top"
     },
 
     //Left Paddle
@@ -119,6 +121,7 @@ let paddles = [
         width: 10,
         height: 110,
         orientation: "vertical",
+        placement: "left"
     },
 
 
@@ -130,6 +133,7 @@ let paddles = [
         width: 10,
         height: 110,
         orientation: "vertical",
+        placement: "right"
     }
 ];
 //const gravity = 0.6;
@@ -188,12 +192,12 @@ function draw() {
  */
 function movePaddle(paddle) {
 
-    if (paddle.orientation === "vertical") {
-        paddle.x = constrain(mouseX, 30, 970);
-    }
-
-
     if (paddle.orientation === "horizontal") {
+        paddle.x = constrain(mouseX, 30, 970);
+    };
+
+
+    if (paddle.orientation === "vertical") {
         paddle.y = constrain(mouseY, 30, 650);
     }
 
@@ -224,11 +228,29 @@ function moveBall(ball) {
 
 function handleBallBounce(ball, paddle) {
     const overlap = centredRectanglesOverlap(ball, paddle);
-    if (paddle.width === 110) {
-        if (overlap) {
+
+    if (overlap) {
+        if (paddle.placement === "top") {
 
             ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
+            ball.velocity.y *= 1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
+
+        }
+
+        if (paddle.placement === "bottom") {
+            ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
             ball.velocity.y *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
+
+        }
+
+        if (paddle.placement === "left") {
+            ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
+            ball.velocity.x *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
+
+        }
+        if (paddle.placement === "right") {
+            ball.x = paddle.x - paddle.height / 2 - ball.height / 2;
+            ball.velocity.x *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
 
         }
     }
