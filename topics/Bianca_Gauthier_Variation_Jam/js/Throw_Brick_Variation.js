@@ -52,16 +52,17 @@
 
 let bricks = [
     {
-        x: undefined,
-        y: undefined,
+        x: 500,
+        y: 665,
         fill: "red",
         width: 60,
         height: 35,
-        active: true
+        active: true,
+        speed: {
+            x: undefined,
+            y: 2,
+        }
     },
-
-
-
 ];
 
 const brickStartX = 170;
@@ -110,7 +111,9 @@ const launchPaddle = {
         x: 555,
         y: 665,
         fill: "black",
-
+        size: 10,
+        speed: 20,
+        state: "idle"
     }
 
 
@@ -131,8 +134,6 @@ let offset = brickWidth / 4;
 //
 function setup() {
     createCanvas(1000, 680);
-    createAllBricks(bricks);
-
 }
 
 
@@ -140,43 +141,62 @@ function setup() {
 function draw() {
     background("grey");
 
-    movePaddle(paddle);
+    moveLaunchPaddle(launchPaddle);
+    moveSpring(luanchPaddle);
     moveBall(ball);
 
-    //handleBounce(ball, paddle);
-    handleBallBounce(ball, paddle);
-
-
-    drawPaddle(paddle);
+    drawLaunchPaddle(launchPaddle);
     drawBall(ball);
 
     for (let brick of bricks) {
         if (brick.active === true) {
             drawBrick(brick);
             handleBrickDestroy(brick, ball);
+            moveBrick(brick)
         }
     };
-
-
-
 }
 
 /**
  * Moves the paddle
  */
-function movePaddle(paddle) {
-    paddle.x = constrain(mouseX, 30, 970);
-
+function moveLaunchPaddle(launchPaddle) {
+    launchPaddle.top.x = constrain(mouseX, 30, 970);
+    launchPaddle.base.x = constrain(mouseX, 30, 970);
 }
+
+function moveSpring(launchPaddle) {
+
+    launchPaddle.spring.x = launchPaddle.base.x + launchPaddle.base.width / 2;
+    launchPaddle.top.y = launchPaddle.spring.y + launchPaddle.spring.size;
+
+    if (launchPaddle.spring.state === "idle") {
+
+    }
+
+    else if (launchPaddle.spring.state === "launched") {
+        launchPaddle.spring.y += -launchPaddle.spring.speed;
+
+        if (launchPaddle.spring.y <= 640) {
+            launchPaddle.spring.state = "retract";
+        }
+    }
+
+    else if (launchPaddle.spring.state === "retract") {
+        launchPaddle.spring.y += launchPaddle.spring.speed;
+
+        if (launchPaddle.spring.y >= height) {
+            launchPaddle.spring.state = "idle";
+        }
+    }
+}
+
 /** Moves the ball*/
-
-
 function moveBall(ball) {
     ball.velocity.y = ball.velocity.y;
 
     ball.x = ball.x + ball.velocity.x;
     ball.y = ball.y + ball.velocity.y;
-
 
     // makes the ball bounce off the right and left side of the canvas
     if (ball.x > width || ball.x < 0) {
@@ -186,29 +206,40 @@ function moveBall(ball) {
     if (ball.y > 300 || ball.y < 0) {
         ball.velocity.y *= -1;
     }
-
-
 }
 
+function moveBrick(brick) {
 
-function handleBallBounce(ball, paddle) {
-    const overlap = centredRectanglesOverlap(ball, paddle);
+    if (launchPaddle.top.y < 640) {
+        brick.x = launchPaddle.spring.x;
+        brick.speed.x = 0;
+    }
 
-    if (overlap) {
-
-        ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
-        ball.velocity.y *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
-
+    else if (launchPaddle.top.y > 640) {
+        brick
     }
 }
 
-function drawPaddle(paddle) {
+function drawLaunchPaddle(launchPaddle) {
+
     push();
     rectMode(CENTER);
     noStroke();
-    fill(paddle.fill);
-    rect(paddle.x, paddle.y, paddle.width, paddle.height);
+    fill(launchPaddle.top.fill);
+    rect(launchPaddle.top.x, launchPaddle.top.y, launchPaddle.top.width, launchPaddle.top.height);
     pop();
+
+    push();
+    rectMode(CENTER);
+    noStroke();
+    fill(launchPaddle.base.fill);
+    rect(launchPaddle.base.x, launchPaddle.base.y, launchPaddle.base.width, launchPaddle.base.height);
+    pop();
+
+    puch();
+    stroke(launchPaddle.spring.fill);
+    strokeWeight(launchPaddle.spring.size);
+    line(launchPaddle.spring.x, launchPaddle.spring.y, launchPaddle.base.width, launchPaddle.base.height)
 }
 
 

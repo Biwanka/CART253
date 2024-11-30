@@ -277,6 +277,9 @@ function handlePaddleBlock(brick, paddle) {
     // Check if it's an overlap
     const block = (d < paddle.width / 2 + brick.width / 2);
 
+    // to figure out if it is the right try paddle.x + paddle.width / 2;
+    // to figure out if it is on the left try paddle.x - paddle.width / 2; 
+
     if (block) {
 
         paddle.constraints.max = brick.x + brick.width / 2;
