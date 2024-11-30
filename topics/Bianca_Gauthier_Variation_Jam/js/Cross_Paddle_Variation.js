@@ -59,20 +59,26 @@ let bricks = [
         height: 35,
         active: true
     },
+];
 
-
-
+let hardBricks = [
+    {
+        x: 750,
+        y: 540,
+        fill: "#8b0000",
+        width: 40,
+        height: 20,
+        active: true
+    }
 ];
 
 const brickStartX = 170;
 const brickStartY = 85;
-const brickGapX = 5;
-const brickGapY = 5;
-const brickWidth = 55;
-const brickHeight = 30;
-
+const brickGapX = 10;
+const brickGapY = 15;
+const brickWidth = 50;
+const brickHeight = 25;
 const active = true;
-
 
 const ball = {
     x: 500,
@@ -87,7 +93,6 @@ const ball = {
 
 };
 
-
 // Our paddle
 let paddles = [
     //bottom paddle 
@@ -98,29 +103,7 @@ let paddles = [
         width: 110,
         height: 10,
         orientation: "horizontal"
-
     },
-
-    //Top Paddle 
-    {
-        x: 500,
-        y: 20,
-        fill: "black",
-        width: 110,
-        height: 10,
-        orientation: "horizontal"
-    },
-
-    //Left Paddle
-    {
-        x: 20,
-        y: 300,
-        fill: "black",
-        width: 10,
-        height: 110,
-        orientation: "vertical",
-    },
-
 
     //Right paddle 
     {
@@ -140,9 +123,6 @@ let row = 0;
 let numberOfColumns = 10;
 let numberOfRows = 6;
 let offset = brickWidth / 4;
-//let newBrick = createAllBrick(col * bricks.width, row * bricks.height);
-
-
 
 
 //
@@ -157,12 +137,7 @@ function setup() {
 function draw() {
     background("grey");
 
-
     moveBall(ball);
-
-    //handleBounce(ball, paddle);
-
-
 
     drawBall(ball);
 
@@ -180,7 +155,12 @@ function draw() {
 
     };
 
-
+    for (let hardBrick of hardBricks) {
+        if (hardBrick.active === true) {
+            drawHardBrick(hardBrick);
+            handleHardBrickDestroy(hardBrick, ball);
+        }
+    }
 }
 
 /**
@@ -196,8 +176,6 @@ function movePaddle(paddle) {
     if (paddle.position = "vertical") {
         paddle.y = constrain(mouseY, 30, 650);
     }
-
-
 }
 /** Moves the ball*/
 
@@ -217,19 +195,21 @@ function moveBall(ball) {
     if (ball.y > height || ball.y < 0) {
         resetBall(ball);
     }
-
-
 }
 
 
 function handleBallBounce(ball, paddle) {
     const overlap = centredRectanglesOverlap(ball, paddle);
-    if (paddle.width === 110) {
-        if (overlap) {
+    if (overlap) {
+        if (paddle.orientation === "horizontal") {
 
             ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
-            ball.velocity.y *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
+            ball.velocity.y *= -1;
+        }
+        if (paddle.orientation === "vertical") {
 
+            ball.x = paddle.x - paddle.width / 2 - ball.width / 2;
+            ball.velocity.x *= -1;
         }
     }
 }
@@ -261,11 +241,21 @@ function drawBrick(brick) {
     noStroke(0);
     rect(brick.x, brick.y, brick.width, brick.height);
     pop();
-
-
 }
+
+function drawHardBrick(hardBrick) {
+
+    push();
+    rectMode(CENTER);
+    fill(hardBrick.fill);
+    noStroke(0);
+    rect(hardBrick.x, hardBrick.y, hardBrick.width, hardBrick.height);
+    pop();
+}
+
+
 function resetBall(ball) {
-    ball.y = 300;
+    ball.y = random(100, 600);
     //the fly will appear in a random y position
     ball.x = random(100, 900);
 }
@@ -274,12 +264,14 @@ function createAllBricks() {
     for (let row = 0; row < numberOfRows; row++) {
         if (row % 2 === 0) {
             col = 12;
-            offset = brickWidth / 4;
+            offset = brickWidth / 2;
         }
+
         else {
             col = 11;
             offset = 0;
         }
+
         for (let col = 0; col < numberOfColumns; col++) {
 
             // We can work out each brick's x and y by its position in the rows and columns
@@ -293,8 +285,6 @@ function createAllBricks() {
             }
             bricks.push(newBrick);
         }
-
-
     }
 }
 
@@ -302,18 +292,26 @@ function handleBrickDestroy(brick, ball) {
     const overlap = centredRectanglesOverlap(brick, ball);
 
     if (overlap) {
-
-        //square.y = brick.y - brick.height / 2 - square.height / 2;
-
         brick.active = false;
         ball.velocity.y *= -1;
     }
+
     if (brick.active === false) {
+    }
+}
+
+function handleHardBrickDestroy(hardBrick, ball) {
+    const overlap = centredRectanglesOverlap(hardBrick, ball);
+
+    if (overlap) {
+        hardBrick.active = false;
+        ball.velocity.y *= -1;
+    }
+
+    if (hardBrick.active === false) {
 
     }
-    else {
 
-    }
 }
 
 
