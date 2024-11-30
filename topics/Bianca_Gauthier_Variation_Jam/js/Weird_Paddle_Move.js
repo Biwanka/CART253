@@ -101,7 +101,6 @@ let paddles = [
 
     },
 
-    //Top Paddle 
     {
         x: 500,
         y: 20,
@@ -139,7 +138,7 @@ let paddles = [
     //Left Paddle
     {
         x: 20,
-        y: 300,
+        y: 340,
         fill: "black",
         width: 10,
         height: 110,
@@ -157,7 +156,7 @@ let paddles = [
     },
     {
         x: 20,
-        y: 100,
+        y: 180,
         fill: "black",
         width: 10,
         height: 110,
@@ -252,8 +251,11 @@ function moveBall(ball) {
         resetBall(ball)
     }
     //makes the ball bounce off the top of the canvas
-    if (ball.y > height || ball.y < 0) {
+    if (ball.y > height) {
         resetBall(ball);
+    }
+    if (ball.y < 0) {
+        ball.velocity.y *= -1;
     }
 
 
