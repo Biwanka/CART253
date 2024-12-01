@@ -53,7 +53,7 @@
 let bricks = [
     {
         x: 500,
-        y: 665,
+        y: 648,
         fill: "red",
         width: 60,
         height: 35,
@@ -77,7 +77,7 @@ const active = true;
 
 const ball = {
     x: 500,
-    y: 400,
+    y: 100,
     fill: "white",
     width: 12,
     height: 12,
@@ -87,6 +87,7 @@ const ball = {
     }
 
 };
+
 
 
 // Our paddle
@@ -101,24 +102,25 @@ const launchPaddle = {
 
     base: {
         x: 500,
-        y: 665,
+        y: 673,
         fill: "black",
         width: 120,
-        height: 15
+        height: 10
     },
 
     spring: {
-        x: 555,
+        x: undefined,
         y: 665,
         fill: "black",
-        size: 10,
+        size: 8,
         speed: 20,
         state: "idle"
     }
 
 
 };
-//const gravity = 0.6;
+
+const gravity = 0.8;
 
 
 let col = 0;
@@ -142,7 +144,7 @@ function draw() {
     background("grey");
 
     moveLaunchPaddle(launchPaddle);
-    moveSpring(luanchPaddle);
+    moveSpring(launchPaddle);
     moveBall(ball);
 
     drawLaunchPaddle(launchPaddle);
@@ -167,7 +169,7 @@ function moveLaunchPaddle(launchPaddle) {
 
 function moveSpring(launchPaddle) {
 
-    launchPaddle.spring.x = launchPaddle.base.x + launchPaddle.base.width / 2;
+    launchPaddle.spring.x = launchPaddle.base.x;
     launchPaddle.top.y = launchPaddle.spring.y + launchPaddle.spring.size;
 
     if (launchPaddle.spring.state === "idle") {
@@ -176,6 +178,7 @@ function moveSpring(launchPaddle) {
 
     else if (launchPaddle.spring.state === "launched") {
         launchPaddle.spring.y += -launchPaddle.spring.speed;
+
 
         if (launchPaddle.spring.y <= 640) {
             launchPaddle.spring.state = "retract";
@@ -209,14 +212,24 @@ function moveBall(ball) {
 }
 
 function moveBrick(brick) {
+    brick.x = launchPaddle.top.x;
 
-    if (launchPaddle.top.y < 640) {
-        brick.x = launchPaddle.spring.x;
-        brick.speed.x = 0;
+    // brick.y = brick.y + brick.speed.y;
+    if (launchPaddle.spring.state === "launched") {
+        brick.y = brick.y - 5;
+    }
+    if (brick.y > 650) {
+        // brick.x = launchPaddle.spring.x;
+        brick.speed.y = 0;
+
     }
 
-    else if (launchPaddle.top.y > 640) {
-        brick
+    else if (brick.y <= 645) {
+        brick.speed.y *= -2;
+        brick.speed.y = 2;
+
+        brick.y = brick.y - brick.speed.y;
+
     }
 }
 
@@ -236,10 +249,11 @@ function drawLaunchPaddle(launchPaddle) {
     rect(launchPaddle.base.x, launchPaddle.base.y, launchPaddle.base.width, launchPaddle.base.height);
     pop();
 
-    puch();
+    push();
     stroke(launchPaddle.spring.fill);
     strokeWeight(launchPaddle.spring.size);
-    line(launchPaddle.spring.x, launchPaddle.spring.y, launchPaddle.base.width, launchPaddle.base.height)
+    line(launchPaddle.spring.x, launchPaddle.spring.y, launchPaddle.base.width);
+    pop();
 }
 
 
@@ -273,6 +287,14 @@ function handleBrickDestroy(brick, ball) {
     if (brick.active === false) {
 
     }
+}
+
+function mousePressed() {
+
+    if (launchPaddle.spring.state === "idle") {
+        launchPaddle.spring.state = "launched";
+    }
+
 }
 
 
