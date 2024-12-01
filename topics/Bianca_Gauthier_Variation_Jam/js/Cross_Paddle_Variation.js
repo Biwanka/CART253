@@ -200,14 +200,26 @@ function handleBallBounce(ball, paddle) {
     const overlap = centredRectanglesOverlap(ball, paddle);
     if (overlap) {
         if (paddle.orientation === "horizontal") {
+            if (ball.y > paddle.y) {
+                ball.velocity.y *= -1;
+            }
+            else if (ball.y < paddle.y) {
+                ball.velocity.y *= 1;
+            }
 
-            ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
-            ball.velocity.y *= -1;
+            // ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
+            //  ball.velocity.y *= -1;
         }
         if (paddle.orientation === "vertical") {
 
-            ball.x = paddle.x - paddle.width / 2 - ball.width / 2;
-            ball.velocity.x *= -1;
+            if (ball.x > paddle.x) {
+                ball.velocity.x *= -1;
+            }
+            else if (ball.x < paddle.x) {
+                ball.velocity.x *= 1;
+            }
+            //ball.x = paddle.x - paddle.width / 2 - ball.width / 2;
+            //ball.velocity.x *= -1;
         }
     }
 }
