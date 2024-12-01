@@ -396,3 +396,38 @@ function centredRectanglesOverlap(a, b) {
         a.y - a.height / 2 < b.y + b.height / 2);
 }
 
+
+/** function moveBrick(brick) {
+
+    brick.speed.y = brick.speed.y + gravity;
+    // brick.x = brick.x + brick.speed.x;
+    brick.y = brick.y - brick.speed.y;
+
+    brick.x = launchPaddle.top.x;
+}
+
+function handleBrickLaunch(brick, launchPadlle) {
+    const overlap = centredRectanglesOverlap(brick, launchPaddle);
+
+    if (overlap) {
+        brick.y = launchPaddle.top.y - launchPaddle.top.height / 2 - brick.height / 2;
+        brick.speed.y *= -1;
+    }
+
+ if (launchPaddle.spring.state === "idle") {
+     brick.speed.y = 0;
+ 
+ 
+ }
+ 
+ else if (launchPaddle.spring.state === "launched" && overlap) {
+     brick.y = launchPaddle.top.y - launchPaddle.top.height / 2 - brick.height / 2;
+     brick.speed.y *= -1;
+ }
+ else if (launchPaddle.spring.state === " retract") {
+     // brick.x = launchPaddle.spring.x;
+     brick.speed.y = 0;
+ 
+ 
+ }
+*/

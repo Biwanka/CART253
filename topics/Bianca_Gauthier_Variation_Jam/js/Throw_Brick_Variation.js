@@ -55,22 +55,15 @@ let bricks = [
         x: 500,
         y: 648,
         fill: "red",
-        width: 60,
-        height: 35,
+        width: 30,
+        height: 45,
         active: true,
-        speed: {
-            x: undefined,
-            y: 2,
+        velocity: {
+            x: 0,
+            y: 2
         }
     },
 ];
-
-const brickStartX = 170;
-const brickStartY = 85;
-const brickGapX = 5;
-const brickGapY = 5;
-const brickWidth = 55;
-const brickHeight = 30;
 
 const active = true;
 
@@ -85,10 +78,7 @@ const ball = {
         x: 3,
         y: 3
     }
-
 };
-
-
 
 // Our paddle
 const launchPaddle = {
@@ -116,22 +106,9 @@ const launchPaddle = {
         speed: 20,
         state: "idle"
     }
-
-
 };
 
-const gravity = 0.8;
-
-
-let col = 0;
-let row = 0;
-let numberOfColumns = 11;
-let numberOfRows = 6;
-let offset = brickWidth / 4;
-//let newBrick = createAllBrick(col * bricks.width, row * bricks.height);
-
-
-
+const gravity = 0.1;
 
 //
 function setup() {
@@ -152,9 +129,10 @@ function draw() {
 
     for (let brick of bricks) {
         if (brick.active === true) {
-            drawBrick(brick);
+            moveBrick(brick);
             handleBrickDestroy(brick, ball);
-            moveBrick(brick)
+            handleBrickLaunch(brick);
+            drawBrick(brick);
         }
     };
 }
@@ -212,24 +190,20 @@ function moveBall(ball) {
 }
 
 function moveBrick(brick) {
+    brick.velocity.y = brick.velocity.y + gravity;
+
+    brick.y = brick.y + brick.velocity.y;
+
     brick.x = launchPaddle.top.x;
+}
 
-    // brick.y = brick.y + brick.speed.y;
-    if (launchPaddle.spring.state === "launched") {
-        brick.y = brick.y - 5;
-    }
-    if (brick.y > 650) {
-        // brick.x = launchPaddle.spring.x;
-        brick.speed.y = 0;
+function handleBrickLaunch(brick) {
+    const overlap = centredRectanglesOverlap(brick, launchPaddle.top);
 
-    }
+    if (overlap) {
 
-    else if (brick.y <= 645) {
-        brick.speed.y *= -2;
-        brick.speed.y = 2;
-
-        brick.y = brick.y - brick.speed.y;
-
+        brick.y = launchPaddle.top.y - launchPaddle.top.height / 2 - brick.height / 2;
+        brick.velocity.y *= -1;
     }
 }
 
