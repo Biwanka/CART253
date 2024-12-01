@@ -49,6 +49,25 @@
  */
 
 "use strict";
+// Our paddle
+const paddle = {
+    //bottom paddle 
+    horizontal: {
+        x: 300,
+        y: 665,
+        fill: "black",
+        width: 110,
+        height: 10,
+    },
+    //Left Paddle
+    vertical: {
+        x: 20,
+        y: 340,
+        fill: "black",
+        width: 10,
+        height: 110,
+    },
+};
 
 let bricks = [
     {
@@ -84,35 +103,8 @@ const ball = {
         x: 3,
         y: 3
     }
-
 };
 
-
-// Our paddle
-let paddles = [
-    //bottom paddle 
-    {
-        x: 300,
-        y: 665,
-        fill: "black",
-        width: 110,
-        height: 10,
-        orientation: "horizontal"
-
-    },
-    //Left Paddle
-    {
-        x: 20,
-        y: 340,
-        fill: "black",
-        width: 10,
-        height: 110,
-        orientation: "vertical",
-
-    },
-];
-
-//const gravity = 0.6;
 
 
 let col = 0;
@@ -120,8 +112,6 @@ let row = 0;
 let numberOfColumns = 10;
 let numberOfRows = 6;
 let offset = brickWidth / 4;
-//let newBrick = createAllBrick(col * bricks.width, row * bricks.height);
-
 
 
 
@@ -129,7 +119,6 @@ let offset = brickWidth / 4;
 function setup() {
     createCanvas(1000, 680);
     createAllBricks(bricks);
-
 }
 
 
@@ -139,11 +128,11 @@ function draw() {
 
 
     moveBall(ball);
+    movePaddle(paddle);
 
-    //handleBounce(ball, paddle);
+    handleBallBounce(ball, paddle);
 
-
-
+    drawPaddle(paddle);
     drawBall(ball);
 
     for (let brick of bricks) {
@@ -152,15 +141,6 @@ function draw() {
             handleBrickDestroy(brick, ball);
         }
     };
-
-    for (let paddle of paddles) {
-        movePaddle(paddle);
-        drawPaddle(paddle);
-        handleBallBounce(ball, paddle);
-
-    };
-
-
 }
 
 /**
@@ -169,26 +149,16 @@ function draw() {
 
 function movePaddle(paddle) {
 
-    if (paddle.orientation === "vertical") {
-        paddle.x = constrain(mouseX, 30, 970);
-    }
-
-
-    if (paddle.orientation === "horizontal") {
-        paddle.y = constrain(mouseY, 30, 650);
-    }
-
-
+    paddle.vertical.x = constrain(mouseX, 30, 970);
+    paddle.horizontal.y = constrain(mouseY, 30, 650);
 }
+
 /** Moves the ball*/
-
-
 function moveBall(ball) {
     ball.velocity.y = ball.velocity.y;
 
     ball.x = ball.x + ball.velocity.x;
     ball.y = ball.y + ball.velocity.y;
-
 
     // makes the ball bounce off the right and left side of the canvas
     if (ball.x > width || ball.x < 0) {
@@ -201,56 +171,45 @@ function moveBall(ball) {
     if (ball.y < 0) {
         ball.velocity.y *= -1;
     }
-
-
 }
-
 
 function handleBallBounce(ball, paddle) {
-    const overlap = centredRectanglesOverlap(ball, paddle);
-
-    if (overlap) {
-        if (paddle.orientation === "horizontal") {
-            if (ball.y > paddle.y) {
-                ball.velocity.y *= -1;
-            }
-            else if (ball.y < paddle.y) {
-                ball.velocity.y *= 1;
-            }
-
-            // ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
-            //  ball.velocity.y *= -1;
+    const horizontalOverlap = centredRectanglesOverlap(ball, paddle.horizontal);
+    const verticalOverlap = centredRectanglesOverlap(ball, paddle.vertical);
+    if (horizontalOverlap) {
+        if (ball.y > paddle.horizontal.y) {
+            ball.velocity.y *= -1;
         }
-        if (paddle.orientation === "vertical") {
-
-            if (ball.x > paddle.x) {
-                ball.velocity.x *= -1;
-            }
-            else if (ball.x < paddle.x) {
-                ball.velocity.x *= 1;
-            }
+        else if (ball.y < paddle.horizontal.y) {
+            ball.velocity.y *= 1;
         }
-        /**if (overlap) {
-            if (paddle.orientation === "horizontal") {
-    
-                ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
-                ball.velocity.y *= -1;
-            }
-            if (paddle.orientation === "vertical") {
-                if (ball.x > (paddle.x - paddle.height / 2 - ball.height / 2) || ball.x < (paddle.x - paddle.height / 2 - ball.height / 2)) {
-                    ball.velocity.x *= -1;
-                }
-    
-            }
-        }*/
+    }
+
+    if (verticalOverlap) {
+
+        if (ball.x > paddle.vertical.x) {
+            ball.velocity.x *= -1;
+        }
+        else if (ball.x < paddle.vertical.x) {
+            ball.velocity.x *= 1;
+        }
     }
 }
+
 function drawPaddle(paddle) {
+
     push();
     rectMode(CENTER);
     noStroke();
-    fill(paddle.fill);
-    rect(paddle.x, paddle.y, paddle.width, paddle.height);
+    fill(paddle.vertical.fill);
+    rect(paddle.vertical.x, paddle.vertical.y, paddle.vertical.width, paddle.vertical.height);
+    pop();
+
+    push();
+    rectMode(CENTER);
+    noStroke();
+    fill(paddle.horizontal.fill);
+    rect(paddle.horizontal.x, paddle.horizontal.y, paddle.horizontal.width, paddle.horizontal.height);
     pop();
 }
 
@@ -304,8 +263,6 @@ function createAllBricks() {
             }
             bricks.push(newBrick);
         }
-
-
     }
 }
 
@@ -313,8 +270,6 @@ function handleBrickDestroy(brick, ball) {
     const overlap = centredRectanglesOverlap(brick, ball);
 
     if (overlap) {
-
-        //square.y = brick.y - brick.height / 2 - square.height / 2;
 
         brick.active = false;
         ball.velocity.y *= -1;
@@ -324,6 +279,23 @@ function handleBrickDestroy(brick, ball) {
     }
     else {
 
+    }
+}
+
+function keyPressed(paddle) {
+
+    if (keyCode === UP_ARROW) {
+        paddle.vertical.y = paddle.vertical.y + 1;
+    }
+
+    if (keyCode === DOWN_ARROW) {
+        // Code to run.
+    }
+    if (keyCode === LEFT_ARROW) {
+        // Code to run.
+    }
+    if (keyCode === RIGHT_ARROW) {
+        // Code to run.
     }
 }
 
