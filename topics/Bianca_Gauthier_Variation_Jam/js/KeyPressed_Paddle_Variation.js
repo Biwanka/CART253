@@ -100,41 +100,6 @@ let paddles = [
         orientation: "horizontal"
 
     },
-
-    {
-        x: 500,
-        y: 20,
-        fill: "black",
-        width: 110,
-        height: 10,
-        orientation: "horizontal"
-    },
-    {
-        x: 100,
-        y: 20,
-        fill: "black",
-        width: 110,
-        height: 10,
-        orientation: "horizontal"
-    },
-
-    {
-        x: 700,
-        y: 20,
-        fill: "black",
-        width: 110,
-        height: 10,
-        orientation: "horizontal"
-    },
-    {
-        x: 900,
-        y: 20,
-        fill: "black",
-        width: 110,
-        height: 10,
-        orientation: "horizontal"
-    },
-
     //Left Paddle
     {
         x: 20,
@@ -145,29 +110,8 @@ let paddles = [
         orientation: "vertical",
 
     },
-    {
-        x: 20,
-        y: 500,
-        fill: "black",
-        width: 10,
-        height: 110,
-        orientation: "vertical",
-
-    },
-    {
-        x: 20,
-        y: 180,
-        fill: "black",
-        width: 10,
-        height: 110,
-        orientation: "vertical",
-
-    },
-
-
-
-
 ];
+
 //const gravity = 0.6;
 
 
