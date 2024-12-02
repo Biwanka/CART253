@@ -113,17 +113,6 @@ let numberOfColumns = 10;
 let numberOfRows = 6;
 let offset = brickWidth / 4;
 
-
-let PaddleSpeed = 2;
-let verticalPaddleMove = 0;
-let horizontalPaddleMove = 0;
-let verticalMoveUp = keyIsDown(UP_ARROW);
-let verticalMoveDown = keyIsDown(DOWN_ARROW);
-let horizontalMoveRight = keyIsDown(RIGHT_ARROW);
-let horizontalMoveLeft = keyIsDown(LEFT_ARROW);
-
-
-
 //
 function setup() {
     createCanvas(1000, 680);
@@ -158,16 +147,35 @@ function draw() {
 
 function movePaddle(paddle) {
 
-    if (keyPressed(keyCode === UP_ARROW)) {
-        paddle.vertical.y = paddle.vertical.y + 1;
-    }
-
     paddle.vertical.x = constrain(mouseX, 30, 970);
     paddle.horizontal.y = constrain(mouseY, 30, 650);
+
+    //need to make a barrier so the paddle dont go out of the canvas 
+
+    if (keyIsDown(UP_ARROW)) {
+        paddle.vertical.y -= 5;
+        //paddle.vertical.y = constrain(30, 650);
+    }
+
+    else if (keyIsDown(DOWN_ARROW)) {
+        paddle.vertical.y += 5;
+        //  paddle.vertical.y = constrain(30, 650);
+    }
+
+    if (keyIsDown(LEFT_ARROW)) {
+        paddle.horizontal.x -= 5;
+        // paddle.horizontal.x = constrain(30, 970);
+    }
+
+    else if (keyIsDown(RIGHT_ARROW)) {
+        paddle.horizontal.x += 5;
+        //  paddle.horizontal.x = constrain(30, 970);
+    }
 }
 
 /** Moves the ball*/
 function moveBall(ball) {
+
     ball.velocity.y = ball.velocity.y;
 
     ball.x = ball.x + ball.velocity.x;
@@ -187,8 +195,10 @@ function moveBall(ball) {
 }
 
 function handleBallBounce(ball, paddle) {
+
     const horizontalOverlap = centredRectanglesOverlap(ball, paddle.horizontal);
     const verticalOverlap = centredRectanglesOverlap(ball, paddle.vertical);
+
     if (horizontalOverlap) {
         if (ball.y > paddle.horizontal.y) {
             ball.velocity.y *= -1;
@@ -295,25 +305,6 @@ function handleBrickDestroy(brick, ball) {
     }
 }
 
-function keyPressed(paddle) {
-
-    if (keyCode === UP_ARROW) {
-
-    }
-
-    if (keyCode === DOWN_ARROW) {
-        // Code to run.
-    }
-    if (keyCode === LEFT_ARROW) {
-        // Code to run.
-    }
-    if (keyCode === RIGHT_ARROW) {
-        // Code to run.
-    }
-    else if (key === "a") {
-
-    }
-}
 
 
 /**function mousePressed() {

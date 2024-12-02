@@ -181,7 +181,7 @@ function handleBallBounce(ball, paddle) {
     if (overlap) {
 
         ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
-        ball.velocity.y *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
+        ball.velocity.y *= -1;
 
     }
 }
@@ -253,23 +253,33 @@ function createAllBricks() {
 function handleBrickDestroy(brick, ball) {
     const overlap = centredRectanglesOverlap(brick, ball);
 
-    let topBrick = brick.y + brick.height / 2;
-    let bottomBrick = brick.y - brick.height / 2;
-    let rightSideBrick = brick.x + brick.width / 2;
-    let leftSideBrick = brick.x - brick.width / 2;
+    let topBrick = brick.y - brick.height / 2 - ball.height / 2;
+    let bottomBrick = brick.y - brick.height / 2 + ball.height / 2;
+    let leftSideBrick = brick.x - brick.width / 2 + ball.width / 2;
+    let rightSideBrick = brick.x - brick.width / 2 - ball.width / 2;
 
     if (overlap) {
 
-        if (ball.y)
+        if (ball.y < brick.y) {
             brick.active = false;
-        ball.velocity.y *= -1;
+            ball.velocity.y *= -1;
+        }
 
+        else if (ball.y > brick.y) {
+            brick.active = false;
+            ball.velocity.y *= -1;
+        }
 
+        if (ball.x < brick.x) {
+            brick.active = false;
+            ball.velocity.x *= -1;
+        }
+
+        else if (ball.x > brick.x) {
+            brick.active = false;
+            ball.velocity.x *= -1;
+        }
     }
-
-
-
-
 
     if (brick.active === false) {
 
@@ -277,9 +287,9 @@ function handleBrickDestroy(brick, ball) {
     else {
 
     }
+
+
 }
-
-
 /**function mousePressed() {
 
     if (mousePressed) {
