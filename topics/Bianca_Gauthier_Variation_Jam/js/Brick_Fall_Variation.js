@@ -50,33 +50,6 @@
 
 "use strict";
 
-let bricks = [
-    {
-        x: undefined,
-        y: 100,
-        fill: "red",
-        width: 60,
-        height: 35,
-        active: true,
-        velocity: {
-            x: 0,
-            y: 2,
-        }
-
-    },
-
-];
-
-const brickStartX = 170;
-const brickStartY = 85;
-const brickGapX = 5;
-const brickGapY = 5;
-const brickWidth = 55;
-const brickHeight = 30;
-
-const active = true;
-
-
 const ball = {
     x: 500,
     y: 400,
@@ -87,9 +60,7 @@ const ball = {
         x: 3,
         y: 3
     }
-
 };
-
 
 // Our paddle
 const paddle = {
@@ -102,9 +73,31 @@ const paddle = {
         min: 30,
         max: 970,
     }
-
 };
 
+
+let bricks = [
+    {
+        x: undefined,
+        y: 100,
+        fill: "red",
+        width: 60,
+        height: 35,
+        active: true,
+        velocity: {
+            x: 0,
+            y: 2,
+        }
+    }
+];
+
+const brickStartX = 170;
+const brickStartY = 85;
+const brickGapX = 5;
+const brickGapY = 5;
+const brickWidth = 55;
+const brickHeight = 30;
+const active = true;
 
 let col = 0;
 let row = 0;
@@ -118,7 +111,6 @@ function setup() {
     createCanvas(1000, 680);
     createAllBricks(bricks);
 }
-
 
 //
 function draw() {
@@ -152,7 +144,6 @@ function movePaddle(paddle) {
     paddle.x = constrain(mouseX, paddle.constraints.min, paddle.constraints.max);
 }
 
-
 /** Moves the ball*/
 
 function moveBall(ball) {
@@ -169,7 +160,6 @@ function moveBall(ball) {
         ball.velocity.y *= -1;
     }
 }
-
 
 
 function handleBallBounce(ball, paddle) {
