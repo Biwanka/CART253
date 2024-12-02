@@ -260,11 +260,17 @@ function handleBrickDestroy(brick, ball) {
 
     if (overlap) {
 
-        //square.y = brick.y - brick.height / 2 - square.height / 2;
-
-        brick.active = false;
+        if (ball.y)
+            brick.active = false;
         ball.velocity.y *= -1;
+
+
     }
+
+
+
+
+
     if (brick.active === false) {
 
     }
