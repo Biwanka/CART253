@@ -272,27 +272,25 @@ function handleBrickFall(brick, ball) {
 }
 
 function handlePaddleBlock(brick, paddle) {
-    //const overlap = centredRectanglesOverlap(brick, paddle);
-    const d = dist(paddle.x, paddle.y, brick.x, brick.y);
+    const overlap = centredRectanglesOverlap(brick, paddle);
+
+    let paddleRight = paddle.x + paddle.width / 2;
+    let paddleLeft = paddle.x - paddle.width / 2;
+    let brickSide = brick.x + brick / 2;
+    //const d = dist(paddle.x, paddle.y, brick.x, brick.y);
     // Check if it's an overlap
     const block = (d < paddle.width / 2 + brick.width / 2);
 
-    // to figure out if it is the right try paddle.x + paddle.width / 2;
-    // to figure out if it is on the left try paddle.x - paddle.width / 2; 
+    // to figure out if it is the right try 
+    // to figure out if it is on the left try 
+    if (overlap && brick.y === 665) {
 
-    if (block) {
-
-        paddle.constraints.max = brick.x + brick.width / 2;
         paddle.constraints.min = brick.x + brick.width / 2;
+        paddle.constraints.max = brick.x + brick.width / 2;
         paddle.x = constrain(mouseX, paddle.constraints.min, paddle.constraints.max);
+
     }
-}
-
-
-/** /
-function handleBrickCaught(brick, paddle) {
-    const overlap = centredRectanglesOverlap(brick, paddle);
-
+    /**  
 
     if (brick.velocity.y === 0 && overlap) {
 
@@ -304,12 +302,29 @@ function handleBrickCaught(brick, paddle) {
             paddle.constraints.min = brick.x + brick.width / 2;
         }
 
+    }*/
+
+}
+
+
+
+function handleBrickCaught(brick, paddle) {
+    const overlap = centredRectanglesOverlap(brick, paddle);
+    brick.active = true;
+    if (overlap && brick.y > paddle.y) {
+        brick.active = false
+
+
+        if (brick.active === false) {
+
+        }
+    }
+    else {
+
     }
 
 
-
 }
-*/
 
 function handleBrickLand(brick) {
 
