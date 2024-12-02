@@ -50,30 +50,6 @@
 
 "use strict";
 
-let bricks = [
-    {
-        x: undefined,
-        y: undefined,
-        fill: "red",
-        width: 60,
-        height: 35,
-        active: true
-    },
-
-
-
-];
-
-const brickStartX = 600;
-const brickStartY = 50;
-const brickGapX = 15;
-const brickGapY = 25;
-const brickWidth = 50;
-const brickHeight = 25;
-
-const active = true;
-
-
 let ball = {
     x: 500,
     y: 400,
@@ -85,9 +61,7 @@ let ball = {
         y: 2
     },
     image: undefined
-
 };
-
 
 // Our paddle
 const paddle = {
@@ -97,26 +71,41 @@ const paddle = {
     width: 110,
     height: 10
 };
-//const gravity = 0.6;
 
+let bricks = [
+    {
+        x: undefined,
+        y: undefined,
+        fill: "red",
+        width: 60,
+        height: 35,
+        active: true
+    },
+];
+
+const brickStartX = 600;
+const brickStartY = 50;
+const brickGapX = 15;
+const brickGapY = 25;
+const brickWidth = 50;
+const brickHeight = 25;
+const active = true;
 
 let col = 0;
 let row = 0;
 let numberOfColumns = 5;
 let numberOfRows = 6;
 let offset = brickWidth / 4;
-//let newBrick = createAllBrick(col * bricks.width, row * bricks.height);
-
 
 
 function preload() {
     ball.image = loadImage("assets/images/Logo_DVD.png");
 }
+
 //
 function setup() {
     createCanvas(1000, 680);
     createAllBricks(bricks);
-
 }
 
 
@@ -127,9 +116,7 @@ function draw() {
     movePaddle(paddle);
     moveBall(ball);
 
-    //handleBounce(ball, paddle);
     handleBallBounce(ball, paddle);
-
 
     drawPaddle(paddle);
     drawBall(ball);
@@ -140,27 +127,22 @@ function draw() {
             handleBrickDestroy(brick, ball);
         }
     };
-
-
-
 }
 
 /**
  * Moves the paddle
  */
 function movePaddle(paddle) {
-    paddle.x = constrain(mouseX, 30, 970);
 
+    paddle.x = constrain(mouseX, 30, 970);
 }
 /** Moves the ball*/
-
 
 function moveBall(ball) {
     ball.velocity.y = ball.velocity.y;
 
     ball.x = ball.x + ball.velocity.x;
     ball.y = ball.y + ball.velocity.y;
-
 
     // makes the ball bounce off the right and left side of the canvas
     if (ball.x > 935 || ball.x < 0) {
@@ -174,7 +156,6 @@ function moveBall(ball) {
     if (ball.y > 690) {
         resetBall(ball);
     }
-
 }
 
 
@@ -185,7 +166,6 @@ function handleBallBounce(ball, paddle) {
 
         ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
         ball.velocity.y *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
-
     }
 }
 
@@ -216,9 +196,8 @@ function drawBrick(brick) {
     noStroke(0);
     rect(brick.x, brick.y, brick.width, brick.height);
     pop();
-
-
 }
+
 function resetBall(ball) {
     ball.y = 300;
     //the fly will appear in a random y position
@@ -248,8 +227,6 @@ function createAllBricks() {
             }
             bricks.push(newBrick);
         }
-
-
     }
 }
 
@@ -258,11 +235,10 @@ function handleBrickDestroy(brick, ball) {
 
     if (overlap) {
 
-        //square.y = brick.y - brick.height / 2 - square.height / 2;
-
         brick.active = false;
         ball.velocity.y *= -1;
     }
+
     if (brick.active === false) {
 
     }
@@ -299,17 +275,4 @@ function centredRectanglesOverlap(a, b) {
         a.y + a.height / 2 > b.y - b.height / 2 &&
         a.y - a.height / 2 < b.y + b.height / 2);
 }
-
-/**
- * Draws the paddle on the canvas
- 
-function drawElement(element) {
-    push();
-    rectMode(CENTER);
-    noStroke();
-    fill(element.fill);
-    rect(element.x, element.y, element.width, element.height);
-    pop();
-}
-*/
 
