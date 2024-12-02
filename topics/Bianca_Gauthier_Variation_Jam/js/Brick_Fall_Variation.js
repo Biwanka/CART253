@@ -144,8 +144,8 @@ function draw() {
         if (brick.active === true) {
             drawBrick(brick);
             handleBrickFall(brick, ball);
-            // handleBrickCaught(brick, paddle);
-            // handlePaddleBlock(brick, paddle);
+            handleBrickCaught(brick, paddle);
+            handlePaddleBlock(brick, paddle);
             handleBrickLand(brick);
         }
     };
@@ -279,11 +279,11 @@ function handlePaddleBlock(brick, paddle) {
     let brickSide = brick.x + brick / 2;
     //const d = dist(paddle.x, paddle.y, brick.x, brick.y);
     // Check if it's an overlap
-    const block = (d < paddle.width / 2 + brick.width / 2);
+    // const block = (d < paddle.width / 2 + brick.width / 2);
 
     // to figure out if it is the right try 
     // to figure out if it is on the left try 
-    if (overlap && brick.y === 665) {
+    if (brick.velocity.y === 0 && overlap) {
 
         paddle.constraints.min = brick.x + brick.width / 2;
         paddle.constraints.max = brick.x + brick.width / 2;
@@ -311,20 +311,25 @@ function handlePaddleBlock(brick, paddle) {
 function handleBrickCaught(brick, paddle) {
     const overlap = centredRectanglesOverlap(brick, paddle);
     brick.active = true;
-    if (overlap && brick.y > paddle.y) {
-        brick.active = false
+    if (overlap) {
 
 
-        if (brick.active === false) {
+        brick.active = false;
 
-        }
     }
-    else {
+    if (brick.active === false) {
+
+    }
+    else if (brick.y === 665) {
+        brick.active = true;
+        brick.velocity.y = 0;
 
     }
 
 
 }
+
+
 
 function handleBrickLand(brick) {
 
