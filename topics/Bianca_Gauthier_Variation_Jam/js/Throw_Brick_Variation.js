@@ -50,23 +50,23 @@
 
 "use strict";
 
-let bricks = [
-    {
-        x: 500,
-        y: 648,
-        fill: "red",
-        width: 30,
-        height: 45,
-        active: true,
-        velocity: {
-            x: 0,
-            y: 2
-        }
+const brick = {
+    x: 500,
+    y: 648,
+    fill: "red",
+    width: 30,
+    height: 45,
+    active: true,
+    state: "pre-launched",
+    acceleration: {
+        x: 0,
+        y: 0,
     },
-];
-
-const active = true;
-
+    velocity: {
+        x: 0,
+        y: 2,
+    }
+};
 
 const ball = {
     x: 500,
@@ -123,18 +123,14 @@ function draw() {
     moveLaunchPaddle(launchPaddle);
     moveSpring(launchPaddle);
     moveBall(ball);
+    moveBrick(brick);
+
+    handleBrickDestroy(brick, ball);
+    handleBrickLaunch(brick);
 
     drawLaunchPaddle(launchPaddle);
     drawBall(ball);
-
-    for (let brick of bricks) {
-        if (brick.active === true) {
-            moveBrick(brick);
-            handleBrickDestroy(brick, ball);
-            handleBrickLaunch(brick);
-            drawBrick(brick);
-        }
-    };
+    drawBrick(brick);
 }
 
 /**
