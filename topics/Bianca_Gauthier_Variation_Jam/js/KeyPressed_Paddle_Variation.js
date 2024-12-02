@@ -157,6 +157,7 @@ function draw() {
  */
 
 function movePaddle(paddle) {
+
     if (keyPressed(keyCode === UP_ARROW)) {
         paddle.vertical.y = paddle.vertical.y + 1;
     }
