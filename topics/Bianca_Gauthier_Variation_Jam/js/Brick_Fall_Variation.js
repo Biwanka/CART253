@@ -274,6 +274,8 @@ function handleBrickFall(brick, ball) {
 function handlePaddleBlock(brick, paddle) {
     const overlap = centredRectanglesOverlap(brick, paddle);
 
+    paddle.x = constrain(mouseX, paddle.constraints.min, paddle.constraints.max);
+
     let paddleRight = paddle.x + paddle.width / 2;
     let paddleLeft = paddle.x - paddle.width / 2;
     let brickSide = brick.x + brick / 2;
@@ -285,10 +287,12 @@ function handlePaddleBlock(brick, paddle) {
     // to figure out if it is on the left try 
     if (brick.velocity.y === 0 && overlap) {
 
-        paddle.constraints.min = brick.x + brick.width / 2;
-        paddle.constraints.max = brick.x + brick.width / 2;
-        paddle.x = constrain(mouseX, paddle.constraints.min, paddle.constraints.max);
-
+        if (brickSide = paddleRight) {
+            paddle.constraints.max = brick.x + brick.width / 2;
+        }
+        else if (brickSide = paddleLeft) {
+            paddle.constraints.min = brick.x + brick.width / 2;
+        }
     }
     /**  
 
