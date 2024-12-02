@@ -50,24 +50,7 @@
 
 "use strict";
 // Our paddle
-const paddle = {
-    //bottom paddle 
-    horizontal: {
-        x: 300,
-        y: 665,
-        fill: "black",
-        width: 110,
-        height: 10,
-    },
-    //Left Paddle
-    vertical: {
-        x: 20,
-        y: 340,
-        fill: "black",
-        width: 10,
-        height: 110,
-    },
-};
+
 
 let bricks = [
     {
@@ -105,13 +88,39 @@ const ball = {
     }
 };
 
-
+const paddle = {
+    //bottom paddle 
+    horizontal: {
+        x: 300,
+        y: 665,
+        fill: "black",
+        width: 110,
+        height: 10,
+    },
+    //Left Paddle
+    vertical: {
+        x: 20,
+        y: 340,
+        fill: "black",
+        width: 10,
+        height: 110,
+    },
+};
 
 let col = 0;
 let row = 0;
 let numberOfColumns = 10;
 let numberOfRows = 6;
 let offset = brickWidth / 4;
+
+
+let PaddleSpeed = 2;
+let verticalPaddleMove = 0;
+let horizontalPaddleMove = 0;
+let verticalMoveUp = keyIsDown(UP_ARROW);
+let verticalMoveDown = keyIsDown(DOWN_ARROW);
+let horizontalMoveRight = keyIsDown(RIGHT_ARROW);
+let horizontalMoveLeft = keyIsDown(LEFT_ARROW);
 
 
 
@@ -148,6 +157,9 @@ function draw() {
  */
 
 function movePaddle(paddle) {
+    if (keyPressed(keyCode === UP_ARROW)) {
+        paddle.vertical.y = paddle.vertical.y + 1;
+    }
 
     paddle.vertical.x = constrain(mouseX, 30, 970);
     paddle.horizontal.y = constrain(mouseY, 30, 650);
@@ -285,7 +297,7 @@ function handleBrickDestroy(brick, ball) {
 function keyPressed(paddle) {
 
     if (keyCode === UP_ARROW) {
-        paddle.vertical.y = paddle.vertical.y + 1;
+
     }
 
     if (keyCode === DOWN_ARROW) {
@@ -296,6 +308,9 @@ function keyPressed(paddle) {
     }
     if (keyCode === RIGHT_ARROW) {
         // Code to run.
+    }
+    else if (key === "a") {
+
     }
 }
 
