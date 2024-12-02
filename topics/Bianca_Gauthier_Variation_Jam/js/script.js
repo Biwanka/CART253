@@ -253,6 +253,11 @@ function createAllBricks() {
 function handleBrickDestroy(brick, ball) {
     const overlap = centredRectanglesOverlap(brick, ball);
 
+    let topBrick = brick.y + brick.height / 2;
+    let bottomBrick = brick.y - brick.height / 2;
+    let rightSideBrick = brick.x + brick.width / 2;
+    let leftSideBrick = brick.x - brick.width / 2;
+
     if (overlap) {
 
         //square.y = brick.y - brick.height / 2 - square.height / 2;

@@ -64,12 +64,12 @@ let bricks = [
 
 ];
 
-const brickStartX = 170;
-const brickStartY = 85;
-const brickGapX = 5;
-const brickGapY = 5;
-const brickWidth = 55;
-const brickHeight = 30;
+const brickStartX = 600;
+const brickStartY = 50;
+const brickGapX = 15;
+const brickGapY = 25;
+const brickWidth = 50;
+const brickHeight = 25;
 
 const active = true;
 
@@ -102,7 +102,7 @@ const paddle = {
 
 let col = 0;
 let row = 0;
-let numberOfColumns = 11;
+let numberOfColumns = 5;
 let numberOfRows = 6;
 let offset = brickWidth / 4;
 //let newBrick = createAllBrick(col * bricks.width, row * bricks.height);
