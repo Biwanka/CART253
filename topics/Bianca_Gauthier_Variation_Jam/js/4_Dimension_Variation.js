@@ -283,6 +283,7 @@ function drawBrick(brick) {
 
 
 }
+
 function resetBall(ball) {
     ball.y = 500;
     //the fly will appear in a random y position

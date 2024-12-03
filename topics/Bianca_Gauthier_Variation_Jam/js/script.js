@@ -250,6 +250,12 @@ function createAllBricks() {
     }
 }
 
+function resetBall(ball) {
+    ball.y = 500;
+    //the fly will appear in a random y position
+    ball.x = random(100, 900);
+}
+
 function handleBrickDestroy(brick, ball) {
     const overlap = centredRectanglesOverlap(brick, ball);
 
