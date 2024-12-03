@@ -166,8 +166,7 @@ function handleBallBounce(ball, paddle) {
     const overlap = centredRectanglesOverlap(ball, paddle);
 
     if (overlap) {
-
-        ball.y = paddle.y - ball.height / 2 - ball.height / 2;
+        ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
         ball.velocity.y *= -1;
     }
 }
@@ -198,7 +197,6 @@ function drawBall(ball) {
 }
 
 function drawBrick(brick) {
-
     push();
     rectMode(CENTER);
     fill(brick.fill);
@@ -240,12 +238,41 @@ function createAllBricks() {
 function handleBrickFall(brick, ball) {
     const overlap = centredRectanglesOverlap(brick, ball);
     brick.y = brick.y + brick.velocity.y;
-
-
+    //  ball.x = ball.x + ball.velocity.x;
     if (brick.velocity.y === 0 && overlap) {
-        ball.velocity.y *= -1;
-        brick.velocity.y = 2;
+        if (ball.y < brick.y) {
+            // ball.y = brick.y - brick.width / 2 - ball.width / 2;
+            ball.velocity.y *= -1;
+            brick.velocity.y = 3;
+
+        }
+
+        else if (ball.y > brick.y) {
+
+            //   ball.y = brick.y + brick.height / 2 + ball.height / 2;
+            ball.velocity.y *= -1;
+            brick.velocity.y = 3;
+
+        }
+
+        if (ball.x < brick.x) {
+            //  ball.x = brick.x + brick.width / 2 + ball.width / 2;
+            ball.velocity.x *= 1;
+            brick.velocity.y = 3;
+
+        }
+
+        else if (ball.x > brick.x) {
+            //  ball.x = brick.x - brick.width / 2 - ball.width / 2;
+            ball.velocity.x *= -1;
+            brick.velocity.y = 3;
+
+        }
     }
+    /**   if (brick.velocity.y === 0 && overlap) {
+          ball.velocity.y *= -1;
+          brick.velocity.y = 2;
+      }*/
 }
 
 function handlePaddleBlock(brick, paddle) {
@@ -268,7 +295,7 @@ function handlePaddleBlock(brick, paddle) {
 function handleBrickCaught(brick, paddle) {
     const overlap = centredRectanglesOverlap(brick, paddle);
     brick.active = true;
-    if (brick.velocity.y === 2 && overlap) {
+    if (brick.velocity.y === 3 && overlap) {
 
         brick.active = false;
     }
@@ -283,7 +310,6 @@ function handleBrickCaught(brick, paddle) {
         brick.velocity.y = 0;
     }
 }
-
 
 
 function handleBrickLand(brick) {
