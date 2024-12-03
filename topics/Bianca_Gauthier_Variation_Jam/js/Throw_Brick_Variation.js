@@ -56,7 +56,7 @@ const brick = {
     fill: "red",
     width: 30,
     height: 45,
-    active: true,
+    active: "true",
     state: "pre-launch",
     acceleration: {
         x: 0,
@@ -72,8 +72,8 @@ const ball = {
     x: 500,
     y: 100,
     fill: "white",
-    width: 12,
-    height: 12,
+    width: 16,
+    height: 16,
     velocity: {
         x: 3,
         y: 3
@@ -127,7 +127,6 @@ function draw() {
 
     handleBrickDestroy(brick, ball);
     handleBrickLaunch(brick, launchPaddle);
-    handleBrickCaught(brick, launchPaddle);
 
     drawLaunchPaddle(launchPaddle);
     drawBall(ball);
@@ -188,80 +187,13 @@ function moveBall(ball) {
 
 function moveBrick(brick) {
 
-
     if (brick.state === "pre-launch") {
         brick.x = mouseX;
-        brick.y = 640;
-        brick.velocity.y = 0;
-        brick.active = true;
-    }
-
-    else if (brick.state === "launch") {
-        brick.acceleration.y += gravity;
-
-        brick.velocity.x += brick.acceleration.x;
-        brick.velocity.y += -brick.acceleration.y;
-
-        brick.x += brick.velocity.x;
-        brick.y += brick.velocity.y;
-
-        if (brick.y < 100) {
-            brick.state = "falling"
-        }
-    }
-
-    else if (brick.state === "falling") {
-
-        brick.velocity.y = 2;
-        brick.y += brick.velocity.y;
-
-        if (brick.y > 645) {
-            brick.state = "pre-launch";
-            brick.y = 645;
-            brick.active = false;
-            brick.x = mouseX;
-
-        }
-    }
-
-
-}
-
-
-function handleBrickLaunch(brick, launchPaddle) {
-
-    const overlap = centredRectanglesOverlap(brick, launchPaddle.top);
-
-    if (overlap && brick.state === "launch") {
-
-        brick.y = launchPaddle.top.y - launchPaddle.top.height / 2 - brick.height / 2;
-        brick.x = mouseX;
-    }
-
-    else if (brick.y > launchPaddle.top.y) {
-        brick.state = "pre-launch";
-        brick.y = 640;
-        brick.velocity.y = 0;
-        brick.acceleration.y = 0;
-        brick.x = mouseX;
     }
 
 }
 
-function handleBrickCaught(brick, launchPaddle) {
-    const overlap = centredRectanglesOverlap(brick, launchPaddle.top);
-    brick.active = true;
-    if (overlap) {
 
-        brick.active = false;
-    }
-
-    if (brick.active === false) {
-
-    }
-
-
-}
 
 function drawLaunchPaddle(launchPaddle) {
 
@@ -306,24 +238,68 @@ function drawBrick(brick) {
     pop();
 }
 
+function handleBrickLaunch(brick, launchPaddle) {
+    const overlap = centredRectanglesOverlap(brick, launchPaddle.top);
+
+    if (brick.state === "pre-launch") {
+        brick.x = mouseX;
+    }
+
+    else if (brick.state === "launch") {
+        brick.acceleration.y += gravity;
+
+        brick.velocity.x += brick.acceleration.x;
+        brick.velocity.y += -brick.acceleration.y;
+
+        brick.x += brick.velocity.x;
+        brick.y += brick.velocity.y;
+
+        if (brick.y < 50) {
+            brick.state = "falling"
+        }
+    }
+    else if (brick.state === "falling") {
+
+        brick.velocity.y = 5;
+        brick.y += brick.velocity.y;
+
+        if (brick.y > 640 && overlap) {
+            brick.state = "pre-launch";
+            brick.y = 643;
+            brick.x = mouseX;
+        }
+
+        else if (brick.y > 750) {
+            resetBrick(brick);
+        }
+    }
+}
+
+function resetBrick(brick) {
+    brick.y = 635;
+    brick.x = mouseX;
+}
 
 function handleBrickDestroy(brick, ball) {
     const overlap = centredRectanglesOverlap(brick, ball);
 
     if (overlap) {
-        brick.active = false;
+        brick.active = "false";
         ball.velocity.y *= -1;
     }
-    if (brick.active === false) {
 
+    if (brick.active === "false") {
+        resetBrick(brick);
     }
+
+
 }
 
 function mousePressed() {
 
     if (brick.state === "pre-launch") {
         brick.state = "launch";
-        brick.x = mouseX;
+
     }
 
     if (launchPaddle.spring.state === "idle") {
@@ -344,3 +320,24 @@ function centredRectanglesOverlap(a, b) {
         a.y - a.height / 2 < b.y + b.height / 2);
 }
 
+/**function handleBrickLaunch(brick, launchPaddle) {
+
+    const overlap = centredRectanglesOverlap(brick, launchPaddle.top);
+
+   
+
+    if (overlap && brick.state === "launch") {
+
+        brick.y = launchPaddle.top.y - launchPaddle.top.height / 2 - brick.height / 2;
+        brick.x = mouseX;
+    }
+
+    else if (brick.y > launchPaddle.top.y) {
+        brick.state = "pre-launch";
+        brick.y = 640;
+        brick.velocity.y = 0;
+        brick.acceleration.y = 0;
+        brick.x = mouseX;
+    }
+
+}*/

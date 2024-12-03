@@ -172,6 +172,12 @@ function handleBallBounce(ball, paddle) {
     }
 }
 
+function resetBall(ball) {
+    ball.y = 500;
+    //the fly will appear in a random y position
+    ball.x = random(100, 900);
+}
+
 function drawPaddle(paddle) {
     push();
     rectMode(CENTER);
