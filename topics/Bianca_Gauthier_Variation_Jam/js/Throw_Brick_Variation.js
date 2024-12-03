@@ -110,13 +110,37 @@ const launchPaddle = {
 
 const gravity = 0.025;
 
+let state = "startGame";
 //
 function setup() {
     createCanvas(1000, 680);
+    resetBrick(brick);
 }
 
+/**function draw() {
+   // if (state === "startGame") {
+       // startGame();
+    //}
 
-//
+    else if (state === "game") {
+        game();
+    }
+
+    else if (state === "gameOver") {
+        gameOver();
+    }
+
+    else if (state === "win") {
+
+    }
+}
+
+function startGame() {
+
+
+}*/
+
+
 function draw() {
     background("grey");
 
@@ -131,6 +155,14 @@ function draw() {
     drawLaunchPaddle(launchPaddle);
     drawBall(ball);
     drawBrick(brick);
+}
+
+function gameOver() {
+
+}
+
+function win() {
+
 }
 
 /**
@@ -190,10 +222,7 @@ function moveBrick(brick) {
     if (brick.state === "pre-launch") {
         brick.x = mouseX;
     }
-
 }
-
-
 
 function drawLaunchPaddle(launchPaddle) {
 
@@ -238,15 +267,24 @@ function drawBrick(brick) {
     pop();
 }
 
+function resetBrick(brick) {
+    brick.y = 645;
+    brick.x = mouseX;
+    brick.velocity.y = 0;
+    brick.acceleration.y = 0;
+    brick.fill = "grey";
+}
+
 function handleBrickLaunch(brick, launchPaddle) {
     const overlap = centredRectanglesOverlap(brick, launchPaddle.top);
 
     if (brick.state === "pre-launch") {
         brick.x = mouseX;
-
+        brick.fill = "red";
     }
 
     else if (brick.state === "launch") {
+
         brick.acceleration.y += gravity;
 
         brick.velocity.x += brick.acceleration.x;
@@ -259,6 +297,7 @@ function handleBrickLaunch(brick, launchPaddle) {
             brick.state = "falling"
         }
     }
+
     else if (brick.state === "falling") {
 
         brick.velocity.y = 5;
@@ -272,32 +311,25 @@ function handleBrickLaunch(brick, launchPaddle) {
 
         else if (brick.y > 750) {
             resetBrick(brick);
+            brick.state = "pre-launch";
         }
     }
 }
-
-
 
 function handleBrickDestroy(brick, ball) {
     const overlap = centredRectanglesOverlap(brick, ball);
 
     if (overlap) {
-        brick.active = "false";
-        ball.velocity.y *= -1;
-
-    }
-
-    if (brick.active === "false") {
         resetBrick(brick);
+        ball.velocity.y *= -1;
+        brick.fill = "grey";
     }
 }
 
-function resetBrick(brick) {
-    brick.y = 635;
-    brick.x = mouseX;
-    brick.velocity.y = 0;
-    brick.state = "pre-launch";
-
+function gameOver() {
+    if (lives === 0) {
+        state = "gameOver";
+    }
 }
 
 function mousePressed() {
@@ -310,7 +342,23 @@ function mousePressed() {
     if (launchPaddle.spring.state === "idle") {
         launchPaddle.spring.state = "launched";
     }
+
+    /**  if (state === "startGame") {
+         state = "game";
+     }
+ 
+     else if (state === "win") {
+         state = "startGame";
+     }
+ 
+     else if (state === "gameOver") {
+         state = "startGame";
+     }
+     else if (state === "game") {
+ 
+     }*/
 }
+
 
 
 /**
@@ -324,6 +372,22 @@ function centredRectanglesOverlap(a, b) {
         a.y + a.height / 2 > b.y - b.height / 2 &&
         a.y - a.height / 2 < b.y + b.height / 2);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**function handleBrickLaunch(brick, launchPaddle) {
 
