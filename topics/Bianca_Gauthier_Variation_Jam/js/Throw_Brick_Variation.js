@@ -243,6 +243,7 @@ function handleBrickLaunch(brick, launchPaddle) {
 
     if (brick.state === "pre-launch") {
         brick.x = mouseX;
+
     }
 
     else if (brick.state === "launch") {
@@ -275,10 +276,7 @@ function handleBrickLaunch(brick, launchPaddle) {
     }
 }
 
-function resetBrick(brick) {
-    brick.y = 635;
-    brick.x = mouseX;
-}
+
 
 function handleBrickDestroy(brick, ball) {
     const overlap = centredRectanglesOverlap(brick, ball);
@@ -286,12 +284,19 @@ function handleBrickDestroy(brick, ball) {
     if (overlap) {
         brick.active = "false";
         ball.velocity.y *= -1;
+
     }
 
     if (brick.active === "false") {
         resetBrick(brick);
     }
+}
 
+function resetBrick(brick) {
+    brick.y = 635;
+    brick.x = mouseX;
+    brick.velocity.y = 0;
+    brick.state = "pre-launch";
 
 }
 
