@@ -204,10 +204,12 @@ function moveBall(ball) {
     // makes the ball bounce off the right and left side of the canvas
     if (ball.x > width || ball.x < 0) {
         resetBall(ball)
+        lives = lives - 1;
     }
     //makes the ball bounce off the top of the canvas
     if (ball.y > height || ball.y < 0) {
         resetBall(ball);
+        lives = lives - 1;
     }
 }
 
@@ -271,15 +273,12 @@ function drawLives() {
     pop();
 }
 
-//resets the ball in a random y position    
-function resetBall(ball) {
-    ball.y = random(200, 800);
-    ball.x = random(100, 900);
-}
-
 /**
+ * 
+ * 
+ * 
  * this creates all of the bricks. saying that if the rows and collums are not the number mentioned at the top then
- * it eill continue creating rows and collums of red bricks.
+ * it eill continue creating rows and collums of red bricks.creates all of the bricks and places them
  * 
  */
 function createAllBricks() {
@@ -312,7 +311,20 @@ function createAllBricks() {
     }
 }
 
-// handles the ball bouncing off of each paddle.
+
+
+//resets the ball in a random y position    
+function resetBall(ball) {
+    ball.y = random(200, 800);
+    ball.x = random(100, 900);
+}
+
+
+/**  
+ * 
+ *  Makes the Ball bounce when the ball comes in contact with the paddle
+ * 
+*/
 function handleBallBounce(ball, paddle) {
     const overlap = centredRectanglesOverlap(ball, paddle);
 
