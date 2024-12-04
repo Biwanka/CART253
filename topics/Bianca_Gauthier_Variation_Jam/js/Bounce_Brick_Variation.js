@@ -50,6 +50,19 @@
 
 "use strict";
 
+//this is our ball ( a white circle)
+const ball = {
+    x: 500,
+    y: 100,
+    fill: "white",
+    width: 12,
+    height: 12,
+    velocity: {
+        x: 3,
+        y: 3
+    }
+};
+
 let bricks = [
     {
         x: 500,
@@ -65,22 +78,8 @@ let bricks = [
     },
 ];
 
-const active = true;
 
-
-const ball = {
-    x: 500,
-    y: 100,
-    fill: "white",
-    width: 12,
-    height: 12,
-    velocity: {
-        x: 3,
-        y: 3
-    }
-};
-
-// Our paddle
+// Our paddle (a thin black rectangle) it contains 3 part. to make the baddle launch like a springed platform
 const launchPaddle = {
     top: {
         x: 500,
@@ -108,6 +107,7 @@ const launchPaddle = {
     }
 };
 
+const active = true;
 const gravity = 0.1;
 
 //
@@ -116,7 +116,7 @@ function setup() {
 }
 
 
-//
+//draws all the elements that is needed for the game.
 function draw() {
     background("grey");
 
@@ -138,15 +138,18 @@ function draw() {
 }
 
 /**
- * Moves the paddle
+ * Moves the paddle at the bottom of the screen with the mouse. only moves left and right
  */
 function moveLaunchPaddle(launchPaddle) {
     launchPaddle.top.x = constrain(mouseX, 30, 970);
     launchPaddle.base.x = constrain(mouseX, 30, 970);
 }
 
+/**
+ * move the spring therefore, when mouse is pressed the state of the platform will become launch, therefore you should
+ * see the top a the platform go up and come back down
+ */
 function moveSpring(launchPaddle) {
-
     launchPaddle.spring.x = launchPaddle.base.x;
     launchPaddle.top.y = launchPaddle.spring.y + launchPaddle.spring.size;
 
@@ -172,7 +175,11 @@ function moveSpring(launchPaddle) {
     }
 }
 
-/** Moves the ball*/
+
+/** 
+ * Moves the ball. the ball is restricted at the top of the canvas and will bounce of the top and the left and right of the canvas
+ * it will also bounce off an invisible restiction so the ball cannot go at the bottom of the canvas
+*/
 function moveBall(ball) {
     ball.velocity.y = ball.velocity.y;
 
@@ -189,16 +196,80 @@ function moveBall(ball) {
     }
 }
 
+/**
+ * this makes the brick move, the brick will appear ontop of the launch paddle and will fallow the same left and right movement 
+ * when it is launched then it will go up an down
+ */
 function moveBrick(brick) {
     brick.velocity.y = brick.velocity.y + gravity;
 
     brick.y = brick.y + brick.velocity.y;
-
     brick.x = launchPaddle.top.x;
-
     brick.y = constrain(mouseY, 0, launchPaddle.top.y);
 }
 
+/**
+ * 
+ * This is where all the elements are drawn 
+ * 
+ * -ball
+ * -launch paddle ( 3 parts) 
+ * -brick
+ * -lives
+ * 
+ * 
+ * 
+ */
+
+
+//draws the launch paddle two thin black rectangle on top of one another
+function drawLaunchPaddle(launchPaddle) {
+    //draws the top of the paddle a thin black rectangle
+    push();
+    rectMode(CENTER);
+    noStroke();
+    fill(launchPaddle.top.fill);
+    rect(launchPaddle.top.x, launchPaddle.top.y, launchPaddle.top.width, launchPaddle.top.height);
+    pop();
+    //drwas the base of the paddle. a thin black rectangle a little longer than the top and it is at the bottom
+    push();
+    rectMode(CENTER);
+    noStroke();
+    fill(launchPaddle.base.fill);
+    rect(launchPaddle.base.x, launchPaddle.base.y, launchPaddle.base.width, launchPaddle.base.height);
+    pop();
+    //draws the spring it is inbetween the two paddles (i cant see it ) but its there aas the mechanism to make the paddle launch
+    push();
+    stroke(launchPaddle.spring.fill);
+    strokeWeight(launchPaddle.spring.size);
+    line(launchPaddle.spring.x, launchPaddle.spring.y, launchPaddle.base.width);
+    pop();
+}
+
+//draws the ball. a white small circle
+function drawBall(ball) {
+    push();
+    rectMode(CENTER);
+    noStroke();
+    fill(ball.fill);
+    ellipse(ball.x, ball.y, ball.width, ball.height);
+    pop();
+}
+
+//draws the brick. a bright red rectangle
+function drawBrick(brick) {
+    push();
+    rectMode(CENTER);
+    fill(brick.fill);
+    noStroke(0);
+    rect(brick.x, brick.y, brick.width, brick.height);
+    pop();
+}
+
+/**
+ * this launches the brick. if the brick touches the launch paddle that is activated the brick will go up. the brick 
+ * is on a constance boucing movement as if on a trampoline. you click the paddle to make the brick go higher.
+ */
 function handleBrickLaunch(brick) {
     const overlap = centredRectanglesOverlap(brick, launchPaddle.top);
 
@@ -209,50 +280,9 @@ function handleBrickLaunch(brick) {
     }
 }
 
-function drawLaunchPaddle(launchPaddle) {
-
-    push();
-    rectMode(CENTER);
-    noStroke();
-    fill(launchPaddle.top.fill);
-    rect(launchPaddle.top.x, launchPaddle.top.y, launchPaddle.top.width, launchPaddle.top.height);
-    pop();
-
-    push();
-    rectMode(CENTER);
-    noStroke();
-    fill(launchPaddle.base.fill);
-    rect(launchPaddle.base.x, launchPaddle.base.y, launchPaddle.base.width, launchPaddle.base.height);
-    pop();
-
-    push();
-    stroke(launchPaddle.spring.fill);
-    strokeWeight(launchPaddle.spring.size);
-    line(launchPaddle.spring.x, launchPaddle.spring.y, launchPaddle.base.width);
-    pop();
-}
-
-
-function drawBall(ball) {
-    push();
-    rectMode(CENTER);
-    noStroke();
-    fill(ball.fill);
-    ellipse(ball.x, ball.y, ball.width, ball.height);
-    pop();
-}
-
-function drawBrick(brick) {
-
-    push();
-    rectMode(CENTER);
-    fill(brick.fill);
-    noStroke(0);
-    rect(brick.x, brick.y, brick.width, brick.height);
-    pop();
-}
-
-
+/**
+ * this is where the brick is effected if it touches the ball. if the brick touches the ball it will disapear.
+ */
 function handleBrickDestroy(brick, ball) {
     const overlap = centredRectanglesOverlap(brick, ball);
 
@@ -265,12 +295,14 @@ function handleBrickDestroy(brick, ball) {
     }
 }
 
+/**
+ * the mouse pressed function. if the mouse is pressed then it will call the function to make the paddle launch.
+ * basically the top rectangle goes up and back down.
+ */
 function mousePressed() {
-
     if (launchPaddle.spring.state === "idle") {
         launchPaddle.spring.state = "launched";
     }
-
 }
 
 
