@@ -50,6 +50,19 @@
 
 "use strict";
 
+//this is our ball ( a white circle)
+const ball = {
+    x: 500,
+    y: 100,
+    fill: "white",
+    width: 16,
+    height: 16,
+    velocity: {
+        x: 3,
+        y: 3
+    }
+};
+
 const brick = {
     x: undefined,
     y: 645,
@@ -68,19 +81,7 @@ const brick = {
     }
 };
 
-const ball = {
-    x: 500,
-    y: 100,
-    fill: "white",
-    width: 16,
-    height: 16,
-    velocity: {
-        x: 3,
-        y: 3
-    }
-};
-
-// Our paddle
+// Our paddle (a thin black rectangle) it contains 3 part. to make the baddle launch like a springed platform
 const launchPaddle = {
     top: {
         x: 500,
@@ -140,7 +141,7 @@ function startGame() {
 
 }*/
 
-
+//draws all the elements that is needed for the game.
 function draw() {
     background("grey");
 
@@ -155,6 +156,7 @@ function draw() {
     drawLaunchPaddle(launchPaddle);
     drawBall(ball);
     drawBrick(brick);
+    drawLives();
 }
 
 function gameOver() {
@@ -166,13 +168,17 @@ function win() {
 }
 
 /**
- * Moves the paddle
+ * Moves the paddle at the bottom of the screen with the mouse. only moves left and right
  */
 function moveLaunchPaddle(launchPaddle) {
     launchPaddle.top.x = constrain(mouseX, 30, 970);
     launchPaddle.base.x = constrain(mouseX, 30, 970);
 }
 
+/**
+ * move the spring therefore, when mouse is pressed the state of the platform will become launch, therefore you should
+ * see the top a the platform go up and come back down
+ */
 function moveSpring(launchPaddle) {
 
     launchPaddle.spring.x = launchPaddle.base.x;
@@ -200,7 +206,11 @@ function moveSpring(launchPaddle) {
     }
 }
 
-/** Moves the ball*/
+
+/** 
+ * Moves the ball. the ball is restricted at the top of the canvas and will bounce of the top and the left and right of the canvas
+ * it will also bounce off an invisible restiction so the ball cannot go at the bottom of the canvas
+*/
 function moveBall(ball) {
     ball.velocity.y = ball.velocity.y;
 
@@ -217,6 +227,10 @@ function moveBall(ball) {
     }
 }
 
+/**
+ * this makes the brick move, the brick will appear ontop of the launch paddle and will fallow the same left and right movement 
+ * when it is launched then it will go up an down
+ */
 function moveBrick(brick) {
 
     if (brick.state === "pre-launch") {
@@ -224,22 +238,37 @@ function moveBrick(brick) {
     }
 }
 
-function drawLaunchPaddle(launchPaddle) {
+/**
+ *
+ * This is where all the elements are drawn
+ *
+ * -ball
+ * -launch paddle ( 3 parts)
+ * -brick
+ * -lives
+ *
+ *
+ *
+ */
 
+
+//draws the launch paddle two thin black rectangle on top of one another
+function drawLaunchPaddle(launchPaddle) {
+    //draws the top of the paddle a thin black rectangle
     push();
     rectMode(CENTER);
     noStroke();
     fill(launchPaddle.top.fill);
     rect(launchPaddle.top.x, launchPaddle.top.y, launchPaddle.top.width, launchPaddle.top.height);
     pop();
-
+    //drwas the base of the paddle. a thin black rectangle a little longer than the top and it is at the bottom
     push();
     rectMode(CENTER);
     noStroke();
     fill(launchPaddle.base.fill);
     rect(launchPaddle.base.x, launchPaddle.base.y, launchPaddle.base.width, launchPaddle.base.height);
     pop();
-
+    //draws the spring it is inbetween the two paddles (i cant see it ) but its there aas the mechanism to make the paddle launch
     push();
     stroke(launchPaddle.spring.fill);
     strokeWeight(launchPaddle.spring.size);
@@ -247,7 +276,7 @@ function drawLaunchPaddle(launchPaddle) {
     pop();
 }
 
-
+//draws the ball. a white small circle
 function drawBall(ball) {
     push();
     rectMode(CENTER);
@@ -257,6 +286,7 @@ function drawBall(ball) {
     pop();
 }
 
+//draws the brick. a bright red rectangle
 function drawBrick(brick) {
 
     push();
@@ -266,6 +296,18 @@ function drawBrick(brick) {
     rect(brick.x, brick.y, brick.width, brick.height);
     pop();
 }
+//Draws the lives of the player. It starts at 3 and goes down to 0. if the balls misses the paddle and fall off the canvas player 
+//lose a life. it is a white number on the top of the canvas.
+function drawLives() {
+    push();
+    textAlign(LEFT, TOP);
+    fill("white");
+    textStyle(BOLD);
+    textSize(100);
+    text(lives, 0, 0);
+    pop();
+}
+
 
 function resetBrick(brick) {
     brick.y = 645;
@@ -275,6 +317,12 @@ function resetBrick(brick) {
     brick.fill = "grey";
 }
 
+
+/**
+ * this launches the brick. if the brick touches the launch paddle that is activated the brick will go up. if it dosent 
+ * touch the ball then when it reaches the top it will start to fall. if the brick is caught by the paddle then you
+ * can restart the launching process. if you dont catch the brick and it goes beyond the bottom canvas then the brick will reset.
+ */
 function handleBrickLaunch(brick, launchPaddle) {
     const overlap = centredRectanglesOverlap(brick, launchPaddle.top);
 
@@ -316,6 +364,9 @@ function handleBrickLaunch(brick, launchPaddle) {
     }
 }
 
+/**
+ * this is where the brick is effected if it touches the ball. if the brick touches the ball it will disapear.
+ */
 function handleBrickDestroy(brick, ball) {
     const overlap = centredRectanglesOverlap(brick, ball);
 
@@ -332,11 +383,13 @@ function gameOver() {
     }
 }
 
+/**
+ * the mouse pressed function. if the mouse is pressed then it will call the function to make the paddle launch.
+ * basically the top rectangle goes up and back down.
+ */
 function mousePressed() {
-
     if (brick.state === "pre-launch") {
         brick.state = "launch";
-
     }
 
     if (launchPaddle.spring.state === "idle") {

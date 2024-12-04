@@ -126,6 +126,7 @@ function draw() {
 
     drawLaunchPaddle(launchPaddle);
     drawBall(ball);
+    drawLives();
 
     for (let brick of bricks) {
         if (brick.active === true) {
@@ -198,7 +199,7 @@ function moveBall(ball) {
 
 /**
  * this makes the brick move, the brick will appear ontop of the launch paddle and will fallow the same left and right movement 
- * when it is launched then it will go up an down
+ * when it is launched then it will go up an down like its bouncing
  */
 function moveBrick(brick) {
     brick.velocity.y = brick.velocity.y + gravity;
@@ -265,6 +266,19 @@ function drawBrick(brick) {
     rect(brick.x, brick.y, brick.width, brick.height);
     pop();
 }
+
+//Draws the lives of the player. It starts at 3 and goes down to 0. if the balls misses the paddle and fall off the canvas player 
+//lose a life. it is a white number on the top of the canvas.
+function drawLives() {
+    push();
+    textAlign(LEFT, TOP);
+    fill("white");
+    textStyle(BOLD);
+    textSize(100);
+    text(lives, 0, 0);
+    pop();
+}
+
 
 /**
  * this launches the brick. if the brick touches the launch paddle that is activated the brick will go up. the brick 
