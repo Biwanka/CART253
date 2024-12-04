@@ -50,36 +50,6 @@
 
 "use strict";
 
-let bricks = [
-    {
-        x: undefined,
-        y: undefined,
-        fill: "red",
-        width: 60,
-        height: 35,
-        active: true
-    },
-];
-
-let hardBricks = [
-    {
-        x: 750,
-        y: 540,
-        fill: "#8b0000",
-        width: 40,
-        height: 20,
-        active: true
-    }
-];
-
-const brickStartX = 170;
-const brickStartY = 85;
-const brickGapX = 10;
-const brickGapY = 15;
-const brickWidth = 50;
-const brickHeight = 25;
-const active = true;
-
 const ball = {
     x: 500,
     y: 400,
@@ -116,22 +86,55 @@ let paddles = [
     }
 ];
 
-let col = 0;
-let row = 0;
-let numberOfColumns = 10;
-let numberOfRows = 6;
-let offset = brickWidth / 4;
+
+let bricks = [
+    {
+        x: undefined,
+        y: undefined,
+        fill: "red",
+        width: 60,
+        height: 35,
+        active: true
+    },
+];
+
+let hardBricks = [
+    {
+        x: 750,
+        y: 540,
+        fill: "#8b0000",
+        width: 40,
+        height: 20,
+        active: true
+    }
+];
 
 
-//
+// the different variables that will be used to make the new bricks.   
+const brickStartX = 170;    //where the first bricks will start
+const brickStartY = 85;
+const brickGapX = 5;        //this will create the gaps in between the bricks 
+const brickGapY = 5;        //this will create the gaps in between the bricks 
+const brickWidth = 50;
+const brickHeight = 25;
+const active = true;
+// variables that helps build the placement of all the bricks. 
+let col = 0;                 // there are 0 columns so they will be called
+let row = 0;                //there are 0 rows at the beggining they will be called 
+let numberOfColumns = 10;   //number of brick columns wanted 
+let numberOfRows = 6;       // number of brick rows wanted
+let offset = brickWidth / 4;   // creates the offset where some rows start at 250 while other rows starts furter
+
+//the lives of the player 
+let lives = 3;
+
+//draws the canvas that the game is displayed on.
 function setup() {
     createCanvas(1000, 680);
-    createAllBricks(bricks);
-
+    createAllBricks(bricks); //creates all the bricks using the variables ontop 
 }
 
-
-//
+//where all elements are called 
 function draw() {
     background("grey");
 
@@ -140,6 +143,7 @@ function draw() {
     drawBall(ball);
 
     for (let brick of bricks) {
+        //this is where if the brick does not come in contact with a brick (brick.state = true) then it will be drawn.
         if (brick.active === true) {
             drawBrick(brick);
             handleBrickDestroy(brick, ball);
@@ -150,7 +154,6 @@ function draw() {
         movePaddle(paddle);
         drawPaddle(paddle);
         handleBallBounce(ball, paddle);
-
     };
 
     for (let hardBrick of hardBricks) {
@@ -162,28 +165,41 @@ function draw() {
 }
 
 /**
- * Moves the paddle
+ *
+ *
+ *
+ *
+ * makes all the elements that need to move, move.
+ *
+ * the ball
+ * the paddle
+ *
+ *
+ *
+ *
+ *
  */
+// Moves the paddle. the paddle is in a cross format and fallows the mouse cursor.
 function movePaddle(paddle) {
 
     if (paddle.position = "horizontal") {
         paddle.x = constrain(mouseX, 30, 970);
     }
 
-
     if (paddle.position = "vertical") {
         paddle.y = constrain(mouseY, 30, 650);
     }
 }
-/** Moves the ball*/
 
 
+/**
+ * move the ball. the ball will bounce off the paddle, the canvas wall and the brick
+ */
 function moveBall(ball) {
     ball.velocity.y = ball.velocity.y;
 
     ball.x = ball.x + ball.velocity.x;
     ball.y = ball.y + ball.velocity.y;
-
 
     // makes the ball bounce off the right and left side of the canvas
     if (ball.x > width || ball.x < 0) {
@@ -195,7 +211,118 @@ function moveBall(ball) {
     }
 }
 
+/**
+ *
+ * This is where all the elements are drawn
+ *
+ * -ball
+ *-paddle
+ * -brick
+ * -lives
+ *
+ *
+ *
+ */
+//draws the paddle. tw0 thin black rectangle that end up being place in a plus sign
+function drawPaddle(paddle) {
+    push();
+    rectMode(CENTER);
+    noStroke();
+    fill(paddle.fill);
+    rect(paddle.x, paddle.y, paddle.width, paddle.height);
+    pop();
+}
 
+//draws the ball. a white small cricle
+function drawBall(ball) {
+    push();
+    rectMode(CENTER);
+    noStroke();
+    fill(ball.fill);
+    ellipse(ball.x, ball.y, ball.width, ball.height);
+    pop();
+}
+//draws the first brick. a bright red rectangle
+function drawBrick(brick) {
+    push();
+    rectMode(CENTER);
+    fill(brick.fill);
+    noStroke(0);
+    rect(brick.x, brick.y, brick.width, brick.height);
+    pop();
+}
+//draws the first brick. a darker and smaller red rectangle
+function drawHardBrick(hardBrick) {
+    push();
+    rectMode(CENTER);
+    fill(hardBrick.fill);
+    noStroke(0);
+    rect(hardBrick.x, hardBrick.y, hardBrick.width, hardBrick.height);
+    pop();
+}
+
+//Draws the lives of the player. It starts at 3 and goes down to 0. if the balls misses the paddle and fall off the canvas player 
+//lose a life. it is a white number on the top of the canvas.
+function drawLives() {
+    push();
+    textAlign(LEFT, TOP);
+    fill("white");
+    textStyle(BOLD);
+    textSize(100);
+    text(lives, 0, 0);
+    pop();
+}
+
+//resets the ball in a random y position  
+function resetBall(ball) {
+    ball.y = random(100, 600);
+    //the fly will appear in a random y position
+    ball.x = random(100, 900);
+}
+/**
+ * 
+ * 
+ * 
+ * this creates all of the bricks. saying that if the rows and collums are not the number mentioned at the top then
+ * it eill continue creating rows and collums of red bricks.creates all of the bricks and places them
+ * 
+ */
+function createAllBricks() {
+    //this checks if the rows that are a pair number,
+    //the number of bricks will be 12 it adds the offset so the bricks start at a different x position.
+    for (let row = 0; row < numberOfRows; row++) {
+        if (row % 2 === 0) {
+            col = 12;
+            offset = brickWidth / 2;
+        }
+
+        else {
+            col = 11;
+            offset = 0;
+        }
+
+        for (let col = 0; col < numberOfColumns; col++) {
+            //this is where it creates the brick in how it will look
+            // We can work out each brick's x and y by its position in the rows and columns
+            let newBrick = {
+                x: brickStartX + offset + col * (brickWidth + brickGapX),
+                y: brickStartY + row * (brickHeight + brickGapY),
+                width: brickWidth,
+                height: brickHeight,
+                fill: "red",
+                active: true
+            }
+            //this creates the bricks
+            bricks.push(newBrick);
+        }
+    }
+}
+
+/**  
+ * 
+ *  Makes the Ball bounce when the ball comes in contact with the paddle
+ * depending on which part of the paddle the ball touches it will bounce in the opposite derection.
+*/
 function handleBallBounce(ball, paddle) {
     const overlap = centredRectanglesOverlap(ball, paddle);
     if (overlap) {
@@ -206,7 +333,6 @@ function handleBallBounce(ball, paddle) {
             else if (ball.y < paddle.y) {
                 ball.velocity.y *= 1;
             }
-
             // ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
             //  ball.velocity.y *= -1;
         }
@@ -224,80 +350,9 @@ function handleBallBounce(ball, paddle) {
     }
 }
 
-function drawPaddle(paddle) {
-    push();
-    rectMode(CENTER);
-    noStroke();
-    fill(paddle.fill);
-    rect(paddle.x, paddle.y, paddle.width, paddle.height);
-    pop();
-}
-
-
-function drawBall(ball) {
-    push();
-    rectMode(CENTER);
-    noStroke();
-    fill(ball.fill);
-    ellipse(ball.x, ball.y, ball.width, ball.height);
-    pop();
-}
-
-function drawBrick(brick) {
-
-    push();
-    rectMode(CENTER);
-    fill(brick.fill);
-    noStroke(0);
-    rect(brick.x, brick.y, brick.width, brick.height);
-    pop();
-}
-
-function drawHardBrick(hardBrick) {
-
-    push();
-    rectMode(CENTER);
-    fill(hardBrick.fill);
-    noStroke(0);
-    rect(hardBrick.x, hardBrick.y, hardBrick.width, hardBrick.height);
-    pop();
-}
-
-
-function resetBall(ball) {
-    ball.y = random(100, 600);
-    //the fly will appear in a random y position
-    ball.x = random(100, 900);
-}
-
-function createAllBricks() {
-    for (let row = 0; row < numberOfRows; row++) {
-        if (row % 2 === 0) {
-            col = 12;
-            offset = brickWidth / 2;
-        }
-
-        else {
-            col = 11;
-            offset = 0;
-        }
-
-        for (let col = 0; col < numberOfColumns; col++) {
-
-            // We can work out each brick's x and y by its position in the rows and columns
-            let newBrick = {
-                x: brickStartX + offset + col * (brickWidth + brickGapX),
-                y: brickStartY + row * (brickHeight + brickGapY),
-                width: brickWidth,
-                height: brickHeight,
-                fill: "red",
-                active: true
-            }
-            bricks.push(newBrick);
-        }
-    }
-}
-
+/**
+ *  this is where the brick is effected if it touches the ball. if the brick touches the ball it will disapear.
+ */
 function handleBrickDestroy(brick, ball) {
     const overlap = centredRectanglesOverlap(brick, ball);
 
