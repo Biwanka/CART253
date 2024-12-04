@@ -57,8 +57,8 @@ const ball = {
     width: 12,
     height: 12,
     velocity: {
-        x: 4,
-        y: 4
+        x: 0,
+        y: 0
     }
 };
 
@@ -229,6 +229,12 @@ function moveBall(ball) {
     ball.x = ball.x + ball.velocity.x;
     ball.y = ball.y + ball.velocity.y;
 
+    //the ball at the complete beginning is not moving and after pressing space Bar will the ball velocity be 
+    //activated therefore start moving
+    if (keyIsDown('32') && ball.velocity.x === 0) {
+        ball.velocity.y = 4;
+        ball.velocity.x = 4;
+    }
     // makes the ball bounce off the right and left side of the canvas
     if (ball.x > width || ball.x < 0) {
         ball.velocity.x *= -1;
@@ -240,6 +246,7 @@ function moveBall(ball) {
     //if the ball fall at the bottom of the canvas. the ball will reset 
     if (ball.y > 690) {
         resetBall(ball);
+        lives = lives - 1;
     }
 }
 
@@ -406,6 +413,7 @@ function handleBrickDestroy(brick, ball) {
 }
 
 function mousePressed() {
+
     if (state === "title") {
         state = "game";
     }
@@ -421,6 +429,7 @@ function mousePressed() {
     }
 
     else if (state === "game") {
+
 
     }
 
