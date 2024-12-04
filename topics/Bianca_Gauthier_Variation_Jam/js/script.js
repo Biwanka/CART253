@@ -104,6 +104,8 @@ let lives = 3;
 //this is the different screen for the game and what we will use to switch in between.
 let state = "title" // "game" , "win" , "gameOver"
 
+let bricksLeft = 0;
+
 // this will be the Title Screen at the begging of the game that will have the title and instruction on the types of flies (uses and image)
 //has position and image
 let titleScreen = {
@@ -128,9 +130,9 @@ let gameOverScreen = {
 };
 
 function preload() {
-    titleScreen.image = loadImage("assets/images/Brick_Breaker_Background.png");
+    titleScreen.image = loadImage("assets/images/Brick_Breaker_Title.png");
     winScreen.image = loadImage("assets/images/YOU_WIN.png");
-    gameOverScreen.image = loadImage("assets/images/game_over_3.png");
+    gameOverScreen.image = loadImage("assets/images/Game_Over.jpg");
 }
 
 
@@ -177,6 +179,8 @@ function game() {
     drawPaddle(paddle);
     drawBall(ball);
     drawLives();
+
+    callGameOver();
 
     for (let brick of bricks) {
         //this is where if the brick does not come in contact with a brick (brick.state = true) then it will be drawn. 
@@ -342,7 +346,7 @@ function createAllBricks() {
 }
 
 
-//resets the ball in a random y position    
+//resets the ball in a random y and x position (however there is restrains so the ball dosent reset in the bricks)    
 function resetBall(ball) {
     ball.y = random(400, 450);
     ball.x = random(100, 900);
@@ -410,6 +414,29 @@ function handleBrickDestroy(brick, ball) {
     else {
 
     }
+}
+
+/**
+ * 
+ * 
+ * this is how the state of teh screen. what is displayed will chnage
+ * 
+ * 
+ * the pathways to move change the screen 
+ * if we are at the title,
+ * if we are at the game 
+ * if we are at the game over screen
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
+function callGameOver() {
+    if (lives === 0) [
+        state = "gameOver"
+    ]
 }
 
 function mousePressed() {
