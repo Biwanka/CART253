@@ -57,8 +57,8 @@ const ball = {
     width: 12,
     height: 12,
     velocity: {
-        x: 3,
-        y: 3
+        x: 4,
+        y: 4
     }
 };
 
@@ -86,16 +86,16 @@ let bricks = [
 // the different variables that will be used to make the new bricks.   
 const brickStartX = 170;    //where the first bricks will start
 const brickStartY = 85;
-const brickGapX = 5;        //this will create the gaps in between the bricks 
-const brickGapY = 5;        //this will create the gaps in between the bricks 
-const brickWidth = 50;
-const brickHeight = 25;
+const brickGapX = 6;        //this will create the gaps in between the bricks 
+const brickGapY = 6;        //this will create the gaps in between the bricks 
+const brickWidth = 65;
+const brickHeight = 30;
 const active = true;
 // variables that helps build the placement of all the bricks. 
 let col = 0;                 // there are 0 columns so they will be called
 let row = 0;                //there are 0 rows at the beggining they will be called 
 let numberOfColumns = 10;   //number of brick columns wanted 
-let numberOfRows = 6;       // number of brick rows wanted
+let numberOfRows = 8;       // number of brick rows wanted
 let offset = brickWidth / 4;   // creates the offset where some rows start at 250 while other rows starts furter
 
 //the lives of the player 
@@ -265,7 +265,7 @@ function createAllBricks() {
 
 //resets the ball in a random y position    
 function resetBall(ball) {
-    ball.y = random(200, 800);
+    ball.y = random(400, 450);
     ball.x = random(100, 900);
 }
 
@@ -277,11 +277,15 @@ function resetBall(ball) {
 function handleBallBounce(ball, paddle) {
     const overlap = centredRectanglesOverlap(ball, paddle);
 
+
+    // Add an effect to the ball's horizontal movement
+    // Probably want to constrain how fast this can get
     if (overlap) {
 
         ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
         ball.velocity.y *= -1;
     }
+
 }
 
 /**
@@ -289,29 +293,32 @@ function handleBallBounce(ball, paddle) {
  */
 function handleBrickDestroy(brick, ball) {
     const overlap = centredRectanglesOverlap(brick, ball);
-
+    const dx = paddle.x - ball.x; // Get distance of ball from centre of paddle on x
+    const angleEffect = map(dx, -paddle.width / 2, paddle.width / 2, -0.05, 0.05); // Convert to a more useful range
     let topBrick = brick.y - brick.height / 2 - ball.height / 2;
     let bottomBrick = brick.y - brick.height / 2 + ball.height / 2;
     let leftSideBrick = brick.x - brick.width / 2 + ball.width / 2;
     let rightSideBrick = brick.x - brick.width / 2 - ball.width / 2;
 
     if (overlap) {
-
+        // if the ball hits the top of the brick if will bounce off in a different y velocity
         if (ball.y < brick.y) {
             brick.active = false;
             ball.velocity.y *= -1;
         }
-
+        // if the ball hits the bottom of the brick if will bounce off in a different y velocity
         else if (ball.y > brick.y) {
             brick.active = false;
             ball.velocity.y *= -1;
         }
-
+        //if the ball hits the left of the ball instead if the bouncing off it will affect its angle
         if (ball.x < brick.x) {
             brick.active = false;
-            ball.velocity.x *= -1;
+            // ball.velocity.x *= -1;
+            // Add an effect to the ball's horizontal movement
+            ball.velocity.x += angleEffect * 1;
         }
-
+        //if the ball hits the right side of the brick it will bounce off in the opposite direction 
         else if (ball.x > brick.x) {
             brick.active = false;
             ball.velocity.x *= -1;
