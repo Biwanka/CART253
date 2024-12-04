@@ -49,7 +49,7 @@
  */
 
 "use strict";
-
+//this is our ball a white circle
 const ball = {
     x: 500,
     y: 400,
@@ -62,7 +62,7 @@ const ball = {
     }
 };
 
-// Our paddle
+//this is our paddle a thin black rectangle
 const paddle = {
     x: 500,
     y: 665,
@@ -75,7 +75,7 @@ const paddle = {
     }
 };
 
-
+//this is the array that creates the first brick (red rectangle)
 let bricks = [
     {
         x: undefined,
@@ -91,28 +91,31 @@ let bricks = [
     }
 ];
 
-const brickStartX = 170;
+// the different variables that will be used to make the new bricks.   
+const brickStartX = 170;    //where the first bricks will start
 const brickStartY = 85;
-const brickGapX = 5;
-const brickGapY = 5;
-const brickWidth = 55;
-const brickHeight = 30;
+const brickGapX = 5;        //this will create the gaps in between the bricks 
+const brickGapY = 5;        //this will create the gaps in between the bricks 
+const brickWidth = 50;
+const brickHeight = 25;
 const active = true;
+// variables that helps build the placement of all the bricks. 
+let col = 0;                 // there are 0 columns so they will be called
+let row = 0;                //there are 0 rows at the beggining they will be called 
+let numberOfColumns = 10;   //number of brick columns wanted 
+let numberOfRows = 6;       // number of brick rows wanted
+let offset = brickWidth / 4;   // creates the offset where some rows start at 250 while other rows starts furter
 
-let col = 0;
-let row = 0;
-let numberOfColumns = 11;
-let numberOfRows = 6;
-let offset = brickWidth / 4;
+//the lives of the player 
+let lives = 3;
 
-
-//
+//draws the canvas that the game is displayed on.
 function setup() {
     createCanvas(1000, 680);
-    createAllBricks(bricks);
+    createAllBricks(bricks); //creates all the bricks using the variables ontop 
 }
 
-//
+//where all elements are called 
 function draw() {
 
     background("grey");
@@ -124,8 +127,10 @@ function draw() {
 
     drawPaddle(paddle);
     drawBall(ball);
+    drawLives();
 
     for (let brick of bricks) {
+        //this is where if the brick does not come in contact with a brick (brick.state = true) then it will be drawn. 
         if (brick.active === true) {
             drawBrick(brick);
             handleBrickFall(brick, ball);
@@ -137,15 +142,28 @@ function draw() {
 }
 
 /**
- * Moves the paddle
+ *
+ *
+ *
+ *
+ * makes all the elements that need to move, move.
+ *
+ * the ball
+ * the paddle
+ *
+ *
+ *
+ *
+ *
  */
+// Moves the paddle. with the mouse. the paddle can only go left and right
 function movePaddle(paddle) {
-
     paddle.x = constrain(mouseX, paddle.constraints.min, paddle.constraints.max);
 }
 
-/** Moves the ball*/
-
+/**
+ * move the ball. the ball will bounce off the paddle, the canvas wall and the brick
+ */
 function moveBall(ball) {
     ball.velocity.y = ball.velocity.y;
 
@@ -161,22 +179,19 @@ function moveBall(ball) {
     }
 }
 
-
-function handleBallBounce(ball, paddle) {
-    const overlap = centredRectanglesOverlap(ball, paddle);
-
-    if (overlap) {
-        ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
-        ball.velocity.y *= -1;
-    }
-}
-
-function resetBall(ball) {
-    ball.y = 500;
-    //the fly will appear in a random y position
-    ball.x = random(100, 900);
-}
-
+/**
+ *
+ * This is where all the elements are drawn
+ *
+ * -ball
+ *-paddle
+ * -brick
+ * -lives
+ *
+ *
+ *
+ */
+//draws the paddle . a thin black rectangle 
 function drawPaddle(paddle) {
     push();
     rectMode(CENTER);
@@ -186,7 +201,7 @@ function drawPaddle(paddle) {
     pop();
 }
 
-
+//draws the ball. a white small cricle
 function drawBall(ball) {
     push();
     rectMode(CENTER);
@@ -196,6 +211,7 @@ function drawBall(ball) {
     pop();
 }
 
+//draws the first brick. a bright red rectangle
 function drawBrick(brick) {
     push();
     rectMode(CENTER);
@@ -205,18 +221,41 @@ function drawBrick(brick) {
     pop();
 }
 
+//Draws the lives of the player. It starts at 3 and goes down to 0. if the balls misses the paddle and fall off the canvas player 
+//lose a life. it is a white number on the top of the canvas.
+function drawLives() {
+    push();
+    textAlign(LEFT, TOP);
+    fill("white");
+    textStyle(BOLD);
+    textSize(100);
+    text(lives, 0, 0);
+    pop();
+}
+
+/**
+ * 
+ * 
+ * 
+ * this creates all of the bricks. saying that if the rows and collums are not the number mentioned at the top then
+ * it eill continue creating rows and collums of red bricks.creates all of the bricks and places them
+ * 
+ */
 function createAllBricks() {
+    //this checks if the rows that are a pair number,
+    //the number of bricks will be 12 it adds the offset so the bricks start at a different x position.
     for (let row = 0; row < numberOfRows; row++) {
         if (row % 2 === 0) {
             col = 12;
             offset = brickWidth / 4;
         }
+        //else the impair ones will have 11 brick
         else {
             col = 11;
             offset = 0;
         }
         for (let col = 0; col < numberOfColumns; col++) {
-
+            //this is where it creates the brick in how it will look
             // We can work out each brick's x and y by its position in the rows and columns
             let newBrick = {
                 x: brickStartX + offset + col * (brickWidth + brickGapX),
@@ -230,43 +269,68 @@ function createAllBricks() {
                     y: 0,
                 }
             }
+            //this creates the bricks
             bricks.push(newBrick);
         }
     }
 }
 
+//resets the ball in a random y position    
+function resetBall(ball) {
+    ball.y = random(200, 800);
+    ball.x = random(100, 900);
+}
+
+/**  
+ * 
+ *  Makes the Ball bounce when the ball comes in contact with the paddle
+ * 
+*/
+
+function handleBallBounce(ball, paddle) {
+    const overlap = centredRectanglesOverlap(ball, paddle);
+
+    if (overlap) {
+        ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
+        ball.velocity.y *= -1;
+    }
+}
+
+/**
+ * 
+ * this is where if the ball comes in contact with a brick. the brick will start falling down 
+ * and the ball wil bounce off the brick depneding on where did it hit the brick.
+ * 
+ */
 function handleBrickFall(brick, ball) {
     const overlap = centredRectanglesOverlap(brick, ball);
     brick.y = brick.y + brick.velocity.y;
     //  ball.x = ball.x + ball.velocity.x;
     if (brick.velocity.y === 0 && overlap) {
+        //if the ball touches the top of the brick
         if (ball.y < brick.y) {
             // ball.y = brick.y - brick.width / 2 - ball.width / 2;
             ball.velocity.y *= -1;
             brick.velocity.y = 3;
-
         }
-
+        // if the ball touches the bottom of the brick
         else if (ball.y > brick.y) {
 
             //   ball.y = brick.y + brick.height / 2 + ball.height / 2;
             ball.velocity.y *= -1;
             brick.velocity.y = 3;
-
         }
-
+        // if it hits the left side of the brick
         if (ball.x < brick.x) {
             //  ball.x = brick.x + brick.width / 2 + ball.width / 2;
             ball.velocity.x *= 1;
             brick.velocity.y = 3;
-
         }
-
+        //if it hits the right side of the brick
         else if (ball.x > brick.x) {
             //  ball.x = brick.x - brick.width / 2 - ball.width / 2;
             ball.velocity.x *= -1;
             brick.velocity.y = 3;
-
         }
     }
     /**   if (brick.velocity.y === 0 && overlap) {
@@ -275,22 +339,34 @@ function handleBrickFall(brick, ball) {
       }*/
 }
 
+/**
+ * when the brick falls. if the brick is not caught by the paddle but reaches the bottom of the canves.
+ * the brick will land on the bottom of the canvas and stop moving. if the brick is stuck at the bottom
+ * it will block the paddle from moving further then the bricks around the paddle
+ * 
+ */
+
 function handlePaddleBlock(brick, paddle) {
     const overlap = centredRectanglesOverlap(brick, paddle);
 
     if (brick.velocity.y === 0 && overlap) {
-
+        //check if the paddle comes in contact with a brick on the right of the paddle then this is the furthest that the paddle can now reach
         if (brick.x > paddle.x) {
             paddle.constraints.max = brick.x + brick.width / 2 - paddle.width / 2;
         }
-
+        //check if the paddle comes in contact with a brick on the left if the paddle then this is the furthest that the paddle can now reach
         else if (brick.x < paddle.x) {
             paddle.constraints.min = brick.x + brick.width / 2 + paddle.width / 2;
         }
     }
 }
 
-
+/**
+ * 
+ * if the brick lands on top of the paddle when it is falling down. then the brick will disappear.
+ * 
+ * 
+ */
 
 function handleBrickCaught(brick, paddle) {
     const overlap = centredRectanglesOverlap(brick, paddle);
@@ -311,7 +387,10 @@ function handleBrickCaught(brick, paddle) {
     }
 }
 
-
+/**
+ * this makes it that if a brick isnt caught by the paddle but reaches the bottom of the canvas it will make the brick 
+ * stop moving. and if a brick lands on another brick then they will stack.
+ */
 function handleBrickLand(brick) {
 
     if (brick.y === 665) {

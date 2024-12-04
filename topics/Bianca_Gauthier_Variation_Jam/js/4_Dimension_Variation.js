@@ -312,13 +312,11 @@ function createAllBricks() {
 }
 
 
-
 //resets the ball in a random y position    
 function resetBall(ball) {
     ball.y = random(200, 800);
     ball.x = random(100, 900);
 }
-
 
 /**  
  * 
