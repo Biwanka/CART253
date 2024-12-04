@@ -101,14 +101,72 @@ let offset = brickWidth / 4;   // creates the offset where some rows start at 25
 //the lives of the player 
 let lives = 3;
 
+//this is the different screen for the game and what we will use to switch in between.
+let state = "title" // "game" , "win" , "gameOver"
+
+// this will be the Title Screen at the begging of the game that will have the title and instruction on the types of flies (uses and image)
+//has position and image
+let titleScreen = {
+    x: 1000,
+    y: 680,
+    image: undefined
+};
+//this will be the You Win background screen that will appear when you get rid of alk the bricks. (uses and image)
+//has position and image
+let winScreen = {
+    x: 1000,
+    y: 680,
+    image: undefined
+};
+
+//this will be the Game Over background screen that will appear when you run out of lives. (uses and image)
+//has position and image
+let gameOverScreen = {
+    x: 1000,
+    y: 680,
+    image: undefined
+};
+
+function preload() {
+    titleScreen.image = loadImage("assets/images/Brick_Breaker_Background.png");
+    winScreen.image = loadImage("assets/images/YOU_WIN.png");
+    gameOverScreen.image = loadImage("assets/images/game_over_3.png");
+}
+
+
 //draws the canvas that the game is displayed on.
 function setup() {
     createCanvas(1000, 680);
     createAllBricks(bricks); //creates all the bricks using the variables ontop 
+    resetBall(ball);
+}
+
+// display the state of the game
+function draw() {
+    if (state === "title") {
+        title();
+    }
+
+    else if (state === "game") {
+        game();
+    }
+
+    else if (state === "gameOver") {
+        gameOver();
+    }
+
+    else if (state === "win") {
+        win();
+    }
+}
+
+function title() {
+    background(titleScreen.image);
+    lives = 3;
 }
 
 //where all elements are called 
-function draw() {
+function game() {
     background("grey");
 
     movePaddle(paddle);
@@ -128,6 +186,20 @@ function draw() {
         }
     };
 }
+/**This is both of the end screen options 
+ * 
+ * 
+ */
+// This displayes the image that shows the GameOver screen that tell player they lost the game
+function gameOver() {
+    background(gameOverScreen.image);
+}
+//this dsiplayes the image tthat show the Win screen that tell player they won the game
+function win() {
+    background(winScreen.image);
+}
+
+
 /**
  *
  *
@@ -331,6 +403,27 @@ function handleBrickDestroy(brick, ball) {
     else {
 
     }
+}
+
+function mousePressed() {
+    if (state === "title") {
+        state = "game";
+    }
+
+    else if (state === "win") {
+        state = "title";
+        lives = 3;
+    }
+
+    else if (state === "gameOver") {
+        state = "title";
+        lives = 3;
+    }
+
+    else if (state === "game") {
+
+    }
+
 }
 /**function mousePressed() {
 
