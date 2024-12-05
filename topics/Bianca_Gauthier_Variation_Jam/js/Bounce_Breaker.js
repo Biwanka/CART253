@@ -19,48 +19,71 @@
  * 
  * 
  * the ideas for variations:
+ * 4- Reverse. I dedcide to make a version that will be the contrary of the concept of the original game. 
+ * instead of bouncing a ball on a paddle to break the bricks, instead the player will need to bounce a brick to a ball. like a brick on a trampoline
+ * that is moving in the top screen. the player will have a pile of bricks ( still need to implement these visual later). i 
+ * Have other ideas with different balls or maybe certain bricks need to only hit the top of the ball but thats for later.
  * 
- * 1- when the ball hits a brick, teh brick dosent break but starts to fall downwards.
- *  if the player dosent catch the falling bricks with the paddle the bricks will freeze at the bottom and sty there.
- * this will block the paddle. so if alot of bricks are not cought it could block the player from moving the paddle.
- * 
- * 
- * 2- 4 corners. the concept of the original game is that the paddle is only at the bottom.
- * but with this variation the paddle will be able to go on all the 4 size.
- * depending on the coding it will only be one paddle that can move to all 4 sides or if not its that there will be 4 paddle 
- * one on each side that can be move seperatly. the ball will now not be able to bounce of any of the sides. 
- * and the brick will be placed in the middle of the screen
- * 
- * 
- * 3- DvD logo. because the game i chose had to do with something from my past i decided to all add another aspect that touches on that.
- * I am going to use the boucing DVD logo. it was a common thing if you ever owned a DVD that when it was left on pause for long
- * the logo would appear and start bouching on the 4 sides of the screen. The main Hype was when the logo actually finally hit the 
- * corner of the screen it was the biggest satisfaction. Mainly i will use the top right corner. so i will change teh ball to be the 
- * DvD logo and the ball will be able to hit the side of the screen. there will be bricks blocking the top right corner.
- * Even if the player gets ride of all the bricks they will not win the game they need to continue until the DVD logo witht perfectly 
- * the top right corner.
- * 
- * 
- * 4- Reverse. I dedcide to make a version that will be the contrary of the cncept of the original game. 
- * instead of bouncing a ball on a paddle to break the bricks, instead the player will need to trow the bricks to hit the ball
- * that is moving in the top screen. the player will have a pile of bricks and need to trow them so it hits the ball and the brick breaks.
- * if the brick hits nothing gravity will do its thing and come back down in the hands of the player. im think maybe to add a timer 
- * where the palyer needs to break all the brick before the time. we will see. 
- */
+ * basic idea i thought it would be funny to have a brick on a trampoline.
+ *  */
+
 
 "use strict";
 
 //this is our ball ( a white circle)
 const ball = {
+    //a white ball
+
     x: 500,
     y: 100,
     fill: "white",
     width: 12,
     height: 12,
     velocity: {
-        x: 3,
-        y: 3
+        x: 4,
+        y: 4
     }
+    /** this will be implemented in another time but i wanted to have different colour balls and that the palyer is told the color of ball
+     * that they need to touch the brick with. if they touch the wrong colour they lose a life. and the colour would change with a timer or after 
+     * everytime they break one of the brick.
+        */
+    //blue ball
+    /**   {
+          x: 400,
+          y: 50,
+          fill: "blue",
+          width: 10,
+          height: 10,
+          velocity: {
+              x: 4,
+              y: 4
+          }
+      },
+      // pink ball
+      {
+          x: 300,
+          y: 150,
+          fill: "pink",
+          width: 15,
+          height: 15,
+          velocity: {
+              x: 3,
+              y: 3
+          }
+      },
+  //yellow ball
+      {
+          x: 600,
+          y: 120,
+          fill: "yellow",
+          width: 13,
+          height: 13,
+          velocity: {
+              x: 4,
+              y: 3
+          }
+      },*/
+
 };
 
 let bricks = [
@@ -116,6 +139,8 @@ let lives = 3;
 //this is the different screen for the game and what we will use to switch in between.
 let state = "title" // "game" , "win" , "gameOver"
 
+
+//this is the counter where if a player breakes a brick then it goes up by one. it is how the player can win the game.
 let bricksLeft = 0;
 
 // this will be the Title Screen at the begging of the game that will have the title and instruction on the types of flies (uses and image)
@@ -142,7 +167,7 @@ let gameOverScreen = {
 };
 
 function preload() {
-    titleScreen.image = loadImage("assets/images/Brick_Breaker_Title.png");
+    titleScreen.image = loadImage("assets/images/Bounce_Breaker_Only_Win.png");
     winScreen.image = loadImage("assets/images/YOU_WIN.png");
     gameOverScreen.image = loadImage("assets/images/Game_Over.jpg");
 }
@@ -151,6 +176,7 @@ function preload() {
 //draws the canvas that the game is displayed on.
 function setup() {
     createCanvas(1000, 680);
+    resetBrick(bricks);
 
 }
 
@@ -158,6 +184,8 @@ function setup() {
 function draw() {
     if (state === "title") {
         title();
+        bricksLeft = 0;
+        // lives = 3;
     }
 
     else if (state === "game") {
@@ -176,6 +204,7 @@ function draw() {
 function title() {
     background(titleScreen.image);
     lives = 3;
+    bricksLeft = 0;
 }
 
 //where all elements are called 
@@ -188,9 +217,11 @@ function game() {
 
     drawLaunchPaddle(launchPaddle);
     drawBall(ball);
-    drawLives();
+    drawBricksLeft();
 
-    callGameOver();
+    callYouWin();
+    //callGameOver();
+
 
     for (let brick of bricks) {
         if (brick.active === true) {
@@ -333,18 +364,24 @@ function drawBrick(brick) {
     pop();
 }
 
-//Draws the lives of the player. It starts at 3 and goes down to 0. if the balls misses the paddle and fall off the canvas player 
-//lose a life. it is a white number on the top of the canvas.
-function drawLives() {
+//Draws the bricks that the player need to break 
+function drawBricksLeft() {
     push();
     textAlign(LEFT, TOP);
     fill("white");
     textStyle(BOLD);
     textSize(100);
-    text(lives, 0, 0);
+    text(bricksLeft, 0, 0);
     pop();
 }
 
+//reset brick back to ontop of the paddle
+function resetBrick(brick) {
+    brick.x = mouseX;
+    brick.y = 645;
+    brick.active = true;
+    brick.fill = "red";
+}
 
 /**
  * this launches the brick. if the brick touches the launch paddle that is activated the brick will go up. the brick 
@@ -368,10 +405,12 @@ function handleBrickDestroy(brick, ball) {
 
     if (overlap) {
         brick.active = false;
-        ball.velocity.y *= -1;
+        brick.fill = "grey";
+        bricksLeft = bricksLeft + 1;
     }
-    if (brick.active === false) {
 
+    if (brick.active === false) {
+        resetBrick(brick);
     }
 }
 
@@ -392,12 +431,20 @@ function handleBrickDestroy(brick, ball) {
  * 
  * 
  */
+//if the player makes the brick come in contact 3 times they win 
+function callYouWin() {
+    if (bricksLeft === 3) {
+        state = "win";
+    }
+}
 
+/**  havent added the function yet still thinking over the effects and what could cause a game over
 function callGameOver() {
     if (lives === 0) [
         state = "gameOver"
     ]
 }
+*/
 
 function mousePressed() {
 

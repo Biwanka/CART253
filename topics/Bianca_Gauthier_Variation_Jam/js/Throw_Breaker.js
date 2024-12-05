@@ -143,7 +143,7 @@ let gameOverScreen = {
 };
 
 function preload() {
-    titleScreen.image = loadImage("assets/images/Throw_Breaker_Only_Win.png"); //need to change update title font after personalizing it
+    titleScreen.image = loadImage("assets/images/Throw_Breaker_Only_Win.png"); //need to change update title font after personalizing 
     winScreen.image = loadImage("assets/images/YOU_WIN.png");
     gameOverScreen.image = loadImage("assets/images/Game_Over.jpg");
 }
