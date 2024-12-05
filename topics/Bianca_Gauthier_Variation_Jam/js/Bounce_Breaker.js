@@ -270,7 +270,9 @@ function moveBrick(brick) {
 
     brick.y = brick.y + brick.velocity.y;
     brick.x = launchPaddle.top.x;
-    brick.y = constrain(mouseY, 0, launchPaddle.top.y);
+    if (brick.y > launchPaddle.top.y) {
+        brick.velocity.y *= -1;
+    }
 }
 
 /**
