@@ -168,20 +168,82 @@ let offset = brickWidth / 4;   // creates the offset where some rows start at 25
 //the lives of the player 
 let lives = 3;
 
+//this is the different screen for the game and what we will use to switch in between.
+let state = "title" // "game" , "win" , "gameOver"
+
+let bricksLeft = 0;
+
+// this will be the Title Screen at the begging of the game that will have the title and instruction on the types of flies (uses and image)
+//has position and image
+let titleScreen = {
+    x: 1000,
+    y: 680,
+    image: undefined
+};
+//this will be the You Win background screen that will appear when you get rid of alk the bricks. (uses and image)
+//has position and image
+let winScreen = {
+    x: 1000,
+    y: 680,
+    image: undefined
+};
+
+//this will be the Game Over background screen that will appear when you run out of lives. (uses and image)
+//has position and image
+let gameOverScreen = {
+    x: 1000,
+    y: 680,
+    image: undefined
+};
+
+function preload() {
+    titleScreen.image = loadImage("assets/images/Brick_Breaker_Title.png");
+    winScreen.image = loadImage("assets/images/YOU_WIN.png");
+    gameOverScreen.image = loadImage("assets/images/Game_Over.jpg");
+}
+
+
 //draws the canvas that the game is displayed on.
 function setup() {
     createCanvas(1000, 680);
     createAllBricks(bricks); //creates all the bricks using the variables ontop 
+    resetBall(ball);
+}
+
+// display the state of the game
+function draw() {
+    if (state === "title") {
+        title();
+    }
+
+    else if (state === "game") {
+        game();
+    }
+
+    else if (state === "gameOver") {
+        gameOver();
+    }
+
+    else if (state === "win") {
+        win();
+    }
+}
+
+function title() {
+    background(titleScreen.image);
+    lives = 3;
 }
 
 //where all elements are called 
-function draw() {
+function game() {
     background("grey");
 
     moveBall(ball);
 
     drawBall(ball);
     drawLives();
+
+    callGameOver();
 
     for (let brick of bricks) {
         if (brick.active === true) {
@@ -195,6 +257,18 @@ function draw() {
         drawPaddle(paddle);
         handleBallBounce(ball, paddle);
     };
+}
+/**This is both of the end screen options 
+ * 
+ * 
+ */
+// This displayes the image that shows the GameOver screen that tell player they lost the game
+function gameOver() {
+    background(gameOverScreen.image);
+}
+//this dsiplayes the image tthat show the Win screen that tell player they won the game
+function win() {
+    background(winScreen.image);
 }
 
 /**
@@ -236,6 +310,12 @@ function moveBall(ball) {
     ball.x = ball.x + ball.velocity.x;
     ball.y = ball.y + ball.velocity.y;
 
+    //the ball at the complete beginning is not moving and after pressing space Bar will the ball velocity be 
+    //activated therefore start moving
+    if (keyIsDown('32') && ball.velocity.x === 0) {
+        ball.velocity.y = 4;
+        ball.velocity.x = 4;
+    }
     // makes the ball bounce off the right and left side of the canvas
     if (ball.x > width || ball.x < 0) {
         resetBall(ball)
@@ -375,19 +455,6 @@ function handleBallBounce(ball, paddle) {
                 ball.velocity.x *= 1;
             }
         }
-        /**if (overlap) {
-            if (paddle.orientation === "horizontal") {
-    
-                ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
-                ball.velocity.y *= -1;
-            }
-            if (paddle.orientation === "vertical") {
-                if (ball.x > (paddle.x - paddle.height / 2 - ball.height / 2) || ball.x < (paddle.x - paddle.height / 2 - ball.height / 2)) {
-                    ball.velocity.x *= -1;
-                }
-    
-            }
-        }*/
     }
 }
 
@@ -410,21 +477,54 @@ function handleBrickDestroy(brick, ball) {
     }
 }
 
+/**
+ * 
+ * 
+ * this is how the state of teh screen. what is displayed will chnage
+ * 
+ * 
+ * the pathways to move change the screen 
+ * if we are at the title,
+ * if we are at the game 
+ * if we are at the game over screen
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
 
-/**function mousePressed() {
-    if (mousePressed) {
-        moveBall(ball);
-    }
- 
-    else {
-        ball.velocity.x = 0;
-        ball.velocity.y = 0;
-        ball.x = random(100, 900)
-        ball.y = random(100, 500)
-    }
- 
-}*/
+function callGameOver() {
+    if (lives === 0) [
+        state = "gameOver"
+    ]
+}
 
+function mousePressed() {
+
+    //to get players from the title screen to the game play
+    //starts at the title if we click the mouse when we are at the title screen, this will then bring the player to the game screen 
+    if (state === "title") {
+        state = "game";
+    }
+    // if the player won the game and are at the winning screen they can click the mouse to bring them back to the title screen.
+    //if they want to replay the game
+    else if (state === "win") {
+        state = "title";
+        lives = 3;
+    }
+
+    //if the player lose the game and are at the game Over screen they can click the mouse to bring them back to the title screen 
+    //if they want to replay the game
+    else if (state === "gameOver") {
+        state = "title";
+        lives = 3;
+    }
+    // if the state of the game is on the game screen then we can start playing the game (the clicking dosent do anything anymore)
+    else if (state === "game") {
+
+    }
+}
 /**
 * Returns true if a and b overlap, and false otherwise
 * Assumes a and b have properties x, y, width and height to describe

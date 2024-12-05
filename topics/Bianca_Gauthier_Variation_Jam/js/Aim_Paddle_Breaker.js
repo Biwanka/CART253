@@ -60,28 +60,33 @@ const ball = {
         x: 3,
         y: 3
     }
+
 };
 
-const paddle = {
+// Our paddle
+let paddles = [
     //bottom paddle 
-    horizontal: {
-        x: 300,
+    {
+        x: 500,
         y: 665,
         fill: "black",
         width: 110,
         height: 10,
+        orientation: "horizontal"
     },
-    //Left Paddle
-    vertical: {
-        x: 20,
-        y: 340,
+
+    //Right paddle 
+    {
+        x: 980,
+        y: 300,
         fill: "black",
         width: 10,
         height: 110,
-    },
-};
+        orientation: "vertical",
+    }
+];
 
-// Our paddle
+
 let bricks = [
     {
         x: undefined,
@@ -92,6 +97,18 @@ let bricks = [
         active: true
     },
 ];
+
+let hardBricks = [
+    {
+        x: 750,
+        y: 540,
+        fill: "#8b0000",
+        width: 40,
+        height: 20,
+        active: true
+    }
+];
+
 
 // the different variables that will be used to make the new bricks.   
 const brickStartX = 170;    //where the first bricks will start
@@ -111,24 +128,81 @@ let offset = brickWidth / 4;   // creates the offset where some rows start at 25
 //the lives of the player 
 let lives = 3;
 
+//this is the different screen for the game and what we will use to switch in between.
+let state = "title" // "game" , "win" , "gameOver"
+
+let bricksLeft = 0;
+
+// this will be the Title Screen at the begging of the game that will have the title and instruction on the types of flies (uses and image)
+//has position and image
+let titleScreen = {
+    x: 1000,
+    y: 680,
+    image: undefined
+};
+//this will be the You Win background screen that will appear when you get rid of alk the bricks. (uses and image)
+//has position and image
+let winScreen = {
+    x: 1000,
+    y: 680,
+    image: undefined
+};
+
+//this will be the Game Over background screen that will appear when you run out of lives. (uses and image)
+//has position and image
+let gameOverScreen = {
+    x: 1000,
+    y: 680,
+    image: undefined
+};
+
+function preload() {
+    titleScreen.image = loadImage("assets/images/Brick_Breaker_Title.png");
+    winScreen.image = loadImage("assets/images/YOU_WIN.png");
+    gameOverScreen.image = loadImage("assets/images/Game_Over.jpg");
+}
+
+
 //draws the canvas that the game is displayed on.
 function setup() {
     createCanvas(1000, 680);
     createAllBricks(bricks); //creates all the bricks using the variables ontop 
+    resetBall(ball);
 }
 
-//where all elements are called
+// display the state of the game
 function draw() {
+    if (state === "title") {
+        title();
+    }
+
+    else if (state === "game") {
+        game();
+    }
+
+    else if (state === "gameOver") {
+        gameOver();
+    }
+
+    else if (state === "win") {
+        win();
+    }
+}
+
+function title() {
+    background(titleScreen.image);
+    lives = 3;
+}
+
+//where all elements are called 
+function game() {
     background("grey");
 
     moveBall(ball);
-    movePaddle(paddle);
 
-    handleBallBounce(ball, paddle);
-
-    drawPaddle(paddle);
     drawBall(ball);
-    drawLives();
+
+    callGameOver();
 
     for (let brick of bricks) {
         //this is where if the brick does not come in contact with a brick (brick.state = true) then it will be drawn.
@@ -137,6 +211,19 @@ function draw() {
             handleBrickDestroy(brick, ball);
         }
     };
+
+    for (let paddle of paddles) {
+        movePaddle(paddle);
+        drawPaddle(paddle);
+        handleBallBounce(ball, paddle);
+    };
+
+    for (let hardBrick of hardBricks) {
+        if (hardBrick.active === true) {
+            drawHardBrick(hardBrick);
+            handleHardBrickDestroy(hardBrick, ball);
+        }
+    }
 }
 
 /**
@@ -154,59 +241,44 @@ function draw() {
  *
  *
  */
-/**
- * move the paddle. the paddle that are horrizontal can only go up and down with the mouse but can go left and rught with the key arrowns
- * and the paddle that are vertical can only go left and right with the mouse but can go up and down with the key arrows.
- */
+// Moves the paddle. the paddle is in a cross format and fallows the mouse cursor.
 function movePaddle(paddle) {
 
-    paddle.vertical.x = constrain(mouseX, 30, 970);
-    paddle.horizontal.y = constrain(mouseY, 30, 650);
-
-    //need to make a barrier so the paddle dont go out of the canvas 
-    if (keyIsDown(UP_ARROW)) {
-        paddle.vertical.y -= 5;
-        //paddle.vertical.y = constrain(30, 650);
+    if (paddle.position = "horizontal") {
+        paddle.x = constrain(mouseX, 30, 970);
     }
 
-    else if (keyIsDown(DOWN_ARROW)) {
-        paddle.vertical.y += 5;
-        //  paddle.vertical.y = constrain(30, 650);
-    }
-
-    if (keyIsDown(LEFT_ARROW)) {
-        paddle.horizontal.x -= 5;
-        // paddle.horizontal.x = constrain(30, 970);
-    }
-
-    else if (keyIsDown(RIGHT_ARROW)) {
-        paddle.horizontal.x += 5;
-        //  paddle.horizontal.x = constrain(30, 970);
+    if (paddle.position = "vertical") {
+        paddle.y = constrain(mouseY, 30, 650);
     }
 }
+
 
 /**
  * move the ball. the ball will bounce off the paddle, the canvas wall and the brick
  */
 function moveBall(ball) {
-
     ball.velocity.y = ball.velocity.y;
 
     ball.x = ball.x + ball.velocity.x;
     ball.y = ball.y + ball.velocity.y;
 
+    //the ball at the complete beginning is not moving and after pressing space Bar will the ball velocity be 
+    //activated therefore start moving
+    if (keyIsDown('32') && ball.velocity.x === 0) {
+        ball.velocity.y = 4;
+        ball.velocity.x = 4;
+    }
     // makes the ball bounce off the right and left side of the canvas
     if (ball.x > width || ball.x < 0) {
         resetBall(ball)
     }
     //makes the ball bounce off the top of the canvas
-    if (ball.y > height) {
+    if (ball.y > height || ball.y < 0) {
         resetBall(ball);
     }
-    if (ball.y < 0) {
-        ball.velocity.y *= -1;
-    }
 }
+
 /**
  *
  * This is where all the elements are drawn
@@ -219,21 +291,13 @@ function moveBall(ball) {
  *
  *
  */
-//draws the paddle. two thin black rectangle. one horizontal and one vertical.
+//draws the paddle. tw0 thin black rectangle that end up being place in a plus sign
 function drawPaddle(paddle) {
-
     push();
     rectMode(CENTER);
     noStroke();
-    fill(paddle.vertical.fill);
-    rect(paddle.vertical.x, paddle.vertical.y, paddle.vertical.width, paddle.vertical.height);
-    pop();
-
-    push();
-    rectMode(CENTER);
-    noStroke();
-    fill(paddle.horizontal.fill);
-    rect(paddle.horizontal.x, paddle.horizontal.y, paddle.horizontal.width, paddle.horizontal.height);
+    fill(paddle.fill);
+    rect(paddle.x, paddle.y, paddle.width, paddle.height);
     pop();
 }
 
@@ -246,7 +310,6 @@ function drawBall(ball) {
     ellipse(ball.x, ball.y, ball.width, ball.height);
     pop();
 }
-
 //draws the first brick. a bright red rectangle
 function drawBrick(brick) {
     push();
@@ -254,6 +317,15 @@ function drawBrick(brick) {
     fill(brick.fill);
     noStroke(0);
     rect(brick.x, brick.y, brick.width, brick.height);
+    pop();
+}
+//draws the first brick. a darker and smaller red rectangle
+function drawHardBrick(hardBrick) {
+    push();
+    rectMode(CENTER);
+    fill(hardBrick.fill);
+    noStroke(0);
+    rect(hardBrick.x, hardBrick.y, hardBrick.width, hardBrick.height);
     pop();
 }
 
@@ -269,12 +341,12 @@ function drawLives() {
     pop();
 }
 
-//resets the ball in a random y position 
+//resets the ball in a random y position  
 function resetBall(ball) {
-    ball.y = 300;
+    ball.y = random(100, 600);
+    //the fly will appear in a random y position
     ball.x = random(100, 900);
 }
-
 /**
  * 
  * 
@@ -289,12 +361,14 @@ function createAllBricks() {
     for (let row = 0; row < numberOfRows; row++) {
         if (row % 2 === 0) {
             col = 12;
-            offset = brickWidth / 4;
+            offset = brickWidth / 2;
         }
+
         else {
             col = 11;
             offset = 0;
         }
+
         for (let col = 0; col < numberOfColumns; col++) {
             //this is where it creates the brick in how it will look
             // We can work out each brick's x and y by its position in the rows and columns
@@ -318,26 +392,28 @@ function createAllBricks() {
  * depending on which part of the paddle the ball touches it will bounce in the opposite derection.
 */
 function handleBallBounce(ball, paddle) {
-
-    const horizontalOverlap = centredRectanglesOverlap(ball, paddle.horizontal);
-    const verticalOverlap = centredRectanglesOverlap(ball, paddle.vertical);
-
-    if (horizontalOverlap) {
-        if (ball.y > paddle.horizontal.y) {
-            ball.velocity.y *= -1;
+    const overlap = centredRectanglesOverlap(ball, paddle);
+    if (overlap) {
+        if (paddle.orientation === "horizontal") {
+            if (ball.y > paddle.y) {
+                ball.velocity.y *= -1;
+            }
+            else if (ball.y < paddle.y) {
+                ball.velocity.y *= 1;
+            }
+            // ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
+            //  ball.velocity.y *= -1;
         }
-        else if (ball.y < paddle.horizontal.y) {
-            ball.velocity.y *= 1;
-        }
-    }
+        if (paddle.orientation === "vertical") {
 
-    if (verticalOverlap) {
-
-        if (ball.x > paddle.vertical.x) {
-            ball.velocity.x *= -1;
-        }
-        else if (ball.x < paddle.vertical.x) {
-            ball.velocity.x *= 1;
+            if (ball.x > paddle.x) {
+                ball.velocity.x *= -1;
+            }
+            else if (ball.x < paddle.x) {
+                ball.velocity.x *= 1;
+            }
+            //ball.x = paddle.x - paddle.width / 2 - ball.width / 2;
+            //ball.velocity.x *= -1;
         }
     }
 }
@@ -349,31 +425,76 @@ function handleBrickDestroy(brick, ball) {
     const overlap = centredRectanglesOverlap(brick, ball);
 
     if (overlap) {
-
         brick.active = false;
         ball.velocity.y *= -1;
     }
+
     if (brick.active === false) {
-
-    }
-    else {
-
     }
 }
 
-/**function mousePressed() {
-    if (mousePressed) {
-        moveBall(ball);
+function handleHardBrickDestroy(hardBrick, ball) {
+    const overlap = centredRectanglesOverlap(hardBrick, ball);
+
+    if (overlap) {
+        hardBrick.active = false;
+        ball.velocity.y *= -1;
     }
- 
-    else {
-        ball.velocity.x = 0;
-        ball.velocity.y = 0;
-        ball.x = random(100, 900)
-        ball.y = random(100, 500)
+
+    if (hardBrick.active === false) {
+
     }
- 
-}*/
+
+}
+
+/**
+ * 
+ * 
+ * this is how the state of teh screen. what is displayed will chnage
+ * 
+ * 
+ * the pathways to move change the screen 
+ * if we are at the title,
+ * if we are at the game 
+ * if we are at the game over screen
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
+function callGameOver() {
+    if (lives === 0) [
+        state = "gameOver"
+    ]
+}
+
+function mousePressed() {
+
+    //to get players from the title screen to the game play
+    //starts at the title if we click the mouse when we are at the title screen, this will then bring the player to the game screen 
+    if (state === "title") {
+        state = "game";
+    }
+    // if the player won the game and are at the winning screen they can click the mouse to bring them back to the title screen.
+    //if they want to replay the game
+    else if (state === "win") {
+        state = "title";
+        lives = 3;
+    }
+
+    //if the player lose the game and are at the game Over screen they can click the mouse to bring them back to the title screen 
+    //if they want to replay the game
+    else if (state === "gameOver") {
+        state = "title";
+        lives = 3;
+    }
+    // if the state of the game is on the game screen then we can start playing the game (the clicking dosent do anything anymore)
+    else if (state === "game") {
+
+    }
+}
 
 /**
 * Returns true if a and b overlap, and false otherwise
@@ -386,3 +507,4 @@ function centredRectanglesOverlap(a, b) {
         a.y + a.height / 2 > b.y - b.height / 2 &&
         a.y - a.height / 2 < b.y + b.height / 2);
 }
+

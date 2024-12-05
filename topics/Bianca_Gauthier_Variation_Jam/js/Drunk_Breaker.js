@@ -49,7 +49,7 @@
  */
 
 "use strict";
-//this is the ball. a white circle.
+
 const ball = {
     x: 500,
     y: 400,
@@ -62,16 +62,26 @@ const ball = {
     }
 };
 
-// this is our paddle a black thin rectangle.
 const paddle = {
-    x: 500,
-    y: 665,
-    fill: "black",
-    width: 110,
-    height: 10
+    //bottom paddle 
+    horizontal: {
+        x: 300,
+        y: 665,
+        fill: "black",
+        width: 110,
+        height: 10,
+    },
+    //Left Paddle
+    vertical: {
+        x: 20,
+        y: 340,
+        fill: "black",
+        width: 10,
+        height: 110,
+    },
 };
 
-//this is the array that creates the first brick (red rectangle)
+// Our paddle
 let bricks = [
     {
         x: undefined,
@@ -86,16 +96,16 @@ let bricks = [
 // the different variables that will be used to make the new bricks.   
 const brickStartX = 170;    //where the first bricks will start
 const brickStartY = 85;
-const brickGapX = 6;        //this will create the gaps in between the bricks 
-const brickGapY = 6;        //this will create the gaps in between the bricks 
-const brickWidth = 65;
-const brickHeight = 30;
+const brickGapX = 5;        //this will create the gaps in between the bricks 
+const brickGapY = 5;        //this will create the gaps in between the bricks 
+const brickWidth = 50;
+const brickHeight = 25;
 const active = true;
 // variables that helps build the placement of all the bricks. 
 let col = 0;                 // there are 0 columns so they will be called
 let row = 0;                //there are 0 rows at the beggining they will be called 
 let numberOfColumns = 10;   //number of brick columns wanted 
-let numberOfRows = 8;       // number of brick rows wanted
+let numberOfRows = 6;       // number of brick rows wanted
 let offset = brickWidth / 4;   // creates the offset where some rows start at 250 while other rows starts furter
 
 //the lives of the player 
@@ -134,8 +144,6 @@ function preload() {
     winScreen.image = loadImage("assets/images/YOU_WIN.png");
     gameOverScreen.image = loadImage("assets/images/Game_Over.jpg");
 }
-
-
 //draws the canvas that the game is displayed on.
 function setup() {
     createCanvas(1000, 680);
@@ -171,8 +179,8 @@ function title() {
 function game() {
     background("grey");
 
-    movePaddle(paddle);
     moveBall(ball);
+    movePaddle(paddle);
 
     handleBallBounce(ball, paddle);
 
@@ -183,13 +191,14 @@ function game() {
     callGameOver();
 
     for (let brick of bricks) {
-        //this is where if the brick does not come in contact with a brick (brick.state = true) then it will be drawn. 
+        //this is where if the brick does not come in contact with a brick (brick.state = true) then it will be drawn.
         if (brick.active === true) {
             drawBrick(brick);
             handleBrickDestroy(brick, ball);
         }
     };
 }
+
 /**This is both of the end screen options 
  * 
  * 
@@ -202,6 +211,7 @@ function gameOver() {
 function win() {
     background(winScreen.image);
 }
+
 
 /**
  *
@@ -218,20 +228,46 @@ function win() {
  *
  *
  */
-// Moves the paddle. with the mouse. the paddle can only go left and right
+/**
+ * move the paddle. the paddle that are horrizontal can only go up and down with the mouse but can go left and rught with the key arrowns
+ * and the paddle that are vertical can only go left and right with the mouse but can go up and down with the key arrows.
+ */
 function movePaddle(paddle) {
-    paddle.x = constrain(mouseX, 30, 970);
+
+    paddle.vertical.x = constrain(mouseX, 30, 970);
+    paddle.horizontal.y = constrain(mouseY, 30, 650);
+
+    //need to make a barrier so the paddle dont go out of the canvas 
+    if (keyIsDown(UP_ARROW)) {
+        paddle.vertical.y -= 5;
+        //paddle.vertical.y = constrain(30, 650);
+    }
+
+    else if (keyIsDown(DOWN_ARROW)) {
+        paddle.vertical.y += 5;
+        //  paddle.vertical.y = constrain(30, 650);
+    }
+
+    if (keyIsDown(LEFT_ARROW)) {
+        paddle.horizontal.x -= 5;
+        // paddle.horizontal.x = constrain(30, 970);
+    }
+
+    else if (keyIsDown(RIGHT_ARROW)) {
+        paddle.horizontal.x += 5;
+        //  paddle.horizontal.x = constrain(30, 970);
+    }
 }
 
 /**
  * move the ball. the ball will bounce off the paddle, the canvas wall and the brick
  */
 function moveBall(ball) {
+
     ball.velocity.y = ball.velocity.y;
 
     ball.x = ball.x + ball.velocity.x;
     ball.y = ball.y + ball.velocity.y;
-
     //the ball at the complete beginning is not moving and after pressing space Bar will the ball velocity be 
     //activated therefore start moving
     if (keyIsDown('32') && ball.velocity.x === 0) {
@@ -240,19 +276,16 @@ function moveBall(ball) {
     }
     // makes the ball bounce off the right and left side of the canvas
     if (ball.x > width || ball.x < 0) {
-        ball.velocity.x *= -1;
+        resetBall(ball)
     }
     //makes the ball bounce off the top of the canvas
+    if (ball.y > height) {
+        resetBall(ball);
+    }
     if (ball.y < 0) {
         ball.velocity.y *= -1;
     }
-    //if the ball fall at the bottom of the canvas. the ball will reset 
-    if (ball.y > 690) {
-        resetBall(ball);
-        lives = lives - 1;
-    }
 }
-
 /**
  *
  * This is where all the elements are drawn
@@ -265,13 +298,21 @@ function moveBall(ball) {
  *
  *
  */
-//draws the paddle . a thin black rectangle 
+//draws the paddle. two thin black rectangle. one horizontal and one vertical.
 function drawPaddle(paddle) {
+
     push();
     rectMode(CENTER);
     noStroke();
-    fill(paddle.fill);
-    rect(paddle.x, paddle.y, paddle.width, paddle.height);
+    fill(paddle.vertical.fill);
+    rect(paddle.vertical.x, paddle.vertical.y, paddle.vertical.width, paddle.vertical.height);
+    pop();
+
+    push();
+    rectMode(CENTER);
+    noStroke();
+    fill(paddle.horizontal.fill);
+    rect(paddle.horizontal.x, paddle.horizontal.y, paddle.horizontal.width, paddle.horizontal.height);
     pop();
 }
 
@@ -294,6 +335,7 @@ function drawBrick(brick) {
     rect(brick.x, brick.y, brick.width, brick.height);
     pop();
 }
+
 //Draws the lives of the player. It starts at 3 and goes down to 0. if the balls misses the paddle and fall off the canvas player 
 //lose a life. it is a white number on the top of the canvas.
 function drawLives() {
@@ -306,6 +348,12 @@ function drawLives() {
     pop();
 }
 
+//resets the ball in a random y position 
+function resetBall(ball) {
+    ball.y = 300;
+    ball.x = random(100, 900);
+}
+
 /**
  * 
  * 
@@ -315,14 +363,13 @@ function drawLives() {
  * 
  */
 function createAllBricks() {
-    //this checks if the rows that are a pair number, 
+    //this checks if the rows that are a pair number,
     //the number of bricks will be 12 it adds the offset so the bricks start at a different x position.
     for (let row = 0; row < numberOfRows; row++) {
         if (row % 2 === 0) {
             col = 12;
             offset = brickWidth / 4;
         }
-        //else the impair ones will have 11 brick 
         else {
             col = 11;
             offset = 0;
@@ -344,28 +391,33 @@ function createAllBricks() {
     }
 }
 
-
-//resets the ball in a random y and x position (however there is restrains so the ball dosent reset in the bricks)    
-function resetBall(ball) {
-    ball.y = random(400, 450);
-    ball.x = random(100, 900);
-}
-
 /**  
  * 
  *  Makes the Ball bounce when the ball comes in contact with the paddle
- * 
+ * depending on which part of the paddle the ball touches it will bounce in the opposite derection.
 */
 function handleBallBounce(ball, paddle) {
-    const overlap = centredRectanglesOverlap(ball, paddle);
 
+    const horizontalOverlap = centredRectanglesOverlap(ball, paddle.horizontal);
+    const verticalOverlap = centredRectanglesOverlap(ball, paddle.vertical);
 
-    // Add an effect to the ball's horizontal movement
-    // Probably want to constrain how fast this can get
-    if (overlap) {
+    if (horizontalOverlap) {
+        if (ball.y > paddle.horizontal.y) {
+            ball.velocity.y *= -1;
+        }
+        else if (ball.y < paddle.horizontal.y) {
+            ball.velocity.y *= 1;
+        }
+    }
 
-        ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
-        ball.velocity.y *= -1;
+    if (verticalOverlap) {
+
+        if (ball.x > paddle.vertical.x) {
+            ball.velocity.x *= -1;
+        }
+        else if (ball.x < paddle.vertical.x) {
+            ball.velocity.x *= 1;
+        }
     }
 }
 
@@ -374,34 +426,12 @@ function handleBallBounce(ball, paddle) {
  */
 function handleBrickDestroy(brick, ball) {
     const overlap = centredRectanglesOverlap(brick, ball);
-    const dx = paddle.x - ball.x; // Get distance of ball from centre of paddle on x
-    const angleEffect = map(dx, -paddle.width / 2, paddle.width / 2, -0.05, 0.05); // Convert to a more useful range
 
     if (overlap) {
-        // if the ball hits the top of the brick if will bounce off in a different y velocity
-        if (ball.y < brick.y) {
-            brick.active = false;
-            ball.velocity.y *= -1;
-        }
-        // if the ball hits the bottom of the brick if will bounce off in a different y velocity
-        else if (ball.y > brick.y) {
-            brick.active = false;
-            ball.velocity.y *= -1;
-        }
-        //if the ball hits the left of the ball instead if the bouncing off it will affect its angle
-        if (ball.x < brick.x) {
-            brick.active = false;
-            // ball.velocity.x *= -1;
-            // Add an effect to the ball's horizontal movement
-            ball.velocity.x += angleEffect * 1;
-        }
-        //if the ball hits the right side of the brick it will bounce off in the opposite direction 
-        else if (ball.x > brick.x) {
-            brick.active = false;
-            ball.velocity.x *= -1;
-        }
-    }
 
+        brick.active = false;
+        ball.velocity.y *= -1;
+    }
     if (brick.active === false) {
 
     }
@@ -458,6 +488,7 @@ function mousePressed() {
 
     }
 }
+
 
 /**
 * Returns true if a and b overlap, and false otherwise

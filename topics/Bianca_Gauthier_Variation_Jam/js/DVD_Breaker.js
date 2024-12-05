@@ -50,42 +50,27 @@
 
 "use strict";
 
-const ball = {
+let ball = {
     x: 500,
     y: 400,
     fill: "white",
     width: 12,
     height: 12,
     velocity: {
-        x: 3,
-        y: 3
-    }
-
+        x: 2,
+        y: 2
+    },
+    image: undefined
 };
 
 // Our paddle
-let paddles = [
-    //bottom paddle 
-    {
-        x: 500,
-        y: 665,
-        fill: "black",
-        width: 110,
-        height: 10,
-        orientation: "horizontal"
-    },
-
-    //Right paddle 
-    {
-        x: 980,
-        y: 300,
-        fill: "black",
-        width: 10,
-        height: 110,
-        orientation: "vertical",
-    }
-];
-
+const paddle = {
+    x: 500,
+    y: 665,
+    fill: "black",
+    width: 110,
+    height: 10
+};
 
 let bricks = [
     {
@@ -98,70 +83,124 @@ let bricks = [
     },
 ];
 
-let hardBricks = [
-    {
-        x: 750,
-        y: 540,
-        fill: "#8b0000",
-        width: 40,
-        height: 20,
-        active: true
-    }
-];
-
-
-// the different variables that will be used to make the new bricks.   
-const brickStartX = 170;    //where the first bricks will start
-const brickStartY = 85;
-const brickGapX = 5;        //this will create the gaps in between the bricks 
-const brickGapY = 5;        //this will create the gaps in between the bricks 
+const brickStartX = 600;
+const brickStartY = 50;
+const brickGapX = 15;
+const brickGapY = 25;
 const brickWidth = 50;
 const brickHeight = 25;
 const active = true;
-// variables that helps build the placement of all the bricks. 
-let col = 0;                 // there are 0 columns so they will be called
-let row = 0;                //there are 0 rows at the beggining they will be called 
-let numberOfColumns = 10;   //number of brick columns wanted 
-let numberOfRows = 6;       // number of brick rows wanted
-let offset = brickWidth / 4;   // creates the offset where some rows start at 250 while other rows starts furter
+
+let col = 0;
+let row = 0;
+let numberOfColumns = 5;
+let numberOfRows = 6;
+let offset = brickWidth / 4;
 
 //the lives of the player 
 let lives = 3;
+
+//this is the different screen for the game and what we will use to switch in between.
+let state = "title" // "game" , "win" , "gameOver"
+
+let bricksLeft = 0;
+
+// this will be the Title Screen at the begging of the game that will have the title and instruction on the types of flies (uses and image)
+//has position and image
+let titleScreen = {
+    x: 1000,
+    y: 680,
+    image: undefined
+};
+//this will be the You Win background screen that will appear when you get rid of alk the bricks. (uses and image)
+//has position and image
+let winScreen = {
+    x: 1000,
+    y: 680,
+    image: undefined
+};
+
+//this will be the Game Over background screen that will appear when you run out of lives. (uses and image)
+//has position and image
+let gameOverScreen = {
+    x: 1000,
+    y: 680,
+    image: undefined
+};
+
+function preload() {
+    titleScreen.image = loadImage("assets/images/Brick_Breaker_Title.png");
+    winScreen.image = loadImage("assets/images/YOU_WIN.png");
+    gameOverScreen.image = loadImage("assets/images/Game_Over.jpg");
+    ball.image = loadImage("assets/images/Logo_DVD.png");
+}
+
 
 //draws the canvas that the game is displayed on.
 function setup() {
     createCanvas(1000, 680);
     createAllBricks(bricks); //creates all the bricks using the variables ontop 
+    resetBall(ball);
+}
+
+// display the state of the game
+function draw() {
+    if (state === "title") {
+        title();
+    }
+
+    else if (state === "game") {
+        game();
+    }
+
+    else if (state === "gameOver") {
+        gameOver();
+    }
+
+    else if (state === "win") {
+        win();
+    }
+}
+
+function title() {
+    background(titleScreen.image);
+    lives = 3;
 }
 
 //where all elements are called 
-function draw() {
+function game() {
     background("grey");
 
+    movePaddle(paddle);
     moveBall(ball);
 
+    handleBallBounce(ball, paddle);
+
+    drawPaddle(paddle);
     drawBall(ball);
+    drawLives();
+
+    callGameOver();
 
     for (let brick of bricks) {
-        //this is where if the brick does not come in contact with a brick (brick.state = true) then it will be drawn.
         if (brick.active === true) {
             drawBrick(brick);
             handleBrickDestroy(brick, ball);
         }
     };
+}
 
-    for (let paddle of paddles) {
-        movePaddle(paddle);
-        drawPaddle(paddle);
-        handleBallBounce(ball, paddle);
-    };
-
-    for (let hardBrick of hardBricks) {
-        if (hardBrick.active === true) {
-            drawHardBrick(hardBrick);
-            handleHardBrickDestroy(hardBrick, ball);
-        }
-    }
+/**This is both of the end screen options 
+ * 
+ * 
+ */
+// This displayes the image that shows the GameOver screen that tell player they lost the game
+function gameOver() {
+    background(gameOverScreen.image);
+}
+//this dsiplayes the image tthat show the Win screen that tell player they won the game
+function win() {
+    background(winScreen.image);
 }
 
 /**
@@ -171,7 +210,7 @@ function draw() {
  *
  * makes all the elements that need to move, move.
  *
- * the ball
+ * the ball(dvd logo)
  * the paddle
  *
  *
@@ -179,21 +218,13 @@ function draw() {
  *
  *
  */
-// Moves the paddle. the paddle is in a cross format and fallows the mouse cursor.
+// Moves the paddle. with the mouse. the paddle can only go left and right
 function movePaddle(paddle) {
-
-    if (paddle.position = "horizontal") {
-        paddle.x = constrain(mouseX, 30, 970);
-    }
-
-    if (paddle.position = "vertical") {
-        paddle.y = constrain(mouseY, 30, 650);
-    }
+    paddle.x = constrain(mouseX, 30, 970);
 }
 
-
 /**
- * move the ball. the ball will bounce off the paddle, the canvas wall and the brick
+ * move the ball. the ball will bounce off the paddle, the canvas wall and the bricks. (dvd logo)
  */
 function moveBall(ball) {
     ball.velocity.y = ball.velocity.y;
@@ -202,11 +233,15 @@ function moveBall(ball) {
     ball.y = ball.y + ball.velocity.y;
 
     // makes the ball bounce off the right and left side of the canvas
-    if (ball.x > width || ball.x < 0) {
-        resetBall(ball)
+    if (ball.x > 935 || ball.x < 0) {
+        ball.velocity.x *= -1;
     }
     //makes the ball bounce off the top of the canvas
-    if (ball.y > height || ball.y < 0) {
+    if (ball.y < 0) {
+        ball.velocity.y *= -1;
+    }
+
+    if (ball.y > 690) {
         resetBall(ball);
     }
 }
@@ -223,7 +258,7 @@ function moveBall(ball) {
  *
  *
  */
-//draws the paddle. tw0 thin black rectangle that end up being place in a plus sign
+//draws the paddle . a thin black rectangle 
 function drawPaddle(paddle) {
     push();
     rectMode(CENTER);
@@ -233,15 +268,16 @@ function drawPaddle(paddle) {
     pop();
 }
 
-//draws the ball. a white small cricle
+//uses an image of the dvd logo
 function drawBall(ball) {
     push();
     rectMode(CENTER);
     noStroke();
     fill(ball.fill);
-    ellipse(ball.x, ball.y, ball.width, ball.height);
+    image(ball.image, ball.x, ball.y,);
     pop();
 }
+
 //draws the first brick. a bright red rectangle
 function drawBrick(brick) {
     push();
@@ -249,15 +285,6 @@ function drawBrick(brick) {
     fill(brick.fill);
     noStroke(0);
     rect(brick.x, brick.y, brick.width, brick.height);
-    pop();
-}
-//draws the first brick. a darker and smaller red rectangle
-function drawHardBrick(hardBrick) {
-    push();
-    rectMode(CENTER);
-    fill(hardBrick.fill);
-    noStroke(0);
-    rect(hardBrick.x, hardBrick.y, hardBrick.width, hardBrick.height);
     pop();
 }
 
@@ -273,12 +300,7 @@ function drawLives() {
     pop();
 }
 
-//resets the ball in a random y position  
-function resetBall(ball) {
-    ball.y = random(100, 600);
-    //the fly will appear in a random y position
-    ball.x = random(100, 900);
-}
+
 /**
  * 
  * 
@@ -293,14 +315,13 @@ function createAllBricks() {
     for (let row = 0; row < numberOfRows; row++) {
         if (row % 2 === 0) {
             col = 12;
-            offset = brickWidth / 2;
+            offset = brickWidth / 4;
         }
-
+        //else the impair ones will have 11 brick
         else {
             col = 11;
             offset = 0;
         }
-
         for (let col = 0; col < numberOfColumns; col++) {
             //this is where it creates the brick in how it will look
             // We can work out each brick's x and y by its position in the rows and columns
@@ -318,37 +339,27 @@ function createAllBricks() {
     }
 }
 
+//resets the ball in a random y position    
+function resetBall(ball) {
+    ball.y = random(400, 450);
+    ball.x = random(100, 900);
+}
+
 /**  
  * 
  *  Makes the Ball bounce when the ball comes in contact with the paddle
- * depending on which part of the paddle the ball touches it will bounce in the opposite derection.
+ * 
 */
 function handleBallBounce(ball, paddle) {
     const overlap = centredRectanglesOverlap(ball, paddle);
-    if (overlap) {
-        if (paddle.orientation === "horizontal") {
-            if (ball.y > paddle.y) {
-                ball.velocity.y *= -1;
-            }
-            else if (ball.y < paddle.y) {
-                ball.velocity.y *= 1;
-            }
-            // ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
-            //  ball.velocity.y *= -1;
-        }
-        if (paddle.orientation === "vertical") {
 
-            if (ball.x > paddle.x) {
-                ball.velocity.x *= -1;
-            }
-            else if (ball.x < paddle.x) {
-                ball.velocity.x *= 1;
-            }
-            //ball.x = paddle.x - paddle.width / 2 - ball.width / 2;
-            //ball.velocity.x *= -1;
-        }
+    if (overlap) {
+
+        ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
+        ball.velocity.y *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
     }
 }
+
 
 /**
  *  this is where the brick is effected if it touches the ball. if the brick touches the ball it will disapear.
@@ -357,42 +368,68 @@ function handleBrickDestroy(brick, ball) {
     const overlap = centredRectanglesOverlap(brick, ball);
 
     if (overlap) {
+
         brick.active = false;
         ball.velocity.y *= -1;
     }
 
     if (brick.active === false) {
-    }
-}
-
-function handleHardBrickDestroy(hardBrick, ball) {
-    const overlap = centredRectanglesOverlap(hardBrick, ball);
-
-    if (overlap) {
-        hardBrick.active = false;
-        ball.velocity.y *= -1;
-    }
-
-    if (hardBrick.active === false) {
 
     }
-
-}
-
-
-/**function mousePressed() {
-    if (mousePressed) {
-        moveBall(ball);
-    }
-
     else {
-        ball.velocity.x = 0;
-        ball.velocity.y = 0;
-        ball.x = random(100, 900)
-        ball.y = random(100, 500)
+
+    }
+}
+
+
+/**
+ * 
+ * 
+ * this is how the state of teh screen. what is displayed will chnage
+ * 
+ * 
+ * the pathways to move change the screen 
+ * if we are at the title,
+ * if we are at the game 
+ * if we are at the game over screen
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
+function callGameOver() {
+    if (lives === 0) [
+        state = "gameOver"
+    ]
+}
+
+function mousePressed() {
+
+    //to get players from the title screen to the game play
+    //starts at the title if we click the mouse when we are at the title screen, this will then bring the player to the game screen 
+    if (state === "title") {
+        state = "game";
+    }
+    // if the player won the game and are at the winning screen they can click the mouse to bring them back to the title screen.
+    //if they want to replay the game
+    else if (state === "win") {
+        state = "title";
+        lives = 3;
     }
 
-}*/
+    //if the player lose the game and are at the game Over screen they can click the mouse to bring them back to the title screen 
+    //if they want to replay the game
+    else if (state === "gameOver") {
+        state = "title";
+        lives = 3;
+    }
+    // if the state of the game is on the game screen then we can start playing the game (the clicking dosent do anything anymore)
+    else if (state === "game") {
+
+    }
+}
 
 /**
 * Returns true if a and b overlap, and false otherwise
