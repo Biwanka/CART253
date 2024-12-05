@@ -25,27 +25,11 @@
  * this will block the paddle. so if alot of bricks are not cought it could block the player from moving the paddle.
  * 
  * 
- * 2- 4 corners. the concept of the original game is that the paddle is only at the bottom.
- * but with this variation the paddle will be able to go on all the 4 size.
- * depending on the coding it will only be one paddle that can move to all 4 sides or if not its that there will be 4 paddle 
- * one on each side that can be move seperatly. the ball will now not be able to bounce of any of the sides. 
- * and the brick will be placed in the middle of the screen
+ * 2- this one focuses on the concept of horizontal and veritcal but you cant move the paddle in the direction you would expect.
+ * the brick on the vertical can only move rigth and left with the mouse. and the horizontal brick can only move up and down with the 
+ * mouse cursor.
  * 
- * 
- * 3- DvD logo. because the game i chose had to do with something from my past i decided to all add another aspect that touches on that.
- * I am going to use the boucing DVD logo. it was a common thing if you ever owned a DVD that when it was left on pause for long
- * the logo would appear and start bouching on the 4 sides of the screen. The main Hype was when the logo actually finally hit the 
- * corner of the screen it was the biggest satisfaction. Mainly i will use the top right corner. so i will change teh ball to be the 
- * DvD logo and the ball will be able to hit the side of the screen. there will be bricks blocking the top right corner.
- * Even if the player gets ride of all the bricks they will not win the game they need to continue until the DVD logo witht perfectly 
- * the top right corner.
- * 
- * 
- * 4- Reverse. I dedcide to make a version that will be the contrary of the cncept of the original game. 
- * instead of bouncing a ball on a paddle to break the bricks, instead the player will need to trow the bricks to hit the ball
- * that is moving in the top screen. the player will have a pile of bricks and need to trow them so it hits the ball and the brick breaks.
- * if the brick hits nothing gravity will do its thing and come back down in the hands of the player. im think maybe to add a timer 
- * where the palyer needs to break all the brick before the time. we will see. 
+ 
  */
 
 "use strict";
@@ -57,8 +41,8 @@ const ball = {
     width: 12,
     height: 12,
     velocity: {
-        x: 3,
-        y: 3
+        x: 0,
+        y: 0
     }
 };
 
@@ -112,10 +96,10 @@ let paddles = [
     //Left Paddle
     {
         x: 20,
-        y: 340,
+        y: 300,
         fill: "black",
         width: 10,
-        height: 110,
+        height: 120,
         orientation: "vertical",
 
     },
@@ -130,7 +114,7 @@ let paddles = [
     },
     {
         x: 20,
-        y: 180,
+        y: 100,
         fill: "black",
         width: 10,
         height: 110,
@@ -171,7 +155,7 @@ let lives = 3;
 //this is the different screen for the game and what we will use to switch in between.
 let state = "title" // "game" , "win" , "gameOver"
 
-let bricksLeft = 0;
+let bricksLeft = 60;
 
 // this will be the Title Screen at the begging of the game that will have the title and instruction on the types of flies (uses and image)
 //has position and image
@@ -197,7 +181,7 @@ let gameOverScreen = {
 };
 
 function preload() {
-    titleScreen.image = loadImage("assets/images/Brick_Breaker_Title.png");
+    titleScreen.image = loadImage("assets/images/Multi_Duo_Breaker_Title.png");
     winScreen.image = loadImage("assets/images/YOU_WIN.png");
     gameOverScreen.image = loadImage("assets/images/Game_Over.jpg");
 }
@@ -244,6 +228,7 @@ function game() {
     drawLives();
 
     callGameOver();
+    callYouWin();
 
     for (let brick of bricks) {
         if (brick.active === true) {
@@ -313,8 +298,8 @@ function moveBall(ball) {
     //the ball at the complete beginning is not moving and after pressing space Bar will the ball velocity be 
     //activated therefore start moving
     if (keyIsDown('32') && ball.velocity.x === 0) {
-        ball.velocity.y = 4;
-        ball.velocity.x = 4;
+        ball.velocity.y = 3;
+        ball.velocity.x = 3;
     }
     // makes the ball bounce off the right and left side of the canvas
     if (ball.x > width || ball.x < 0) {
@@ -327,6 +312,7 @@ function moveBall(ball) {
     if (ball.y < 0) {
         ball.velocity.y *= -1;
     }
+
 }
 
 /**
@@ -387,6 +373,7 @@ function drawLives() {
 function resetBall(ball) {
     ball.y = 300;
     ball.x = random(100, 900);
+    lives = lives - 1;
 }
 
 
@@ -468,6 +455,7 @@ function handleBrickDestroy(brick, ball) {
         //square.y = brick.y - brick.height / 2 - square.height / 2;
         brick.active = false;
         ball.velocity.y *= -1;
+        bricksLeft = bricksLeft - 1;
     }
     if (brick.active === false) {
 
@@ -493,6 +481,11 @@ function handleBrickDestroy(brick, ball) {
  * 
  * 
  */
+function callYouWin() {
+    if (bricksLeft === 0) {
+        state = "win";
+    }
+}
 
 function callGameOver() {
     if (lives === 0) [
@@ -512,6 +505,9 @@ function mousePressed() {
     else if (state === "win") {
         state = "title";
         lives = 3;
+        brick.active = true;
+        ball.velocity.x = 0;
+        ball.velocity.y = 0;
     }
 
     //if the player lose the game and are at the game Over screen they can click the mouse to bring them back to the title screen 
@@ -519,6 +515,10 @@ function mousePressed() {
     else if (state === "gameOver") {
         state = "title";
         lives = 3;
+        brick.active = true;
+        ball.velocity.x = 0;
+        ball.velocity.y = 0;
+
     }
     // if the state of the game is on the game screen then we can start playing the game (the clicking dosent do anything anymore)
     else if (state === "game") {
