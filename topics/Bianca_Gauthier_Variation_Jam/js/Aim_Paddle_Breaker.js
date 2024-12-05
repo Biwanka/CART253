@@ -57,8 +57,8 @@ const ball = {
     width: 12,
     height: 12,
     velocity: {
-        x: 3,
-        y: 3
+        x: 0,
+        y: 0
     }
 
 };
@@ -157,7 +157,7 @@ let gameOverScreen = {
 };
 
 function preload() {
-    titleScreen.image = loadImage("assets/images/Brick_Breaker_Title.png");
+    titleScreen.image = loadImage("assets/images/aim_Paddle_breaker.png");
     winScreen.image = loadImage("assets/images/YOU_WIN.png");
     gameOverScreen.image = loadImage("assets/images/Game_Over.jpg");
 }

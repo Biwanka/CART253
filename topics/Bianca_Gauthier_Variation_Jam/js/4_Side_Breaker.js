@@ -19,33 +19,12 @@
  * 
  * 
  * the ideas for variations:
- * 
- * 1- when the ball hits a brick, teh brick dosent break but starts to fall downwards.
- *  if the player dosent catch the falling bricks with the paddle the bricks will freeze at the bottom and sty there.
- * this will block the paddle. so if alot of bricks are not cought it could block the player from moving the paddle.
- * 
- * 
  * 2- 4 corners. the concept of the original game is that the paddle is only at the bottom.
  * but with this variation the paddle will be able to go on all the 4 size.
  * depending on the coding it will only be one paddle that can move to all 4 sides or if not its that there will be 4 paddle 
  * one on each side that can be move seperatly. the ball will now not be able to bounce of any of the sides. 
  * and the brick will be placed in the middle of the screen
  * 
- * 
- * 3- DvD logo. because the game i chose had to do with something from my past i decided to all add another aspect that touches on that.
- * I am going to use the boucing DVD logo. it was a common thing if you ever owned a DVD that when it was left on pause for long
- * the logo would appear and start bouching on the 4 sides of the screen. The main Hype was when the logo actually finally hit the 
- * corner of the screen it was the biggest satisfaction. Mainly i will use the top right corner. so i will change teh ball to be the 
- * DvD logo and the ball will be able to hit the side of the screen. there will be bricks blocking the top right corner.
- * Even if the player gets ride of all the bricks they will not win the game they need to continue until the DVD logo witht perfectly 
- * the top right corner.
- * 
- * 
- * 4- Reverse. I dedcide to make a version that will be the contrary of the cncept of the original game. 
- * instead of bouncing a ball on a paddle to break the bricks, instead the player will need to trow the bricks to hit the ball
- * that is moving in the top screen. the player will have a pile of bricks and need to trow them so it hits the ball and the brick breaks.
- * if the brick hits nothing gravity will do its thing and come back down in the hands of the player. im think maybe to add a timer 
- * where the palyer needs to break all the brick before the time. we will see. 
  */
 
 "use strict";
@@ -58,8 +37,8 @@ const ball = {
     width: 12,
     height: 12,
     velocity: {
-        x: 3,
-        y: 3
+        x: 0,
+        y: 0
     }
 };
 
@@ -166,7 +145,7 @@ let gameOverScreen = {
 };
 
 function preload() {
-    titleScreen.image = loadImage("assets/images/Brick_Breaker_Title.png");
+    titleScreen.image = loadImage("assets/images/Fout_Side_Breaker_Title.png");
     winScreen.image = loadImage("assets/images/YOU_WIN.png");
     gameOverScreen.image = loadImage("assets/images/Game_Over.jpg");
 }

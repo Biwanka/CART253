@@ -152,8 +152,8 @@ function preload() {
 //draws the canvas that the game is displayed on.
 function setup() {
     createCanvas(1000, 680);
-    createAllBricks(bricks); //creates all the bricks using the variables ontop 
-    resetBall(ball);
+    resetBrick(brick);
+
 }
 
 // display the state of the game
@@ -229,9 +229,11 @@ function moveSpring(launchPaddle) {
     launchPaddle.spring.x = launchPaddle.base.x;
     launchPaddle.top.y = launchPaddle.spring.y + launchPaddle.spring.size;
 
-    if (launchPaddle.spring.state === "idle") {
 
+    if (keyIsDown('32') && launchPaddle.spring.state === "idle") {
+        launchPaddle.spring.state = "launched";
     }
+
 
     else if (launchPaddle.spring.state === "launched") {
         launchPaddle.spring.y += -launchPaddle.spring.speed;
@@ -371,13 +373,14 @@ function resetBrick(brick) {
 function handleBrickLaunch(brick, launchPaddle) {
     const overlap = centredRectanglesOverlap(brick, launchPaddle.top);
 
-    if (brick.state === "pre-launch") {
+    if (keyIsDown('32') && brick.state === "pre-launch") {
         brick.x = mouseX;
         brick.fill = "red";
+        brick.state = "launch";
     }
 
     else if (brick.state === "launch") {
-
+        brick.fill = "red";
         brick.acceleration.y += gravity;
 
         brick.velocity.x += brick.acceleration.x;
@@ -471,22 +474,6 @@ function mousePressed() {
 
     }
 }
-/**
- * the mouse pressed function. if the mouse is pressed then it will call the function to make the paddle launch.
- * basically the top rectangle goes up and back down.
- */
-function mousePressed() {
-    if (brick.state === "pre-launch") {
-        brick.state = "launch";
-    }
-
-    if (launchPaddle.spring.state === "idle") {
-        launchPaddle.spring.state = "launched";
-    }
-
-
-}
-
 
 
 /**

@@ -219,8 +219,8 @@ function moveSpring(launchPaddle) {
     launchPaddle.spring.x = launchPaddle.base.x;
     launchPaddle.top.y = launchPaddle.spring.y + launchPaddle.spring.size;
 
-    if (launchPaddle.spring.state === "idle") {
-
+    if (keyIsDown('32') && launchPaddle.spring.state === "idle") {
+        launchPaddle.spring.state = "launched";
     }
 
     else if (launchPaddle.spring.state === "launched") {
@@ -421,15 +421,6 @@ function mousePressed() {
     // if the state of the game is on the game screen then we can start playing the game (the clicking dosent do anything anymore)
     else if (state === "game") {
 
-    }
-}
-/**
- * the mouse pressed function. if the mouse is pressed then it will call the function to make the paddle launch.
- * basically the top rectangle goes up and back down.
- */
-function mousePressed() {
-    if (launchPaddle.spring.state === "idle") {
-        launchPaddle.spring.state = "launched";
     }
 }
 
