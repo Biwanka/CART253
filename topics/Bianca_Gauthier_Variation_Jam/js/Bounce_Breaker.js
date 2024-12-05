@@ -151,8 +151,7 @@ function preload() {
 //draws the canvas that the game is displayed on.
 function setup() {
     createCanvas(1000, 680);
-    createAllBricks(bricks); //creates all the bricks using the variables ontop 
-    resetBall(ball);
+
 }
 
 // display the state of the game
