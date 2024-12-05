@@ -112,7 +112,7 @@ const launchPaddle = {
 const gravity = 0.025;
 
 //the lives of the player 
-let lives = 3;
+let lives = 0;
 
 //this is the different screen for the game and what we will use to switch in between.
 let state = "title" // "game" , "win" , "gameOver"
@@ -143,7 +143,7 @@ let gameOverScreen = {
 };
 
 function preload() {
-    titleScreen.image = loadImage("assets/images/Brick_Breaker_Title.png");
+    titleScreen.image = loadImage("assets/images/Throw_Breaker_Only_Win.png"); //need to change update title font after personalizing it
     winScreen.image = loadImage("assets/images/YOU_WIN.png");
     gameOverScreen.image = loadImage("assets/images/Game_Over.jpg");
 }
@@ -178,6 +178,7 @@ function draw() {
 function title() {
     background(titleScreen.image);
     lives = 3;
+    bricksLeft = 0;
 }
 
 //where all elements are called 
@@ -195,9 +196,10 @@ function game() {
     drawLaunchPaddle(launchPaddle);
     drawBall(ball);
     drawBrick(brick);
-    drawLives();
+    drawBricksLeft();
 
-    callGameOver();
+    callYouWin();
+    // callGameOver();
 }
 /**This is both of the end screen options 
  * 
@@ -269,7 +271,7 @@ function moveBall(ball) {
         ball.velocity.x *= -1;
     }
     //makes the ball bounce off the top of the canvas
-    if (ball.y > 300 || ball.y < 0) {
+    if (ball.y > 300 || ball.y < -5) {
         ball.velocity.y *= -1;
     }
 }
@@ -345,13 +347,13 @@ function drawBrick(brick) {
 }
 //Draws the lives of the player. It starts at 3 and goes down to 0. if the balls misses the paddle and fall off the canvas player 
 //lose a life. it is a white number on the top of the canvas.
-function drawLives() {
+function drawBricksLeft() {
     push();
     textAlign(LEFT, TOP);
     fill("white");
     textStyle(BOLD);
     textSize(100);
-    text(lives, 0, 0);
+    text(bricksLeft, 0, 0);
     pop();
 }
 
@@ -379,8 +381,13 @@ function handleBrickLaunch(brick, launchPaddle) {
         brick.state = "launch";
     }
 
-    else if (brick.state === "launch") {
+    if (brick.state === "pre-launch") {
+        brick.x = mouseX;
         brick.fill = "red";
+    }
+
+    else if (brick.state === "launch") {
+
         brick.acceleration.y += gravity;
 
         brick.velocity.x += brick.acceleration.x;
@@ -422,6 +429,7 @@ function handleBrickDestroy(brick, ball) {
         resetBrick(brick);
         ball.velocity.y *= -1;
         brick.fill = "grey";
+        bricksLeft = bricksLeft + 1;
     }
 }
 
@@ -442,12 +450,20 @@ function handleBrickDestroy(brick, ball) {
  * 
  * 
  */
+// ideas for later, adding more balls depending on how many bricks left. speed change. brick size change ...
+function callYouWin() {
+    if (bricksLeft === 5) {
+        state = "win";
+    }
+}
 
+/**  havent added the function yet still thinking over the effects and what could cause a game over
 function callGameOver() {
     if (lives === 0) [
         state = "gameOver"
     ]
 }
+*/
 
 function mousePressed() {
 
