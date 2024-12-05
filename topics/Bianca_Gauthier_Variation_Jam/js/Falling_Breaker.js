@@ -49,6 +49,23 @@
  */
 
 "use strict";
+
+//this is the array that creates the first brick (red rectangle)
+let bricks = [
+    {
+        x: undefined,
+        y: 100,
+        fill: "red",
+        width: 60,
+        height: 35,
+        active: true,
+        velocity: {
+            x: 0,
+            y: 2,
+        }
+    }
+];
+
 //this is our ball a white circle
 const ball = {
     x: 500,
@@ -75,34 +92,19 @@ const paddle = {
     }
 };
 
-//this is the array that creates the first brick (red rectangle)
-let bricks = [
-    {
-        x: undefined,
-        y: 100,
-        fill: "red",
-        width: 60,
-        height: 35,
-        active: true,
-        velocity: {
-            x: 0,
-            y: 2,
-        }
-    }
-];
 
 // the different variables that will be used to make the new bricks.   
 const brickStartX = 170;    //where the first bricks will start
 const brickStartY = 85;
 const brickGapX = 5;        //this will create the gaps in between the bricks 
 const brickGapY = 5;        //this will create the gaps in between the bricks 
-const brickWidth = 50;
-const brickHeight = 25;
+const brickWidth = 55;
+const brickHeight = 30;
 const active = true;
 // variables that helps build the placement of all the bricks. 
 let col = 0;                 // there are 0 columns so they will be called
 let row = 0;                //there are 0 rows at the beggining they will be called 
-let numberOfColumns = 10;   //number of brick columns wanted 
+let numberOfColumns = 11;   //number of brick columns wanted 
 let numberOfRows = 6;       // number of brick rows wanted
 let offset = brickWidth / 4;   // creates the offset where some rows start at 250 while other rows starts furter
 
@@ -113,6 +115,8 @@ let lives = 3;
 let state = "title" // "game" , "win" , "gameOver"
 
 let bricksLeft = 0;
+
+let brickCaught = 30;
 
 // this will be the Title Screen at the begging of the game that will have the title and instruction on the types of flies (uses and image)
 //has position and image
@@ -148,7 +152,7 @@ function preload() {
 function setup() {
     createCanvas(1000, 680);
     createAllBricks(bricks); //creates all the bricks using the variables ontop 
-    resetBall(ball);
+
 }
 
 // display the state of the game
@@ -189,10 +193,10 @@ function game() {
     drawBall(ball);
     drawLives();
 
+    callYouWin();
     callGameOver();
 
     for (let brick of bricks) {
-        //this is where if the brick does not come in contact with a brick (brick.state = true) then it will be drawn. 
         if (brick.active === true) {
             drawBrick(brick);
             handleBrickFall(brick, ball);
@@ -201,6 +205,7 @@ function game() {
             handleBrickLand(brick);
         }
     };
+
 }
 
 /**This is both of the end screen options 
@@ -245,12 +250,6 @@ function moveBall(ball) {
     ball.x = ball.x + ball.velocity.x;
     ball.y = ball.y + ball.velocity.y;
 
-    //the ball at the complete beginning is not moving and after pressing space Bar will the ball velocity be 
-    //activated therefore start moving
-    if (keyIsDown('32') && ball.velocity.x === 0) {
-        ball.velocity.y = 4;
-        ball.velocity.x = 4;
-    }
     // makes the ball bounce off the right and left side of the canvas
     if (ball.x > width || ball.x < 0) {
         ball.velocity.x *= -1;
@@ -258,6 +257,10 @@ function moveBall(ball) {
     //makes the ball bounce off the top of the canvas
     if (ball.y < 0) {
         ball.velocity.y *= -1;
+    }
+
+    if (ball.y > height) {
+        resetBall(ball);
     }
 }
 
@@ -357,11 +360,7 @@ function createAllBricks() {
     }
 }
 
-//resets the ball in a random y position    
-function resetBall(ball) {
-    ball.y = random(200, 800);
-    ball.x = random(100, 900);
-}
+
 
 /**  
  * 
@@ -372,7 +371,7 @@ function handleBallBounce(ball, paddle) {
     const overlap = centredRectanglesOverlap(ball, paddle);
 
     if (overlap) {
-        ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
+        ball.y = paddle.y - ball.height / 2 - ball.height / 2;
         ball.velocity.y *= -1;
     }
 }
@@ -387,37 +386,38 @@ function handleBrickFall(brick, ball) {
     const overlap = centredRectanglesOverlap(brick, ball);
     brick.y = brick.y + brick.velocity.y;
     //  ball.x = ball.x + ball.velocity.x;
-    if (brick.velocity.y === 0 && overlap) {
-        //if the ball touches the top of the brick
-        if (ball.y < brick.y) {
-            // ball.y = brick.y - brick.width / 2 - ball.width / 2;
-            ball.velocity.y *= -1;
-            brick.velocity.y = 3;
-        }
-        // if the ball touches the bottom of the brick
-        else if (ball.y > brick.y) {
-
-            //   ball.y = brick.y + brick.height / 2 + ball.height / 2;
-            ball.velocity.y *= -1;
-            brick.velocity.y = 3;
-        }
-        // if it hits the left side of the brick
-        if (ball.x < brick.x) {
-            //  ball.x = brick.x + brick.width / 2 + ball.width / 2;
-            ball.velocity.x *= 1;
-            brick.velocity.y = 3;
-        }
-        //if it hits the right side of the brick
-        else if (ball.x > brick.x) {
-            //  ball.x = brick.x - brick.width / 2 - ball.width / 2;
-            ball.velocity.x *= -1;
-            brick.velocity.y = 3;
-        }
-    }
     /**   if (brick.velocity.y === 0 && overlap) {
-          ball.velocity.y *= -1;
-          brick.velocity.y = 2;
-      }*/
+          //if the ball touches the top of the brick
+          if (ball.y < brick.y) {
+              // ball.y = brick.y - brick.width / 2 - ball.width / 2;
+              ball.velocity.y *= -1;
+              brick.velocity.y = 3;
+          }
+          // if the ball touches the bottom of the brick
+          else if (ball.y > brick.y) {
+  
+              //   ball.y = brick.y + brick.height / 2 + ball.height / 2;
+              ball.velocity.y *= -1;
+              brick.velocity.y = 3;
+          }
+          // if it hits the left side of the brick
+          if (ball.x < brick.x) {
+              //  ball.x = brick.x + brick.width / 2 + ball.width / 2;
+              ball.velocity.x *= 1;
+              brick.velocity.y = 3;
+          }
+          //if it hits the right side of the brick
+          else if (ball.x > brick.x) {
+              //  ball.x = brick.x - brick.width / 2 - ball.width / 2;
+              ball.velocity.x *= -1;
+              brick.velocity.y = 3;
+          }
+      }*/ //the top one made some of the brick not freeze at the bottom and I couldnt 
+    //figure out the problem so i stayed witht the vary basic only velocity change at y.
+    if (brick.velocity.y === 0 && overlap) {
+        ball.velocity.y *= -1;
+        brick.velocity.y = 3;
+    }
 }
 
 /**
@@ -435,8 +435,8 @@ function handlePaddleBlock(brick, paddle) {
         if (brick.x > paddle.x) {
             paddle.constraints.max = brick.x + brick.width / 2 - paddle.width / 2;
         }
-        //check if the paddle comes in contact with a brick on the left if the paddle then this is the furthest that the paddle can now reach
         else if (brick.x < paddle.x) {
+            //check if the paddle comes in contact with a brick on the left if the paddle then this is the furthest that the paddle can now reach
             paddle.constraints.min = brick.x + brick.width / 2 + paddle.width / 2;
         }
     }
@@ -455,6 +455,7 @@ function handleBrickCaught(brick, paddle) {
     if (brick.velocity.y === 3 && overlap) {
 
         brick.active = false;
+        brickCaught = brickCaught - 1;
     }
 
     if (brick.active === false) {
@@ -492,6 +493,11 @@ function handleBrickLand(brick) {
     }
 }
 
+//resets the ball in a random y position    
+function resetBall(ball) {
+    ball.y = random(400, 450);
+    ball.x = random(100, 900);
+}
 /**
  * 
  * 
@@ -508,6 +514,13 @@ function handleBrickLand(brick) {
  * 
  * 
  */
+
+function callYouWin() {
+    if (brickCaught === 0) {
+        state = "win";
+    }
+
+}
 
 function callGameOver() {
     if (lives === 0) [
