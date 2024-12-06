@@ -1,5 +1,5 @@
 /**
- * Brick Breaker
+ * Brick Breaker: DVD BREAKER
  * Bianca Gauthier
  * 
  * Im going to be using a game that is very nastalgic as I use to always play it on my dads phone when i was very young. 
@@ -19,18 +19,7 @@
  * 
  * 
  * the ideas for variations:
- * 
- * 1- when the ball hits a brick, teh brick dosent break but starts to fall downwards.
- *  if the player dosent catch the falling bricks with the paddle the bricks will freeze at the bottom and sty there.
- * this will block the paddle. so if alot of bricks are not cought it could block the player from moving the paddle.
- * 
- * 
- * 2- 4 corners. the concept of the original game is that the paddle is only at the bottom.
- * but with this variation the paddle will be able to go on all the 4 size.
- * depending on the coding it will only be one paddle that can move to all 4 sides or if not its that there will be 4 paddle 
- * one on each side that can be move seperatly. the ball will now not be able to bounce of any of the sides. 
- * and the brick will be placed in the middle of the screen
- * 
+
  * 
  * 3- DvD logo. because the game i chose had to do with something from my past i decided to all add another aspect that touches on that.
  * I am going to use the boucing DVD logo. it was a common thing if you ever owned a DVD that when it was left on pause for long
@@ -47,7 +36,7 @@
 "use strict";
 //our DVD LOGO
 let ball = {
-    x: 500,
+    x: 100,
     y: 300,
     fill: "grey",
     width: 30,
@@ -116,7 +105,6 @@ let winScreen = {
 function preload() {
     titleScreen.image = loadImage("assets/images/DVD_Breaker_Title.png");
     winScreen.image = loadImage("assets/images/YOU_WIN.png");
-    gameOverScreen.image = loadImage("assets/images/Game_Over.jpg");
     ball.image = loadImage("assets/images/DVD.png");
 }
 
@@ -144,7 +132,7 @@ function draw() {
 
 function title() {
     background(titleScreen.image);
-    lives = 3;
+
 }
 
 //where all elements are called 
@@ -169,14 +157,7 @@ function game() {
     };
 }
 
-/**This is both of the end screen options 
- * 
- * 
- */
-// This displayes the image that shows the GameOver screen that tell player they lost the game
-function gameOver() {
-    background(gameOverScreen.image);
-}
+//This is the end screen options 
 //this dsiplayes the image tthat show the Win screen that tell player they won the game
 function win() {
     background(winScreen.image);

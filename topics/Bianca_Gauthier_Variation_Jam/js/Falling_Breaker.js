@@ -1,5 +1,5 @@
 /**
- * Brick Breaker
+ * Brick Breaker : FALLING BREAKER
  * Bianca Gauthier
  * 
  * Im going to be using a game that is very nastalgic as I use to always play it on my dads phone when i was very young. 
@@ -24,28 +24,6 @@
  *  if the player dosent catch the falling bricks with the paddle the bricks will freeze at the bottom and sty there.
  * this will block the paddle. so if alot of bricks are not cought it could block the player from moving the paddle.
  * 
- * 
- * 2- 4 corners. the concept of the original game is that the paddle is only at the bottom.
- * but with this variation the paddle will be able to go on all the 4 size.
- * depending on the coding it will only be one paddle that can move to all 4 sides or if not its that there will be 4 paddle 
- * one on each side that can be move seperatly. the ball will now not be able to bounce of any of the sides. 
- * and the brick will be placed in the middle of the screen
- * 
- * 
- * 3- DvD logo. because the game i chose had to do with something from my past i decided to all add another aspect that touches on that.
- * I am going to use the boucing DVD logo. it was a common thing if you ever owned a DVD that when it was left on pause for long
- * the logo would appear and start bouching on the 4 sides of the screen. The main Hype was when the logo actually finally hit the 
- * corner of the screen it was the biggest satisfaction. Mainly i will use the top right corner. so i will change teh ball to be the 
- * DvD logo and the ball will be able to hit the side of the screen. there will be bricks blocking the top right corner.
- * Even if the player gets ride of all the bricks they will not win the game they need to continue until the DVD logo witht perfectly 
- * the top right corner.
- * 
- * 
- * 4- Reverse. I dedcide to make a version that will be the contrary of the cncept of the original game. 
- * instead of bouncing a ball on a paddle to break the bricks, instead the player will need to trow the bricks to hit the ball
- * that is moving in the top screen. the player will have a pile of bricks and need to trow them so it hits the ball and the brick breaks.
- * if the brick hits nothing gravity will do its thing and come back down in the hands of the player. im think maybe to add a timer 
- * where the palyer needs to break all the brick before the time. we will see. 
  */
 
 "use strict";
@@ -74,8 +52,8 @@ const ball = {
     width: 12,
     height: 12,
     velocity: {
-        x: 3,
-        y: 3
+        x: 0,
+        y: 0
     }
 };
 
@@ -109,14 +87,14 @@ let numberOfRows = 6;       // number of brick rows wanted
 let offset = brickWidth / 4;   // creates the offset where some rows start at 250 while other rows starts furter
 
 //the lives of the player 
-let lives = 3;
+let lives = 2;
 
 //this is the different screen for the game and what we will use to switch in between.
 let state = "title" // "game" , "win" , "gameOver"
 
 let bricksLeft = 0;
 
-let brickCaught = 30;
+let brickCaught = 0;
 
 // this will be the Title Screen at the begging of the game that will have the title and instruction on the types of flies (uses and image)
 //has position and image
@@ -142,7 +120,7 @@ let gameOverScreen = {
 };
 
 function preload() {
-    titleScreen.image = loadImage("assets/images/Brick_Breaker_Title.png");
+    titleScreen.image = loadImage("assets/images/Falling_Breaker.png");
     winScreen.image = loadImage("assets/images/YOU_WIN.png");
     gameOverScreen.image = loadImage("assets/images/Game_Over.jpg");
 }
@@ -158,7 +136,9 @@ function setup() {
 // display the state of the game
 function draw() {
     if (state === "title") {
-        title();
+        title()
+        brickCaught = 0;
+        lives = 2;
     }
 
     else if (state === "game") {
@@ -192,6 +172,7 @@ function game() {
     drawPaddle(paddle);
     drawBall(ball);
     drawLives();
+    drawBrickCaught();
 
     callYouWin();
     callGameOver();
@@ -249,7 +230,10 @@ function moveBall(ball) {
 
     ball.x = ball.x + ball.velocity.x;
     ball.y = ball.y + ball.velocity.y;
-
+    if (keyIsDown('32') && ball.velocity.x === 0) {
+        ball.velocity.y = 3;
+        ball.velocity.x = 3;
+    }
     // makes the ball bounce off the right and left side of the canvas
     if (ball.x > width || ball.x < 0) {
         ball.velocity.x *= -1;
@@ -261,6 +245,7 @@ function moveBall(ball) {
 
     if (ball.y > height) {
         resetBall(ball);
+        lives = lives - 1;
     }
 }
 
@@ -315,6 +300,15 @@ function drawLives() {
     textStyle(BOLD);
     textSize(100);
     text(lives, 0, 0);
+    pop();
+}
+function drawBrickCaught() {
+    push();
+    textAlign(RIGHT, TOP);
+    fill("black");
+    textStyle(BOLD);
+    textSize(100);
+    text(brickCaught, width, 0);
     pop();
 }
 
@@ -416,7 +410,7 @@ function handleBrickFall(brick, ball) {
     //figure out the problem so i stayed witht the vary basic only velocity change at y.
     if (brick.velocity.y === 0 && overlap) {
         ball.velocity.y *= -1;
-        brick.velocity.y = 3;
+        brick.velocity.y = 4;
     }
 }
 
@@ -452,10 +446,10 @@ function handlePaddleBlock(brick, paddle) {
 function handleBrickCaught(brick, paddle) {
     const overlap = centredRectanglesOverlap(brick, paddle);
     brick.active = true;
-    if (brick.velocity.y === 3 && overlap) {
+    if (brick.velocity.y === 4 && overlap) {
 
         brick.active = false;
-        brickCaught = brickCaught - 1;
+        brickCaught = brickCaught + 1;
     }
 
     if (brick.active === false) {
@@ -475,7 +469,7 @@ function handleBrickCaught(brick, paddle) {
  */
 function handleBrickLand(brick) {
 
-    if (brick.y === 665) {
+    if (brick.y === 660) {
         brick.velocity.y = 0;
     }
 
@@ -486,7 +480,7 @@ function handleBrickLand(brick) {
         // Otherwise check if they overlap
         const overlap = centredRectanglesOverlap(brick, otherBrick);
 
-        if (brick.y === 665 && overlap) {
+        if (brick.y === 660 && overlap) {
             brick.velocity.y = 0;
             otherBrick.velocity.y = 0;
         }
@@ -516,7 +510,7 @@ function resetBall(ball) {
  */
 
 function callYouWin() {
-    if (brickCaught === 0) {
+    if (brickCaught === 55) {
         state = "win";
     }
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
@@ -18,13 +18,79 @@
   <script src="js/libraries/p5.sound.min.js"></script>
 
   <!-- My script(s) -->
-  <script src="js/script.js"></script>
+  <!-- <script src="js/script.js"></script>-->
 
+  <title>Brick Breaker Variations</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: url('assets/images/Brick_Breaker_Title_Screen_Background.png');
+      background-size: cover;
+    }
 
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 100px;
+    }
+
+    .title {
+      font-size: 50px;
+      font-weight: bold;
+      color: white;
+      background-color: red;
+      padding: 20px 40px;
+      border: 6px solid black;
+      text-align: center;
+    }
+
+    .links {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      width: 80%;
+      max-width: 800px;
+      margin-top: 20px;
+    }
+
+    .link-box {
+      background-color: red;
+      color: white;
+      font-size: 25px;
+      font-weight: bold;
+      padding: 20px;
+      text-align: center;
+      border: 6px solid black;
+      text-decoration: none;
+    }
+
+    .link-box:hover {
+      background-color: darkred;
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <body>
-  <!-- HTML would go here if needed. -->
+  <div class="container">
+    <div class="title">BRICK BREAKER VARIATION</div>
+    <div class="links">
+      <a href="Brick_Breaker.html" class="link-box"> Brick Breaker </a>
+      <a href="Bulldozer_Breaker.html" class="link-box"> Bulldozer Breaker </a>
+      <a href="Falling_Breaker.html" class="link-box"> Falling Breaker </a>
+      <a href="4_Side_Breaker.html" class="link-box"> Four Side Breaker </a>
+      <a href="Multi_Duo_Breaker.html" class="link-box"> Multi Duo Breaker </a>
+      <a href="Drunk_Breaker.html" class="link-box"> Drunk Breaker </a>
+      <a href="Aim_Paddle_Breaker.html" class="link-box"> Aim Paddle Breaker </a>
+      <a href="DVD_Breaker.html" class="link-box"> DvD Breaker</a>
+      <a href="Throw_Breaker.html" class="link-box"> Throw Breaker </a>
+      <a href="Bounce_Breaker.html" class="link-box"> Bounce Breaker</a>
+
+    </div>
+  </div>
 </body>
 
 </html>

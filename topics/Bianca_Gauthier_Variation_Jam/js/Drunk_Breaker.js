@@ -1,5 +1,5 @@
 /**
- * Brick Breaker
+ * Brick Breaker : DRUNK BREAKER
  * Bianca Gauthier
  * 
  * Im going to be using a game that is very nastalgic as I use to always play it on my dads phone when i was very young. 
@@ -19,33 +19,10 @@
  * 
  * 
  * the ideas for variations:
- * 
- * 1- when the ball hits a brick, teh brick dosent break but starts to fall downwards.
- *  if the player dosent catch the falling bricks with the paddle the bricks will freeze at the bottom and sty there.
- * this will block the paddle. so if alot of bricks are not cought it could block the player from moving the paddle.
- * 
- * 
- * 2- 4 corners. the concept of the original game is that the paddle is only at the bottom.
- * but with this variation the paddle will be able to go on all the 4 size.
- * depending on the coding it will only be one paddle that can move to all 4 sides or if not its that there will be 4 paddle 
- * one on each side that can be move seperatly. the ball will now not be able to bounce of any of the sides. 
- * and the brick will be placed in the middle of the screen
- * 
- * 
- * 3- DvD logo. because the game i chose had to do with something from my past i decided to all add another aspect that touches on that.
- * I am going to use the boucing DVD logo. it was a common thing if you ever owned a DVD that when it was left on pause for long
- * the logo would appear and start bouching on the 4 sides of the screen. The main Hype was when the logo actually finally hit the 
- * corner of the screen it was the biggest satisfaction. Mainly i will use the top right corner. so i will change teh ball to be the 
- * DvD logo and the ball will be able to hit the side of the screen. there will be bricks blocking the top right corner.
- * Even if the player gets ride of all the bricks they will not win the game they need to continue until the DVD logo witht perfectly 
- * the top right corner.
- * 
- * 
- * 4- Reverse. I dedcide to make a version that will be the contrary of the cncept of the original game. 
- * instead of bouncing a ball on a paddle to break the bricks, instead the player will need to trow the bricks to hit the ball
- * that is moving in the top screen. the player will have a pile of bricks and need to trow them so it hits the ball and the brick breaks.
- * if the brick hits nothing gravity will do its thing and come back down in the hands of the player. im think maybe to add a timer 
- * where the palyer needs to break all the brick before the time. we will see. 
+ * 2- this one focuses on the concept of horizontal and veritcal but you cant move the paddle in the direction you would expect.
+ * the brick on the vertical can only move rigth and left with the mouse. and the horizontal brick can only move up and down with the 
+ * mouse cursor. and then i decided to add the key board arrow to fill in what direction the paddle couldnt move with. very difficult to win 
+ * i think i only did it once but that the point. its like your drunk and slow cant seem to understand your movement. 
  */
 
 "use strict";
@@ -109,12 +86,12 @@ let numberOfRows = 6;       // number of brick rows wanted
 let offset = brickWidth / 4;   // creates the offset where some rows start at 250 while other rows starts furter
 
 //the lives of the player 
-let lives = 3;
+let lives = 5;
 
 //this is the different screen for the game and what we will use to switch in between.
 let state = "title" // "game" , "win" , "gameOver"
 
-let bricksLeft = 0;
+let bricksLeft = 60;
 
 // this will be the Title Screen at the begging of the game that will have the title and instruction on the types of flies (uses and image)
 //has position and image
@@ -140,7 +117,7 @@ let gameOverScreen = {
 };
 
 function preload() {
-    titleScreen.image = loadImage("assets/images/Brick_Breaker_Title.png");
+    titleScreen.image = loadImage("assets/images/Drunk_Breaker_Title.png");
     winScreen.image = loadImage("assets/images/YOU_WIN.png");
     gameOverScreen.image = loadImage("assets/images/Game_Over.jpg");
 }
@@ -155,6 +132,8 @@ function setup() {
 function draw() {
     if (state === "title") {
         title();
+        bricksLeft = 60;
+        lives = 5;
     }
 
     else if (state === "game") {
@@ -172,7 +151,7 @@ function draw() {
 
 function title() {
     background(titleScreen.image);
-    lives = 3;
+    lives = 5;
 }
 
 //where all elements are called 
@@ -187,7 +166,9 @@ function game() {
     drawPaddle(paddle);
     drawBall(ball);
     drawLives();
+    drawBricksLeft();
 
+    callYouWin();
     callGameOver();
 
     for (let brick of bricks) {
@@ -240,7 +221,7 @@ function movePaddle(paddle) {
     //need to make a barrier so the paddle dont go out of the canvas 
     if (keyIsDown(UP_ARROW)) {
         paddle.vertical.y -= 5;
-        //paddle.vertical.y = constrain(30, 650);
+        // paddle.vertical.y = constrain(mouseX, 30, 650);
     }
 
     else if (keyIsDown(DOWN_ARROW)) {
@@ -277,10 +258,12 @@ function moveBall(ball) {
     // makes the ball bounce off the right and left side of the canvas
     if (ball.x > width || ball.x < 0) {
         resetBall(ball)
+        lives = lives - 1;
     }
     //makes the ball bounce off the top of the canvas
     if (ball.y > height) {
         resetBall(ball);
+        lives = lives - 1;
     }
     if (ball.y < 0) {
         ball.velocity.y *= -1;
@@ -345,6 +328,16 @@ function drawLives() {
     textStyle(BOLD);
     textSize(100);
     text(lives, 0, 0);
+    pop();
+}
+
+function drawBricksLeft() {
+    push();
+    textAlign(RIGHT, TOP);
+    fill("grey");
+    textStyle(BOLD);
+    textSize(100);
+    text(bricksLeft, 0, 0);
     pop();
 }
 
@@ -431,6 +424,7 @@ function handleBrickDestroy(brick, ball) {
 
         brick.active = false;
         ball.velocity.y *= -1;
+        bricksLeft = bricksLeft - 1;
     }
     if (brick.active === false) {
 
@@ -456,6 +450,12 @@ function handleBrickDestroy(brick, ball) {
  * 
  * 
  */
+
+function callYouWin() {
+    if (bricksLeft === 0) {
+        state = "win";
+    }
+}
 
 function callGameOver() {
     if (lives === 0) [

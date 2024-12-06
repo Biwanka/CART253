@@ -1,5 +1,5 @@
 /**
- * Brick Breaker
+ * Brick Breaker : MULTI DUO BREAKER
  * Bianca Gauthier
  * 
  * Im going to be using a game that is very nastalgic as I use to always play it on my dads phone when i was very young. 
@@ -19,11 +19,6 @@
  * 
  * 
  * the ideas for variations:
- * 
- * 1- when the ball hits a brick, teh brick dosent break but starts to fall downwards.
- *  if the player dosent catch the falling bricks with the paddle the bricks will freeze at the bottom and sty there.
- * this will block the paddle. so if alot of bricks are not cought it could block the player from moving the paddle.
- * 
  * 
  * 2- this one focuses on the concept of horizontal and veritcal but you cant move the paddle in the direction you would expect.
  * the brick on the vertical can only move rigth and left with the mouse. and the horizontal brick can only move up and down with the 
@@ -198,6 +193,11 @@ function setup() {
 function draw() {
     if (state === "title") {
         title();
+        bricks.active = true;
+        bricksLeft = 60;
+        lives = 3;
+        //createAllBricks(bricks);
+        // createAllBricks(brick);  couldnt get the bricks to respond and if i used create all bricks then the bouncing of the ball disapeared
     }
 
     else if (state === "game") {
@@ -206,10 +206,12 @@ function draw() {
 
     else if (state === "gameOver") {
         gameOver();
+
     }
 
     else if (state === "win") {
         win();
+
     }
 }
 
@@ -226,6 +228,7 @@ function game() {
 
     drawBall(ball);
     drawLives();
+    drawBricksLeft();
 
     callGameOver();
     callYouWin();
@@ -368,6 +371,15 @@ function drawLives() {
     text(lives, 0, 0);
     pop();
 }
+function drawBricksLeft() {
+    push();
+    textAlign(RIGHT, TOP);
+    fill("grey");
+    textStyle(BOLD);
+    textSize(100);
+    text(bricksLeft, 0, 0);
+    pop();
+}
 
 //resets the ball in a random y position  
 function resetBall(ball) {
@@ -499,6 +511,7 @@ function mousePressed() {
     //starts at the title if we click the mouse when we are at the title screen, this will then bring the player to the game screen 
     if (state === "title") {
         state = "game";
+
     }
     // if the player won the game and are at the winning screen they can click the mouse to bring them back to the title screen.
     //if they want to replay the game
@@ -508,6 +521,7 @@ function mousePressed() {
         brick.active = true;
         ball.velocity.x = 0;
         ball.velocity.y = 0;
+
     }
 
     //if the player lose the game and are at the game Over screen they can click the mouse to bring them back to the title screen 
@@ -518,6 +532,7 @@ function mousePressed() {
         brick.active = true;
         ball.velocity.x = 0;
         ball.velocity.y = 0;
+
 
     }
     // if the state of the game is on the game screen then we can start playing the game (the clicking dosent do anything anymore)

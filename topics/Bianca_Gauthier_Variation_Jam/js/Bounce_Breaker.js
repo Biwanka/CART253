@@ -1,5 +1,5 @@
 /**
- * Brick Breaker
+ * Brick Breaker : BOUNCE BREAKER 
  * Bianca Gauthier
  * 
  * Im going to be using a game that is very nastalgic as I use to always play it on my dads phone when i was very young. 
@@ -231,6 +231,10 @@ function game() {
             drawBrick(brick);
         }
     };
+}
+//this dsiplayes the image tthat show the Win screen that tell player they won the game
+function win() {
+    background(winScreen.image);
 }
 
 /**

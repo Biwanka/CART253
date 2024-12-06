@@ -20,32 +20,7 @@
  * 
  * the ideas for variations:
  * 
- * 1- when the ball hits a brick, teh brick dosent break but starts to fall downwards.
- *  if the player dosent catch the falling bricks with the paddle the bricks will freeze at the bottom and sty there.
- * this will block the paddle. so if alot of bricks are not cought it could block the player from moving the paddle.
- * 
- * 
- * 2- 4 corners. the concept of the original game is that the paddle is only at the bottom.
- * but with this variation the paddle will be able to go on all the 4 size.
- * depending on the coding it will only be one paddle that can move to all 4 sides or if not its that there will be 4 paddle 
- * one on each side that can be move seperatly. the ball will now not be able to bounce of any of the sides. 
- * and the brick will be placed in the middle of the screen
- * 
- * 
- * 3- DvD logo. because the game i chose had to do with something from my past i decided to all add another aspect that touches on that.
- * I am going to use the boucing DVD logo. it was a common thing if you ever owned a DVD that when it was left on pause for long
- * the logo would appear and start bouching on the 4 sides of the screen. The main Hype was when the logo actually finally hit the 
- * corner of the screen it was the biggest satisfaction. Mainly i will use the top right corner. so i will change teh ball to be the 
- * DvD logo and the ball will be able to hit the side of the screen. there will be bricks blocking the top right corner.
- * Even if the player gets ride of all the bricks they will not win the game they need to continue until the DVD logo witht perfectly 
- * the top right corner.
- * 
- * 
- * 4- Reverse. I dedcide to make a version that will be the contrary of the cncept of the original game. 
- * instead of bouncing a ball on a paddle to break the bricks, instead the player will need to trow the bricks to hit the ball
- * that is moving in the top screen. the player will have a pile of bricks and need to trow them so it hits the ball and the brick breaks.
- * if the brick hits nothing gravity will do its thing and come back down in the hands of the player. im think maybe to add a timer 
- * where the palyer needs to break all the brick before the time. we will see. 
+ * all other will be variations inspired by this game !!! 
  */
 
 "use strict";
@@ -95,7 +70,7 @@ const active = true;
 let col = 0;                 // there are 0 columns so they will be called
 let row = 0;                //there are 0 rows at the beggining they will be called 
 let numberOfColumns = 10;   //number of brick columns wanted 
-let numberOfRows = 8;       // number of brick rows wanted
+let numberOfRows = 6;       // number of brick rows wanted
 let offset = brickWidth / 4;   // creates the offset where some rows start at 250 while other rows starts furter
 
 //the lives of the player 
@@ -104,7 +79,8 @@ let lives = 3;
 //this is the different screen for the game and what we will use to switch in between.
 let state = "title" // "game" , "win" , "gameOver"
 
-let bricksLeft = 0;
+//how many bricks there are on screen 
+let bricksLeft = 60;
 
 // this will be the Title Screen at the begging of the game that will have the title and instruction on the types of flies (uses and image)
 //has position and image
@@ -147,10 +123,14 @@ function setup() {
 function draw() {
     if (state === "title") {
         title();
+        lives = 3;
+        bricksLeft = 60;
+        bricks.active = true;
     }
 
     else if (state === "game") {
         game();
+
     }
 
     else if (state === "gameOver") {
@@ -179,8 +159,10 @@ function game() {
     drawPaddle(paddle);
     drawBall(ball);
     drawLives();
+    drawBricksLeft();
 
     callGameOver();
+    callYouWin();
 
     for (let brick of bricks) {
         //this is where if the brick does not come in contact with a brick (brick.state = true) then it will be drawn. 
@@ -305,6 +287,15 @@ function drawLives() {
     text(lives, 0, 0);
     pop();
 }
+function drawBricksLeft() {
+    push();
+    textAlign(RIGHT, TOP);
+    fill("grey");
+    textStyle(BOLD);
+    textSize(100);
+    text(bricksLeft, 0, 0);
+    pop();
+}
 
 /**
  * 
@@ -378,15 +369,18 @@ function handleBrickDestroy(brick, ball) {
     const angleEffect = map(dx, -paddle.width / 2, paddle.width / 2, -0.05, 0.05); // Convert to a more useful range
 
     if (overlap) {
+        bricksLeft = bricksLeft - 1;
         // if the ball hits the top of the brick if will bounce off in a different y velocity
         if (ball.y < brick.y) {
             brick.active = false;
             ball.velocity.y *= -1;
+
         }
         // if the ball hits the bottom of the brick if will bounce off in a different y velocity
         else if (ball.y > brick.y) {
             brick.active = false;
             ball.velocity.y *= -1;
+
         }
         //if the ball hits the left of the ball instead if the bouncing off it will affect its angle
         if (ball.x < brick.x) {
@@ -394,11 +388,13 @@ function handleBrickDestroy(brick, ball) {
             // ball.velocity.x *= -1;
             // Add an effect to the ball's horizontal movement
             ball.velocity.x += angleEffect * 1;
+
         }
         //if the ball hits the right side of the brick it will bounce off in the opposite direction 
         else if (ball.x > brick.x) {
             brick.active = false;
             ball.velocity.x *= -1;
+
         }
     }
 
@@ -426,6 +422,11 @@ function handleBrickDestroy(brick, ball) {
  * 
  * 
  */
+function callYouWin() {
+    if (bricksLeft === 0) {
+        state = "win";
+    }
+}
 
 function callGameOver() {
     if (lives === 0) [
@@ -445,6 +446,8 @@ function mousePressed() {
     else if (state === "win") {
         state = "title";
         lives = 3;
+        bricksLeft = 80;
+        brick.active = true
     }
 
     //if the player lose the game and are at the game Over screen they can click the mouse to bring them back to the title screen 
@@ -452,6 +455,8 @@ function mousePressed() {
     else if (state === "gameOver") {
         state = "title";
         lives = 3;
+        bricksLeft = 80;
+        brick.active = true
     }
     // if the state of the game is on the game screen then we can start playing the game (the clicking dosent do anything anymore)
     else if (state === "game") {

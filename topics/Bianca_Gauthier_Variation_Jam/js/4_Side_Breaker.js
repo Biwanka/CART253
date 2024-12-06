@@ -1,5 +1,5 @@
 /**
- * Brick Breaker
+ * Brick Breaker : FOUR SIDE BREAKER
  * Bianca Gauthier
  * 
  * Im going to be using a game that is very nastalgic as I use to always play it on my dads phone when i was very young. 
@@ -116,10 +116,12 @@ let offset = brickWidth / 4;   // creates the offset where some rows start at 25
 //the lives of the player 
 let lives = 3;
 
+//how many bricks there are on screen 
+let bricksLeft = 60;
+
 //this is the different screen for the game and what we will use to switch in between.
 let state = "title" // "game" , "win" , "gameOver"
 
-let bricksLeft = 0;
 
 // this will be the Title Screen at the begging of the game that will have the title and instruction on the types of flies (uses and image)
 //has position and image
@@ -145,7 +147,7 @@ let gameOverScreen = {
 };
 
 function preload() {
-    titleScreen.image = loadImage("assets/images/Fout_Side_Breaker_Title.png");
+    titleScreen.image = loadImage("assets/images/Four_Side_Breaker_Title.png");
     winScreen.image = loadImage("assets/images/YOU_WIN.png");
     gameOverScreen.image = loadImage("assets/images/Game_Over.jpg");
 }
@@ -162,6 +164,9 @@ function setup() {
 function draw() {
     if (state === "title") {
         title();
+        lives = 3;
+        bricksLeft = 60;
+        bricks.active = true;
     }
 
     else if (state === "game") {
@@ -189,9 +194,11 @@ function game() {
     moveBall(ball);
 
     drawBall(ball);
-    drawLives()
+    drawLives();
+    drawBricksLeft();
 
     callGameOver();
+    callYouWin();
 
     for (let brick of bricks) {
         //this is where if the brick does not come in contact with a brick (brick.state = true) then it will be drawn. 
@@ -207,7 +214,18 @@ function game() {
         handleBallBounce(ball, paddle);
     };
 }
-
+/**This is both of the end screen options 
+ * 
+ * 
+ */
+// This displayes the image that shows the GameOver screen that tell player they lost the game
+function gameOver() {
+    background(gameOverScreen.image);
+}
+//this dsiplayes the image tthat show the Win screen that tell player they won the game
+function win() {
+    background(winScreen.image);
+}
 /**
  * 
  * 
@@ -309,7 +327,7 @@ function drawBrick(brick) {
     pop();
 }
 //Draws the lives of the player. It starts at 3 and goes down to 0. if the balls misses the paddle and fall off the canvas player 
-//loose a life. it is a white number on the top of the canvas.
+//lose a life. it is a white number on the top of the canvas.
 function drawLives() {
     push();
     textAlign(LEFT, TOP);
@@ -317,6 +335,15 @@ function drawLives() {
     textStyle(BOLD);
     textSize(100);
     text(lives, 0, 0);
+    pop();
+}
+function drawBricksLeft() {
+    push();
+    textAlign(RIGHT, TOP);
+    fill("grey");
+    textStyle(BOLD);
+    textSize(100);
+    text(bricksLeft, 0, 0);
     pop();
 }
 
@@ -410,6 +437,7 @@ function handleBrickDestroy(brick, ball) {
 
         brick.active = false;
         ball.velocity.y *= -1;
+        bricksLeft = bricksLeft - 1;
     }
     if (brick.active === false) {
 
@@ -435,6 +463,12 @@ function handleBrickDestroy(brick, ball) {
  * 
  * 
  */
+
+function callYouWin() {
+    if (bricksLeft === 0) {
+        state = "win";
+    }
+}
 
 function callGameOver() {
     if (lives === 0) [
