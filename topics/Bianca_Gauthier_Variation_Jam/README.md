@@ -1,13 +1,13 @@
 # Template p5 Project
 
-Author Name
+Bianca Gauthier
 
 [View this project online](URL_FOR_THE_RUNNING_PROJECT)
 
 ## Description
 
 Im going to be using a game that is very nastalgic as I use to always play it on my dad phone when i was very young. 
- The game is Brick Breakers specifically the one on the Blackberry. I will create a couple different variations of the game. Some do not have a GameOver screen yet. Many of the variations I have other ideas to add, but the main point was to have fun and explore how brick breaker could be experienced differently. 
+ The game is Brick Breakers specifically the one on the Blackberry. I will create a couple different variations of the game. Some do not have a GameOver screen yet. Many of the variations I have other ideas to add, but the main point was to have fun and explore how brick breaker could be experienced differently.  (havent added the respawned of the bricks yet so refresh to replay again... sorry)
 
 ## Credits
 
