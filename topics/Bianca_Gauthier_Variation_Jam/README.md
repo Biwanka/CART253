@@ -3,7 +3,7 @@
 Bianca Gauthier
 
 [View this project online](https://biwanka.github.io/CART253/topics/Bianca_Gauthier_Variation_Jam/index.html)
-view the Code : 
+view the Code : https://github.com/Biwanka/CART253/tree/main/topics/Bianca_Gauthier_Variation_Jam 
 
 ## Description
 
