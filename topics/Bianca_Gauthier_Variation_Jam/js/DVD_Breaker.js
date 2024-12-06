@@ -35,30 +35,26 @@
  * 3- DvD logo. because the game i chose had to do with something from my past i decided to all add another aspect that touches on that.
  * I am going to use the boucing DVD logo. it was a common thing if you ever owned a DVD that when it was left on pause for long
  * the logo would appear and start bouching on the 4 sides of the screen. The main Hype was when the logo actually finally hit the 
- * corner of the screen it was the biggest satisfaction. Mainly i will use the top right corner. so i will change teh ball to be the 
+ * corner of the screen it was the biggest satisfaction. Mainly i will use the top right corner (changed because it was very long to get specifically
+ * that corner so all corner ). so i will change teh ball to be the 
  * DvD logo and the ball will be able to hit the side of the screen. there will be bricks blocking the top right corner.
- * Even if the player gets ride of all the bricks they will not win the game they need to continue until the DVD logo witht perfectly 
- * the top right corner.
+ * Even if the player gets ride of all the bricks they will not win the game they need to continue until the DVD logo hits one of the corners
+ * I have tested and it is possible 
  * 
- * 
- * 4- Reverse. I dedcide to make a version that will be the contrary of the cncept of the original game. 
- * instead of bouncing a ball on a paddle to break the bricks, instead the player will need to trow the bricks to hit the ball
- * that is moving in the top screen. the player will have a pile of bricks and need to trow them so it hits the ball and the brick breaks.
- * if the brick hits nothing gravity will do its thing and come back down in the hands of the player. im think maybe to add a timer 
- * where the palyer needs to break all the brick before the time. we will see. 
+ 
  */
 
 "use strict";
-
+//our DVD LOGO
 let ball = {
     x: 500,
-    y: 400,
-    fill: "white",
-    width: 12,
-    height: 12,
+    y: 300,
+    fill: "grey",
+    width: 30,
+    height: 30,
     velocity: {
-        x: 2,
-        y: 2
+        x: 3,
+        y: 3
     },
     image: undefined
 };
@@ -68,7 +64,7 @@ const paddle = {
     x: 500,
     y: 665,
     fill: "black",
-    width: 110,
+    width: 150,
     height: 10
 };
 
@@ -83,8 +79,8 @@ let bricks = [
     },
 ];
 
-const brickStartX = 600;
-const brickStartY = 50;
+const brickStartX = 550;
+const brickStartY = 100;
 const brickGapX = 15;
 const brickGapY = 25;
 const brickWidth = 50;
@@ -97,13 +93,10 @@ let numberOfColumns = 5;
 let numberOfRows = 6;
 let offset = brickWidth / 4;
 
-//the lives of the player 
-let lives = 3;
 
 //this is the different screen for the game and what we will use to switch in between.
 let state = "title" // "game" , "win" , "gameOver"
 
-let bricksLeft = 0;
 
 // this will be the Title Screen at the begging of the game that will have the title and instruction on the types of flies (uses and image)
 //has position and image
@@ -120,19 +113,11 @@ let winScreen = {
     image: undefined
 };
 
-//this will be the Game Over background screen that will appear when you run out of lives. (uses and image)
-//has position and image
-let gameOverScreen = {
-    x: 1000,
-    y: 680,
-    image: undefined
-};
-
 function preload() {
-    titleScreen.image = loadImage("assets/images/Brick_Breaker_Title.png");
+    titleScreen.image = loadImage("assets/images/DVD_Breaker_Title.png");
     winScreen.image = loadImage("assets/images/YOU_WIN.png");
     gameOverScreen.image = loadImage("assets/images/Game_Over.jpg");
-    ball.image = loadImage("assets/images/Logo_DVD.png");
+    ball.image = loadImage("assets/images/DVD.png");
 }
 
 
@@ -140,7 +125,6 @@ function preload() {
 function setup() {
     createCanvas(1000, 680);
     createAllBricks(bricks); //creates all the bricks using the variables ontop 
-    resetBall(ball);
 }
 
 // display the state of the game
@@ -151,10 +135,6 @@ function draw() {
 
     else if (state === "game") {
         game();
-    }
-
-    else if (state === "gameOver") {
-        gameOver();
     }
 
     else if (state === "win") {
@@ -178,9 +158,8 @@ function game() {
 
     drawPaddle(paddle);
     drawBall(ball);
-    drawLives();
 
-    callGameOver();
+    callYouWin();
 
     for (let brick of bricks) {
         if (brick.active === true) {
@@ -233,16 +212,12 @@ function moveBall(ball) {
     ball.y = ball.y + ball.velocity.y;
 
     // makes the ball bounce off the right and left side of the canvas
-    if (ball.x > 935 || ball.x < 0) {
+    if (ball.x > width || ball.x < 0) {
         ball.velocity.x *= -1;
     }
     //makes the ball bounce off the top of the canvas
-    if (ball.y < 0) {
+    if (ball.y > height || ball.y < 0) {
         ball.velocity.y *= -1;
-    }
-
-    if (ball.y > 690) {
-        resetBall(ball);
     }
 }
 
@@ -272,8 +247,10 @@ function drawPaddle(paddle) {
 function drawBall(ball) {
     push();
     rectMode(CENTER);
+    imageMode(CENTER);
     noStroke();
     fill(ball.fill);
+    ellipse(ball.x, ball.y, ball.width, ball.height);
     image(ball.image, ball.x, ball.y,);
     pop();
 }
@@ -285,18 +262,6 @@ function drawBrick(brick) {
     fill(brick.fill);
     noStroke(0);
     rect(brick.x, brick.y, brick.width, brick.height);
-    pop();
-}
-
-//Draws the lives of the player. It starts at 3 and goes down to 0. if the balls misses the paddle and fall off the canvas player 
-//lose a life. it is a white number on the top of the canvas.
-function drawLives() {
-    push();
-    textAlign(LEFT, TOP);
-    fill("white");
-    textStyle(BOLD);
-    textSize(100);
-    text(lives, 0, 0);
     pop();
 }
 
@@ -347,7 +312,8 @@ function resetBall(ball) {
 
 /**  
  * 
- *  Makes the Ball bounce when the ball comes in contact with the paddle
+ *  Makes the Ball bounce when the ball comes in contact with the paddle. the dvd logo can bounce on all 4 corner but you can use the 
+ * paddle to try and see if you cna get a better direction
  * 
 */
 function handleBallBounce(ball, paddle) {
@@ -356,13 +322,14 @@ function handleBallBounce(ball, paddle) {
     if (overlap) {
 
         ball.y = paddle.y - paddle.height / 2 - ball.height / 2;
-        ball.velocity.y *= -1;   //ball.velocity.y = -ball.velocity.y is another way to write it 
+        ball.velocity.y *= -1;
     }
 }
 
 
 /**
  *  this is where the brick is effected if it touches the ball. if the brick touches the ball it will disapear.
+ * i didnt change much this effect . as players may think they win if they rid of all the bricks
  */
 function handleBrickDestroy(brick, ball) {
     const overlap = centredRectanglesOverlap(brick, ball);
@@ -398,11 +365,25 @@ function handleBrickDestroy(brick, ball) {
  * 
  * 
  */
+//if the DVD logo lands in any of the corners they will win. at first i did if perfectly but because the logo was maybe to big, it
+//never counted as a win so i left it as the image is bigger then the ball istself. 
+//i have tried and it does work and it is possible to hit one of the corner, the time it takes varied but just as satisfying !!!!
+function callYouWin() {
+    if (ball.x <= 2 && ball.y <= 2) {
+        state = "win";
+    }
 
-function callGameOver() {
-    if (lives === 0) [
-        state = "gameOver"
-    ]
+    else if (ball.x >= 998 && ball.y <= 2) {
+        state = "win";
+    }
+
+    else if (ball.x <= 2 && ball.y >= 678) {
+        state = "win";
+    }
+
+    else if (ball.x >= 998 && ball.y >= 678) {
+        state = "win";
+    }
 }
 
 function mousePressed() {
@@ -416,15 +397,9 @@ function mousePressed() {
     //if they want to replay the game
     else if (state === "win") {
         state = "title";
-        lives = 3;
+        brick.active = true;
     }
 
-    //if the player lose the game and are at the game Over screen they can click the mouse to bring them back to the title screen 
-    //if they want to replay the game
-    else if (state === "gameOver") {
-        state = "title";
-        lives = 3;
-    }
     // if the state of the game is on the game screen then we can start playing the game (the clicking dosent do anything anymore)
     else if (state === "game") {
 
