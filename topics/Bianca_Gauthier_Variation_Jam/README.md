@@ -2,7 +2,7 @@
 
 Bianca Gauthier
 
-[View this project online](URL_FOR_THE_RUNNING_PROJECT)
+[View this project online](https://biwanka.github.io/CART253/topics/Bianca_Gauthier_Variation_Jam/index.html)
 
 ## Description
 
