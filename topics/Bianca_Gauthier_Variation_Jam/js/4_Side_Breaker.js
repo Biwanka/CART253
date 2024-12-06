@@ -147,7 +147,7 @@ let gameOverScreen = {
 };
 
 function preload() {
-    titleScreen.image = loadImage("assets/images/Four_Side_Breaker_Title.png");
+    titleScreen.image = loadImage("assets/images/Four_Side_Breaker.png");
     winScreen.image = loadImage("assets/images/YOU_WIN.png");
     gameOverScreen.image = loadImage("assets/images/Game_Over.jpg");
 }
