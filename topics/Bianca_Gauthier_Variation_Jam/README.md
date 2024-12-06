@@ -6,16 +6,17 @@ Author Name
 
 ## Description
 
-This description should help the reader understand what the program is, what any controls do, and perhaps what the desired experience it.
+Im going to be using a game that is very nastalgic as I use to always play it on my dad phone when i was very young. 
+ The game is Brick Breakers specifically the one on the Blackberry. I will create a couple different variations of the game. Some do not have a GameOver screen yet. Many of the variations I have other ideas to add, but the main point was to have fun and explore how brick breaker could be experienced differently. 
 
 ## Credits
 
-This bit should describe what tools were used. For example:
-
 This project uses [p5.js](https://p5js.org).
+It used the concept of the main Brick Breaker Game.
+All the visuals are done by me.
+I did use the function centredRectanglesOverlap(a, b) that was shown in class and the start of the ball and paddle thta was in the same lecture
+
 
 ## Attribution
 
-This bit should attribute any assets or other elements used taken from other sources. For example:
-
-The fish images were sourced from the [Creative Commons image "Georgia Aquarium Fish"](https://search.creativecommons.org/photos/96f6f770-eac1-488c-8abb-16bee7bcc874) by Mike Johnston which is licensed with CC BY 2.0. To view a copy of this license, visit https://creativecommons.org/licenses/by/2.0/.
+the DVD logo is the traditional one that was used. not the code but the logo itself https://www.bouncingdvdlogo.com/ 
