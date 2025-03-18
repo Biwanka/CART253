@@ -367,7 +367,7 @@ function callYouWin() {
     }
 }
 
-function mousePressed() {
+function mousePressed(brick) {
 
     //to get players from the title screen to the game play
     //starts at the title if we click the mouse when we are at the title screen, this will then bring the player to the game screen 
